@@ -39,6 +39,5 @@ class SubTab extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }

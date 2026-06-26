@@ -1,9 +1,11 @@
+import 'package:bounce/bounce.dart';
 import 'package:flutter/material.dart';
 import 'package:study_vault/core/config/app_colors.dart';
 import 'package:study_vault/core/config/app_font_size.dart';
 import 'package:study_vault/core/constans/college_branches.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/core/widgets/custom_text_field.dart';
+import 'package:study_vault/features/notes/presentation/screens/note_detail_screen.dart';
 import 'package:study_vault/features/notes/presentation/widgets/pdf_container.dart';
 import 'package:study_vault/features/notes/presentation/widgets/sub_tab.dart';
 
@@ -15,7 +17,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -64,14 +66,11 @@ class HomeScreen extends StatelessWidget {
                   itemCount: AppConstants.mvpSubjectsByBranch["CSE"]!.length,
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
-                    return AppConstants.mvpSubjectsByBranch["CSE"]!.isNotEmpty
-                        ? SubTab(
-                            title:
-                                AppConstants.mvpSubjectsByBranch["CSE"]![index],
-                            isSelected: true,
-                            onTap: () {},
-                          )
-                        : SubTab(title: "All", isSelected: true, onTap: () {});
+                    return SubTab(
+                      title: AppConstants.mvpSubjectsByBranch["CSE"]![index],
+                      isSelected: true,
+                      onTap: () {},
+                    );
                   },
                 ),
               ),
@@ -92,7 +91,23 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              Column(children: List.generate(3, (_) => const PdfContainer())),
+              const SizedBox(height: 10),
+              Column(
+                children: List.generate(
+                  3,
+                  (_) => Bounce(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const NoteDetailScreen(),
+                        ),
+                      );
+                    },
+                    child: const PdfContainer(),
+                  ),
+                ),
+              ),
               ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -121,16 +136,21 @@ class HomeScreen extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 10),
-                      SizedBox(
-                        height: 355,
-                        width: double.infinity,
-                        child: ListView.builder(
-                          padding: const EdgeInsets.only(top: 10),
-                          itemCount: 5,
-                          scrollDirection: Axis.vertical,
-                          itemBuilder: (context, index) {
-                            return PdfContainer();
-                          },
+                      Column(
+                        children: List.generate(
+                          3,
+                          (_) => Bounce(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const NoteDetailScreen(),
+                                ),
+                              );
+                            },
+                            child: const PdfContainer(),
+                          ),
                         ),
                       ),
                       const SizedBox(height: 10),

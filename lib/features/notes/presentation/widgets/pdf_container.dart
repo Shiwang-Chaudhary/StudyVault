@@ -10,7 +10,7 @@ class PdfContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 105,
-      width: 150,
+      width: double.infinity,
       padding: const EdgeInsets.all(8.0),
       margin: const EdgeInsets.only(right: 6, bottom: 12),
       decoration: BoxDecoration(

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:study_vault/core/config/app_themes.dart';
-import 'package:study_vault/features/auth/presentation/screens/get_started_screen.dart';
-import 'package:study_vault/features/notes/presentation/screens/home_screen.dart';
+import 'package:study_vault/core/navigation/main_screen.dart';
 
 void main() {
   runApp(const ProviderScope(child: StudyVault()));
@@ -19,7 +18,7 @@ class StudyVault extends StatelessWidget {
       darkTheme: AppTheme.dark,
       themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
-      home: const HomeScreen(),
+      home: const MainScreen(),
     );
   }
 }

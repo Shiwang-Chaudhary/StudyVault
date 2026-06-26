@@ -1,0 +1,214 @@
+import 'package:bounce/bounce.dart';
+import 'package:flutter/material.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:study_vault/core/config/app_colors.dart';
+import 'package:study_vault/core/config/app_font_size.dart';
+import 'package:study_vault/core/widgets/custom_button.dart';
+import 'package:study_vault/core/widgets/custom_text.dart';
+
+class NoteDetailScreen extends StatelessWidget {
+  const NoteDetailScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const CustomText(text: "Note Detail")),
+      body: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: 170,
+              // margin: const EdgeInsets.all(16.0),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: AppColors.textPrimary,
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              child: const Center(
+                child: CustomText(
+                  text: "PDF Viewer Placeholder",
+                  color: AppColors.background,
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            CustomText(
+              text: "Operating Systems Unit 2 — Deadlocks",
+              size: FontSizes.xxxl,
+              maxLines: 2,
+              weight: FontWeight.bold,
+              color: AppColors.textPrimary,
+            ),
+            CustomText(
+              text: "CSE · Semester IV · 18 pages",
+              size: FontSizes.xl,
+              maxLines: 2,
+              // weight: FontWeight.bold,
+              color: AppColors.textSecondary,
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: 25,
+                  backgroundColor: AppColors.infoMuted,
+                  child: CustomText(
+                    text: "SC",
+                    color: AppColors.info,
+                    size: FontSizes.lg,
+                    weight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      text: "Shiwang Chaudhary",
+                      size: FontSizes.lg,
+                      weight: FontWeight.w600,
+                    ),
+                    CustomText(
+                      text: "42 notes uploaded",
+                      size: FontSizes.md,
+                      color: AppColors.textSecondary,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: List.generate(
+                3,
+                (index) => Expanded(
+                  child: Container(
+                    height: 80,
+                    margin: const EdgeInsets.only(top: 20, left: 6, right: 6),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.surface,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        // horizontal: 8.0,
+                        vertical: 8.0,
+                      ),
+                      child: Column(
+                        children: [
+                          CustomText(
+                            text: "540",
+                            size: FontSizes.xxl,
+                            color: AppColors.textPrimary,
+                          ),
+                          CustomText(
+                            text: "Downloads",
+                            size: FontSizes.md,
+                            weight: FontWeight.w400,
+                            color: AppColors.textSecondary,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Bounce(
+              onTap: () {},
+              child: Container(
+                height: 60,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Iconsax.document_download,
+                      color: AppColors.textPrimary,
+                      size: 28,
+                    ),
+                    const SizedBox(width: 10),
+                    CustomText(
+                      text: "Download",
+                      size: FontSizes.xl,
+                      weight: FontWeight.bold,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Divider(color: AppColors.border, height: 40, thickness: 1),
+            CustomText(
+              text: "Rate this note",
+              size: FontSizes.xxl,
+              weight: FontWeight.bold,
+              color: AppColors.textPrimary,
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.star_border_outlined,
+                color: AppColors.textTertiary,
+                size: 36,
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomText(
+                  text: "Reviews",
+                  size: FontSizes.xxl,
+                  weight: FontWeight.bold,
+                  color: AppColors.textPrimary,
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: CustomText(text: "See all", color: AppColors.primary),
+                ),
+              ],
+            ),
+            Column(
+              children: List.generate(
+                2,
+                (index) => Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Row(
+                    children: [
+                      CustomText(
+                        text: "Name ${index + 1}",
+                        size: FontSizes.lg,
+                        color: AppColors.textPrimary,
+                      ),
+                      const SizedBox(width: 10),
+                      Row(
+                        children: List.generate(
+                          5,
+                          (i) => Icon(
+                            Icons.star,
+                            color: AppColors.accentAmber,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

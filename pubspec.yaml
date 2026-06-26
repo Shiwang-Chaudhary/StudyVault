@@ -40,6 +40,7 @@ dependencies:
   custom_lint: ^0.5.11
   google_fonts: ^8.1.0
   bounce: ^1.0.2
+  iconsax_flutter: ^1.0.1
 
 dev_dependencies:
   flutter_test:
