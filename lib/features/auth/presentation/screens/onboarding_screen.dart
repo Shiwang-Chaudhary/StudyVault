@@ -77,7 +77,10 @@ Widget tellUsAboutYou(PageController pageController) {
         weight: FontWeight.w500,
       ),
       const SizedBox(height: 10),
-      CustomTextField(),
+      CustomTextField(
+        hintText: "Search your college",
+        controller: TextEditingController(),
+      ),
       const SizedBox(height: 30),
       Row(
         children: [

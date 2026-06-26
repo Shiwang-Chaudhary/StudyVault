@@ -3,13 +3,17 @@ import 'package:study_vault/core/config/app_colors.dart';
 import 'package:study_vault/core/config/app_font_size.dart';
 
 class CustomTextField extends StatelessWidget {
-  const CustomTextField({super.key});
+  final String hintText;
+  final TextEditingController? controller;
+
+  const CustomTextField({super.key, required this.hintText, this.controller});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
       decoration: InputDecoration(
-        hintText: 'Search your college',
+        hintText: hintText,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 16,

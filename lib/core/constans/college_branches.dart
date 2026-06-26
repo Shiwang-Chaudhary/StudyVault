@@ -4,6 +4,7 @@ class AppConstants {
 
   static const Map<String, List<String>> mvpSubjectsByBranch = {
     'CSE': [
+      "All",
       'DSA',
       'DBMS',
       'Operating Systems',
@@ -16,6 +17,7 @@ class AppConstants {
     ],
 
     'IT': [
+      "All",
       'DSA',
       'DBMS',
       'Operating Systems',
@@ -26,6 +28,7 @@ class AppConstants {
     ],
 
     'ECE': [
+      "All",
       'Digital Electronics',
       'Signals & Systems',
       'Microprocessors',
@@ -34,6 +37,7 @@ class AppConstants {
     ],
 
     'EEE': [
+      "All",
       'Electrical Machines',
       'Power Systems',
       'Control Systems',
@@ -41,6 +45,7 @@ class AppConstants {
     ],
 
     'EE': [
+      "All",
       'Electrical Machines',
       'Power Systems',
       'Control Systems',
@@ -48,6 +53,7 @@ class AppConstants {
     ],
 
     'Mechanical': [
+      "All",
       'Thermodynamics',
       'Fluid Mechanics',
       'Machine Design',
@@ -55,6 +61,7 @@ class AppConstants {
     ],
 
     'Civil': [
+      "All",
       'Surveying',
       'Structural Analysis',
       'Concrete Technology',
