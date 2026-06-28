@@ -1,7 +1,22 @@
 class AppConstants {
   AppConstants._();
   // MVP branch and subject data for StudyVault
-
+  static const List<String> items = [
+    'Delhi University',
+    'Gurugram University',
+    'Mumbai University',
+    'Bangalore University',
+  ];
+  static const List<String> semesters = [
+    'Semester I',
+    'Semester II',
+    'Semester III',
+    'Semester IV',
+    'Semester V',
+    'Semester VI',
+    'Semester VII',
+    'Semester VIII',
+  ];
   static const Map<String, List<String>> mvpSubjectsByBranch = {
     'CSE': [
       "All",

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:study_vault/features/notes/presentation/screens/home_screen.dart';
+import 'package:study_vault/features/notes/presentation/screens/upload_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -13,7 +14,7 @@ class _MainScreenState extends State<MainScreen> {
   final pages = [
     const HomeScreen(),
     const Center(child: Text("Notes")),
-    const Center(child: Text("Flashcards")),
+    const UploadScreen(),
     const Center(child: Text("Profile")),
   ];
   int index = 0;

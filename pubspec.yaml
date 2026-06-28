@@ -41,6 +41,7 @@ dependencies:
   google_fonts: ^8.1.0
   bounce: ^1.0.2
   iconsax_flutter: ^1.0.1
+  dotted_border: ^3.1.0
 
 dev_dependencies:
   flutter_test:

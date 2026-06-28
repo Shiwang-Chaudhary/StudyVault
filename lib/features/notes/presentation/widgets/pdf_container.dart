@@ -36,8 +36,7 @@ class PdfContainer extends StatelessWidget {
             ),
           ),
           SizedBox(width: 8),
-          SizedBox(
-            width: 280,
+          Expanded(
             child: Padding(
               padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
               child: Column(
