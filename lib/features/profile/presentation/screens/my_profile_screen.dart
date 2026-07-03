@@ -73,6 +73,7 @@ class MyProfileScreen extends StatelessWidget {
                 ),
               ],
             ),
+            const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: List.generate(
@@ -114,6 +115,7 @@ class MyProfileScreen extends StatelessWidget {
                 ),
               ),
             ),
+            const SizedBox(height: 10),
             Divider(color: AppColors.border, thickness: 1, height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
