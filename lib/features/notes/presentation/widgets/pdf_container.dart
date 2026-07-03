@@ -9,7 +9,7 @@ class PdfContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 105,
+      height: 93,
       width: double.infinity,
       padding: const EdgeInsets.all(8.0),
       margin: const EdgeInsets.only(right: 6, bottom: 12),
@@ -44,14 +44,14 @@ class PdfContainer extends StatelessWidget {
                 children: [
                   CustomText(
                     text: "Operating Systems Unit 2 — Deadlocks",
-                    size: FontSizes.xl,
+                    size: FontSizes.lg,
                     weight: FontWeight.w600,
                     color: AppColors.textPrimary,
                   ),
                   const SizedBox(height: 2),
                   CustomText(
                     text: "CSE · Semester IV",
-                    size: FontSizes.lg,
+                    size: FontSizes.md,
                     weight: FontWeight.w600,
                     color: AppColors.textSecondary,
                   ),
@@ -66,33 +66,33 @@ class PdfContainer extends StatelessWidget {
                       const SizedBox(width: 4),
                       const CustomText(
                         text: "4.8",
-                        size: FontSizes.lg,
+                        size: FontSizes.md,
                         weight: FontWeight.w600,
                         color: AppColors.textSecondary,
                       ),
                       const SizedBox(width: 16),
                       const Icon(
                         Icons.favorite_border,
-                        color: AppColors.textSecondary,
+                        color: AppColors.accentCoral,
                         size: 18,
                       ),
                       const SizedBox(width: 4),
                       const CustomText(
                         text: "132",
-                        size: FontSizes.lg,
+                        size: FontSizes.md,
                         weight: FontWeight.w600,
                         color: AppColors.textSecondary,
                       ),
                       const SizedBox(width: 16),
                       const Icon(
                         Icons.download_outlined,
-                        color: AppColors.textSecondary,
+                        color: AppColors.success,
                         size: 18,
                       ),
                       const SizedBox(width: 4),
                       const CustomText(
                         text: "540",
-                        size: FontSizes.lg,
+                        size: FontSizes.md,
                         weight: FontWeight.w600,
                         color: AppColors.textSecondary,
                       ),

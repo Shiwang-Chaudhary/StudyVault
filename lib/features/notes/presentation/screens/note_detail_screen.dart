@@ -5,6 +5,7 @@ import 'package:study_vault/core/config/app_colors.dart';
 import 'package:study_vault/core/config/app_font_size.dart';
 import 'package:study_vault/core/widgets/custom_button.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
+import 'package:study_vault/features/profile/presentation/screens/uploader_profile_screen.dart';
 
 class NoteDetailScreen extends StatelessWidget {
   const NoteDetailScreen({super.key});
@@ -12,7 +13,13 @@ class NoteDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const CustomText(text: "Note Detail")),
+      appBar: AppBar(
+        title: const CustomText(
+          text: "Note Detail",
+          size: FontSizes.xxl,
+          weight: FontWeight.w600,
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(
@@ -49,35 +56,45 @@ class NoteDetailScreen extends StatelessWidget {
               color: AppColors.textSecondary,
             ),
             const SizedBox(height: 20),
-            Row(
-              children: [
-                CircleAvatar(
-                  radius: 25,
-                  backgroundColor: AppColors.infoMuted,
-                  child: CustomText(
-                    text: "SC",
-                    color: AppColors.info,
-                    size: FontSizes.lg,
-                    weight: FontWeight.w600,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const UploaderProfileScreen(),
                   ),
-                ),
-                const SizedBox(width: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomText(
-                      text: "Shiwang Chaudhary",
+                );
+              },
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 25,
+                    backgroundColor: AppColors.infoMuted,
+                    child: CustomText(
+                      text: "SC",
+                      color: AppColors.info,
                       size: FontSizes.lg,
                       weight: FontWeight.w600,
                     ),
-                    CustomText(
-                      text: "42 notes uploaded",
-                      size: FontSizes.md,
-                      color: AppColors.textSecondary,
-                    ),
-                  ],
-                ),
-              ],
+                  ),
+                  const SizedBox(width: 10),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText(
+                        text: "Shiwang Chaudhary",
+                        size: FontSizes.lg,
+                        weight: FontWeight.w600,
+                      ),
+                      CustomText(
+                        text: "42 notes uploaded",
+                        size: FontSizes.md,
+                        color: AppColors.textSecondary,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

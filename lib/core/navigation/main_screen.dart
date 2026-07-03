@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:study_vault/features/notes/presentation/screens/home_screen.dart';
 import 'package:study_vault/features/notes/presentation/screens/upload_screen.dart';
+import 'package:study_vault/features/profile/presentation/screens/my_profile_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -15,7 +16,7 @@ class _MainScreenState extends State<MainScreen> {
     const HomeScreen(),
     const Center(child: Text("Notes")),
     const UploadScreen(),
-    const Center(child: Text("Profile")),
+    const MyProfileScreen(),
   ];
   int index = 0;
   @override
