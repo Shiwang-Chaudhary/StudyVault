@@ -1,8 +1,6 @@
 const { ApiError } = require('../utils/apiResponse.utils');
 
-// Centralized error handler — every thrown/rejected error from controllers
-// (via asyncHandler) ends up here so responses stay consistent.
-// eslint-disable-next-line no-unused-vars
+
 const errorHandler = (err, req, res, next) => {
   console.error(err);
 
@@ -39,12 +37,4 @@ const errorHandler = (err, req, res, next) => {
   });
 };
 
-const notFound = (req, res, next) => {
-  res.status(404).json({
-    success: false,
-    data: null,
-    error: { message: `Route not found: ${req.method} ${req.originalUrl}` },
-  });
-};
-
-module.exports = { errorHandler, notFound };
+module.exports =  errorHandler;

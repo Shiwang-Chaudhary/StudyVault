@@ -7,7 +7,7 @@ class ApiError extends Error{
 }
 
 const successResponse = (res, statusCode, data = null, meta = {}) =>{
-    return res.statusCode(statusCode).json({
+    return res.status(statusCode).json({
         success: true,
         data,
         error: null,
@@ -15,16 +15,7 @@ const successResponse = (res, statusCode, data = null, meta = {}) =>{
     });
 }
 
-const failureResponse = (res, statusCode, message = "Something went wrong", details = null) =>{
-    return res.statusCode(statusCode).json({
-        success: false,
-        data: null,
-        error: { message, details },
-    });
-}
-
 module.exports = {
     ApiError,
     successResponse,
-    failureResponse
 }

@@ -3,5 +3,7 @@ const notfound = (req, res, next) => {
         success: false,
         data: null,
         error: { message: `Route not found: ${req.method} ${req.originalUrl}` }
-    })
+    });
 }
+
+module.exports = notfound;
