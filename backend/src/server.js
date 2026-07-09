@@ -5,5 +5,5 @@ const PORT = process.env.PORT || 5000;
 
 
 app.listen(PORT, () =>{
-    console.log(`🚀 NoteMandi API running on port ${PORT}`);
+    console.log(`🚀 StudyVault API running on port ${PORT}`);
 });

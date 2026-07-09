@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:study_vault/core/config/app_colors.dart';
 import 'package:study_vault/core/config/app_font_size.dart';
@@ -5,11 +6,11 @@ import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/features/auth/presentation/screens/onboarding_screen.dart';
 import 'package:study_vault/features/auth/presentation/widgets/google_container.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: Center(
         child: Column(

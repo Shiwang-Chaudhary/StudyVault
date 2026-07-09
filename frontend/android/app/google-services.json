@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "909896374886",
+    "project_id": "quickmeet-4d384",
+    "storage_bucket": "quickmeet-4d384.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:909896374886:android:235dbba3d9317f571eeba7",
+        "android_client_info": {
+          "package_name": "com.example.quick_meet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "909896374886-6hvd73fpdtbnn37l6pp0bcailothu9k4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.quick_meet",
+            "certificate_hash": "490702402f2f5d7e96ee4b6be374e18d6cec26c3"
+          }
+        },
+        {
+          "client_id": "909896374886-8s1k8cm589b7taho5if562q82q4ssp95.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_TQ0AzvuS23yDJgd_lQc0F-vfih345O8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "909896374886-8s1k8cm589b7taho5if562q82q4ssp95.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "909896374886-6ukr16j65tgc444spvec2jf4tg1b3ma8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.studyVault"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:909896374886:android:0f99c0118c11f8001eeba7",
+        "android_client_info": {
+          "package_name": "com.example.study_vault"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "909896374886-8s1k8cm589b7taho5if562q82q4ssp95.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_TQ0AzvuS23yDJgd_lQc0F-vfih345O8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "909896374886-8s1k8cm589b7taho5if562q82q4ssp95.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "909896374886-6ukr16j65tgc444spvec2jf4tg1b3ma8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.studyVault"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

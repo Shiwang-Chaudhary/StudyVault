@@ -6,15 +6,14 @@ const morgan = require('morgan');
 const notfoundHandler = require('./middleware/notfound.middlware');
 const errorHandler = require('./middleware/errorHandler.middleware');
 
-// Middleware
 app.use(cors());
-// app.use(helmet());
+app.use(helmet());
 app.use(express.json());
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 
 //Routes
 app.get("/", (req, res) => {
-    res.json({ message: "Welcome to NoteMandi API" });
+    res.json({ message: "Welcome to StudyVault API" });
 });
 
 app.use(notfoundHandler);
