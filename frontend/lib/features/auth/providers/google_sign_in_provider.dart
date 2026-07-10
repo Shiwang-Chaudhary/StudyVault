@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:study_vault/features/auth/providers/auth_repo_provider.dart';
 
-class GoogleSignInProvider extends AsyncNotifier {
+class GoogleSignInProvider extends AsyncNotifier<void> {
   @override
   Future<void> build() async {}
 
