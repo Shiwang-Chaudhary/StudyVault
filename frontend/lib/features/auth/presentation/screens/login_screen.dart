@@ -5,12 +5,15 @@ import 'package:study_vault/core/config/app_font_size.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/features/auth/presentation/screens/onboarding_screen.dart';
 import 'package:study_vault/features/auth/presentation/widgets/google_container.dart';
+import 'package:study_vault/features/auth/providers/google_sign_in_provider.dart';
 
 class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(googleSignInProvider);
+    final authNotifier = ref.read(googleSignInProvider.notifier);
     return Scaffold(
       body: Center(
         child: Column(
@@ -39,15 +42,9 @@ class LoginScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 10),
             GoogleContainer(
+              isLoading: authState.isLoading,
               onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return const OnboardingScreen();
-                    },
-                  ),
-                );
+                authNotifier.signIn();
               },
             ),
             Row(

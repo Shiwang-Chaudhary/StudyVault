@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const notfoundHandler = require('./middleware/notfound.middlware');
 const errorHandler = require('./middleware/errorHandler.middleware');
+const routes = require('./routes/index');
 
 app.use(cors());
 app.use(helmet());
@@ -15,6 +16,7 @@ app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 app.get("/", (req, res) => {
     res.json({ message: "Welcome to StudyVault API" });
 });
+app.use("/api", routes);
 
 app.use(notfoundHandler);
 app.use(errorHandler);
