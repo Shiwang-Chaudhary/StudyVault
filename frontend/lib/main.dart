@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:study_vault/core/config/app_themes.dart';
 import 'package:study_vault/core/navigation/auth_gate.dart';
-import 'package:study_vault/core/navigation/main_screen.dart';
+import 'package:study_vault/features/auth/presentation/screens/get_started_screen.dart';
 import 'package:study_vault/firebase_options.dart';
 
 void main() async {
@@ -18,12 +18,12 @@ class StudyVault extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'NoteMandi',
+      title: 'StudyVault',
       theme: AppTheme.dark,
       darkTheme: AppTheme.dark,
       themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
-      home: const AuthGate(),
+      home: const GetStartedScreen(),
     );
   }
 }

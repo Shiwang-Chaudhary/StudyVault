@@ -22,4 +22,3 @@ app.use(notfoundHandler);
 app.use(errorHandler);
 
 module.exports = app;
-

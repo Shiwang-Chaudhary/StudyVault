@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:study_vault/core/config/app_colors.dart';
 import 'package:study_vault/core/config/app_font_size.dart';
+import 'package:study_vault/core/navigation/auth_gate.dart';
 import 'package:study_vault/core/widgets/custom_button.dart';
 import 'package:study_vault/core/widgets/custom_list_tile.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
@@ -79,7 +80,7 @@ class GetStartedScreen extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return const LoginScreen();
+                          return const AuthGate();
                         },
                       ),
                     );

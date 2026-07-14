@@ -1,8 +1,6 @@
 import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:study_vault/core/constans/api_constants.dart';
 import 'package:study_vault/features/auth/data/user_model.dart';
@@ -59,9 +57,12 @@ class AuthRepoProvider {
         ApiConstants.googleLogin,
         options: Options(headers: {'Authorization': 'Bearer $token'}),
       );
-
-      return UserModel.fromJson(response.data);
+      log("Backend sync response: ${response.data}");
+      final userModel = UserModel.fromJson(response.data["data"]);
+      log("Usermodel inside syncWithBackend: ${userModel.toJson()}");
+      return userModel;
     } on DioException catch (e) {
+      log("Backend sync failed: ${e.message}");
       throw Exception('Backend sync failed: ${e.message}');
     }
   }

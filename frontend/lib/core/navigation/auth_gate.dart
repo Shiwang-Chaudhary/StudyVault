@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:study_vault/core/navigation/main_screen.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
+import 'package:study_vault/features/auth/presentation/screens/get_started_screen.dart';
 
 import 'package:study_vault/features/auth/presentation/screens/login_screen.dart';
 import 'package:study_vault/features/auth/presentation/screens/onboarding_screen.dart';
@@ -15,6 +18,7 @@ class AuthGate extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    log("AuthGate build");
     final authState = ref.watch(authStateProvider);
 
     return authState.when(
@@ -27,10 +31,13 @@ class AuthGate extends ConsumerWidget {
 
       data: (firebaseUser) {
         // User is not logged in
+        log("Firebase user: ${firebaseUser?.uid}");
         if (firebaseUser == null) {
+          log("Returning GetStartedScreen");
           return const LoginScreen();
         }
-
+        log("Watching userProfileProvider");
+        // final firebaseUser = firebaseUser;
         // User is logged in, fetch profile from backend
         final userProfile = ref.watch(userProfileProvider);
 
@@ -43,6 +50,7 @@ class AuthGate extends ConsumerWidget {
           ),
 
           data: (user) {
+            log("User onboarding status: ${user.hasCompletedOnboarding}");
             if (!user.hasCompletedOnboarding) {
               return const OnboardingScreen();
             }
