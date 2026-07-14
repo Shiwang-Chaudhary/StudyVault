@@ -6,6 +6,7 @@ import 'package:study_vault/core/constans/college_branches.dart';
 import 'package:study_vault/core/widgets/custom_button.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/core/widgets/custom_text_field.dart';
+import 'package:study_vault/features/auth/data/onboarding_model.dart';
 import 'package:study_vault/features/auth/presentation/widgets/disclaimer.dart';
 import 'package:study_vault/features/auth/presentation/widgets/drop_down.dart';
 import 'package:study_vault/features/auth/presentation/widgets/subject_chip.dart';
@@ -20,9 +21,17 @@ class OnboardingScreen extends ConsumerStatefulWidget {
 class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   final PageController pageController = PageController();
   bool isSelected = false;
+  final TextEditingController collegeController = TextEditingController();
+  final OnboardingModel onboardingData = OnboardingModel(
+    college: "",
+    branch: "",
+    semester: "",
+    selectedSubjects: [],
+  );
   @override
   void dispose() {
     pageController.dispose();
+    collegeController.dispose();
     super.dispose();
   }
 
@@ -33,14 +42,25 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         padding: const EdgeInsets.all(12.0),
         child: PageView(
           controller: pageController,
-          children: [tellUsAboutYou(pageController), whatAreYouHereFor()],
+          children: [
+            tellUsAboutYou(
+              pageController,
+              collegeController: collegeController,
+              onboardingData: onboardingData,
+            ),
+            whatAreYouHereFor(onboardingData),
+          ],
         ),
       ),
     );
   }
 }
 
-Widget tellUsAboutYou(PageController pageController) {
+Widget tellUsAboutYou(
+  PageController pageController, {
+  required TextEditingController collegeController,
+  required OnboardingModel onboardingData,
+}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -80,7 +100,7 @@ Widget tellUsAboutYou(PageController pageController) {
       const SizedBox(height: 10),
       CustomTextField(
         hintText: "Search your college",
-        controller: TextEditingController(),
+        controller: collegeController,
       ),
       const SizedBox(height: 30),
       Row(
@@ -92,6 +112,7 @@ Widget tellUsAboutYou(PageController pageController) {
               items: AppConstants.branches,
               onChanged: (String? value) {
                 // Handle the selected value here
+                onboardingData.branch = value ?? "";
               },
             ),
           ),
@@ -103,6 +124,7 @@ Widget tellUsAboutYou(PageController pageController) {
               items: AppConstants.branches,
               onChanged: (String? value) {
                 // Handle the selected value here
+                onboardingData.semester = value ?? "";
               },
             ),
           ),
@@ -129,7 +151,7 @@ Widget tellUsAboutYou(PageController pageController) {
   );
 }
 
-Widget whatAreYouHereFor() {
+Widget whatAreYouHereFor(OnboardingModel onboardingData) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -168,8 +190,17 @@ Widget whatAreYouHereFor() {
 
         children: AppConstants.mvpSubjectsByBranch["CSE"]!
             .map(
-              (subject) =>
-                  SubjectChip(subject: subject, isSelected: true, onTap: () {}),
+              (subject) => SubjectChip(
+                subject: subject,
+                isSelected: true,
+                onTap: () {
+                  if (onboardingData.selectedSubjects.contains(subject)) {
+                    onboardingData.selectedSubjects.remove(subject);
+                  } else {
+                    onboardingData.selectedSubjects.add(subject);
+                  }
+                },
+              ),
             )
             .toList(),
       ),
