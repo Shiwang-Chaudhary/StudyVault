@@ -87,10 +87,10 @@ class _UploadScreenState extends State<UploadScreen> {
           const SizedBox(height: 5),
           CustomAutocompleteTextField(
             controller: collegeController,
-            items: AppConstants.items,
-            hintText: "e.g. ${AppConstants.items.first}",
-            onSelected: (String selection) {
-              debugPrint('Selected: $selection');
+            items: AppConstants.colleges,
+            hintText: "e.g. ${AppConstants.colleges.first}",
+            onSelected: (String college) {
+              debugPrint('College: $college');
             },
           ),
           const SizedBox(height: 20),

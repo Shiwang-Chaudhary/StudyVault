@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_vault/core/config/app_colors.dart';
 import 'package:study_vault/core/config/app_font_size.dart';
+import 'package:study_vault/core/config/app_prefrences.dart';
 import 'package:study_vault/core/navigation/auth_gate.dart';
 import 'package:study_vault/core/widgets/custom_button.dart';
 import 'package:study_vault/core/widgets/custom_list_tile.dart';
@@ -75,7 +77,8 @@ class GetStartedScreen extends StatelessWidget {
                   text: "Get Started",
                   height: 55,
                   width: double.infinity,
-                  onPressed: () {
+                  onPressed: () async {
+                    await AppPreferences.completeFirstLaunch();
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(

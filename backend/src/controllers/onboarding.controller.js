@@ -3,12 +3,12 @@ const User = require("../models/user.model");
 const { ApiError, successResponse } = require("../utils/apiResponse.utils");
 
 const onboardingController = asyncHandler(async (req, res) => {
-    const{college, branch, semester, interests} = req.body;
+    const{college, branch, semester, subjects} = req.body;
     const user = await User.findOne({firebaseUid: req.user.uid});
-    if (!college || !branch || !semester || !Array.isArray(interests)) {
+    if (!college || !branch || !semester || !Array.isArray(subjects)) {
         throw new ApiError(
             400,
-            "college, branch, semester and interests are required."
+            "college, branch, semester and subjects are required."
     );
 }
     if(!user){
@@ -18,7 +18,7 @@ const onboardingController = asyncHandler(async (req, res) => {
     user.college = college;
     user.branch = branch;
     user.semester = semester;
-    user.interests = interests;
+    user.subjects = subjects;
 
     await user.save();
 

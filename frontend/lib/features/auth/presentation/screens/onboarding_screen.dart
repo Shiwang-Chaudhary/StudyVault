@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:study_vault/core/config/app_colors.dart';
 import 'package:study_vault/core/config/app_font_size.dart';
 import 'package:study_vault/core/constans/college_branches.dart';
+import 'package:study_vault/core/widgets/custom_auto_complete_text_field.dart';
 import 'package:study_vault/core/widgets/custom_button.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/core/widgets/custom_text_field.dart';
@@ -10,6 +11,8 @@ import 'package:study_vault/features/auth/data/onboarding_model.dart';
 import 'package:study_vault/features/auth/presentation/widgets/disclaimer.dart';
 import 'package:study_vault/features/auth/presentation/widgets/drop_down.dart';
 import 'package:study_vault/features/auth/presentation/widgets/subject_chip.dart';
+import 'package:study_vault/features/auth/providers/oboarding_submit_provider.dart';
+import 'package:study_vault/features/auth/providers/onboarding_state_provider.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -22,12 +25,6 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   final PageController pageController = PageController();
   bool isSelected = false;
   final TextEditingController collegeController = TextEditingController();
-  final OnboardingModel onboardingData = OnboardingModel(
-    college: "",
-    branch: "",
-    semester: "",
-    selectedSubjects: [],
-  );
   @override
   void dispose() {
     pageController.dispose();
@@ -37,18 +34,22 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final onboardingData = ref.watch(onboardingStateProvider);
+    final onboardingNotifier = ref.read(onboardingSubmitProvider.notifier);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: PageView(
+          physics: const NeverScrollableScrollPhysics(),
           controller: pageController,
           children: [
             tellUsAboutYou(
               pageController,
               collegeController: collegeController,
               onboardingData: onboardingData,
+              ref: ref,
             ),
-            whatAreYouHereFor(onboardingData),
+            whatAreYouHereFor(ref, onboardingData),
           ],
         ),
       ),
@@ -60,6 +61,7 @@ Widget tellUsAboutYou(
   PageController pageController, {
   required TextEditingController collegeController,
   required OnboardingModel onboardingData,
+  required WidgetRef ref,
 }) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,9 +100,18 @@ Widget tellUsAboutYou(
         weight: FontWeight.w500,
       ),
       const SizedBox(height: 10),
-      CustomTextField(
-        hintText: "Search your college",
+      // CustomTextField(
+      //   hintText: "Search your college",
+      //   controller: collegeController,
+      // ),
+      CustomAutocompleteTextField(
         controller: collegeController,
+        items: AppConstants.colleges,
+        hintText: "e.g. ${AppConstants.colleges.first}",
+        onSelected: (String college) {
+          debugPrint('College: $college');
+          ref.read(onboardingStateProvider.notifier).update(college: college);
+        },
       ),
       const SizedBox(height: 30),
       Row(
@@ -110,9 +121,11 @@ Widget tellUsAboutYou(
               hintText: "Branch",
               // header: "Branch",
               items: AppConstants.branches,
-              onChanged: (String? value) {
-                // Handle the selected value here
-                onboardingData.branch = value ?? "";
+              onChanged: (String? branchValue) {
+                debugPrint('Branch: $branchValue');
+                ref
+                    .read(onboardingStateProvider.notifier)
+                    .update(branch: branchValue);
               },
             ),
           ),
@@ -120,11 +133,12 @@ Widget tellUsAboutYou(
           Expanded(
             child: DropDown(
               hintText: "Semester",
-              // header: "Semester",
-              items: AppConstants.branches,
-              onChanged: (String? value) {
-                // Handle the selected value here
-                onboardingData.semester = value ?? "";
+              items: AppConstants.semesters,
+              onChanged: (String? semesterValue) {
+                debugPrint('Semester: $semesterValue');
+                ref
+                    .read(onboardingStateProvider.notifier)
+                    .update(semester: semesterValue);
               },
             ),
           ),
@@ -138,6 +152,9 @@ Widget tellUsAboutYou(
         child: CustomButton(
           text: "Continue",
           onPressed: () {
+            ref
+                .read(onboardingStateProvider.notifier)
+                .update(college: collegeController.text.trim());
             pageController.nextPage(
               duration: const Duration(milliseconds: 1000),
               curve: Curves.easeInOut,
@@ -151,7 +168,7 @@ Widget tellUsAboutYou(
   );
 }
 
-Widget whatAreYouHereFor(OnboardingModel onboardingData) {
+Widget whatAreYouHereFor(WidgetRef ref, OnboardingModel onboardingData) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -188,26 +205,32 @@ Widget whatAreYouHereFor(OnboardingModel onboardingData) {
         spacing: 12,
         runSpacing: 12,
 
-        children: AppConstants.mvpSubjectsByBranch["CSE"]!
-            .map(
-              (subject) => SubjectChip(
-                subject: subject,
-                isSelected: true,
-                onTap: () {
-                  if (onboardingData.selectedSubjects.contains(subject)) {
-                    onboardingData.selectedSubjects.remove(subject);
-                  } else {
-                    onboardingData.selectedSubjects.add(subject);
-                  }
-                },
-              ),
-            )
-            .toList(),
+        children:
+            (AppConstants.mvpSubjectsByBranch[onboardingData.branch] ??
+                    AppConstants.mvpSubjectsByBranch["CSE"]!)
+                .map(
+                  (subject) => SubjectChip(
+                    subject: subject,
+                    isSelected: onboardingData.selectedSubjects.contains(
+                      subject,
+                    ),
+                    onTap: () {
+                      ref
+                          .read(onboardingStateProvider.notifier)
+                          .toggleSubject(subject);
+                    },
+                  ),
+                )
+                .toList(),
       ),
       const SizedBox(height: 60),
       CustomButton(
         text: "Done",
-        onPressed: () {},
+        onPressed: () {
+          ref
+              .read(onboardingSubmitProvider.notifier)
+              .submitOnboarding(onboardingData);
+        },
         width: double.infinity,
         height: 55,
       ),

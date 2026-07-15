@@ -20,7 +20,6 @@ class AuthGate extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     log("AuthGate build");
     final authState = ref.watch(authStateProvider);
-
     return authState.when(
       loading: () =>
           const Scaffold(body: Center(child: CircularProgressIndicator())),

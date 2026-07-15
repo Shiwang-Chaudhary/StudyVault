@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema(
     college: { type: String, default: null },
     branch: { type: String, default: null },
     semester: { type: String, default: null },
-    interests: { type: [String], default: [] }, // subject preferences from step 2
+    subjects: { type: [String], default: [] }, // subject preferences from step 2
 
     // V2 fields — store now so schema doesn't need migration later
     walletBalance: { type: Number, default: 0 },

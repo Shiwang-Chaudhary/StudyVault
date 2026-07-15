@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:study_vault/core/constans/api_constants.dart';
+import 'package:study_vault/features/auth/data/onboarding_model.dart';
 import 'package:study_vault/features/auth/data/user_model.dart';
 
 class AuthRepoProvider {
@@ -13,7 +14,7 @@ class AuthRepoProvider {
   final GoogleSignIn googleSignIn = GoogleSignIn.instance;
   Future<void> initialize() async {}
 
-  Future<UserModel> sigInWithGoogle() async {
+  Future<void> sigInWithGoogle() async {
     try {
       //Initialize the GoogleSignIn instance
       await googleSignIn.initialize();
@@ -33,8 +34,8 @@ class AuthRepoProvider {
         idToken: googleAuth.idToken,
       );
       await firebaseAuth.signInWithCredential(credential);
-      final user = await syncWithBackend();
-      return user;
+      await syncWithBackend();
+      // return user;
     } catch (e, st) {
       log("ERROR: $e");
       log(st.toString());
@@ -64,6 +65,29 @@ class AuthRepoProvider {
     } on DioException catch (e) {
       log("Backend sync failed: ${e.message}");
       throw Exception('Backend sync failed: ${e.message}');
+    }
+  }
+
+  Future<void> completeOnboarding(OnboardingModel data) async {
+    try {
+      final token = await getIdToken;
+      if (token == null) {
+        throw Exception("User not authenticated found");
+      }
+      final response = await dio.patch(
+        ApiConstants.onboarding,
+        data: {
+          'college': data.college,
+          'branch': data.branch,
+          'semester': data.semester,
+          'subjects': data.selectedSubjects,
+        },
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+      );
+      log("Complete onboarding response: ${response.data['data']}");
+    } catch (e) {
+      log("Failed to complete onboarding: $e");
+      throw Exception('Failed to complete onboarding: $e');
     }
   }
 
