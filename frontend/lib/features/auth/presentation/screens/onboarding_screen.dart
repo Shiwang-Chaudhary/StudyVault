@@ -11,7 +11,7 @@ import 'package:study_vault/features/auth/data/onboarding_model.dart';
 import 'package:study_vault/features/auth/presentation/widgets/disclaimer.dart';
 import 'package:study_vault/features/auth/presentation/widgets/drop_down.dart';
 import 'package:study_vault/features/auth/presentation/widgets/subject_chip.dart';
-import 'package:study_vault/features/auth/providers/oboarding_submit_provider.dart';
+import 'package:study_vault/features/auth/providers/onboarding_submit_provider.dart';
 import 'package:study_vault/features/auth/providers/onboarding_state_provider.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {

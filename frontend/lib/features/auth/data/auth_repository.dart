@@ -6,8 +6,8 @@ import 'package:study_vault/core/constans/api_constants.dart';
 import 'package:study_vault/features/auth/data/onboarding_model.dart';
 import 'package:study_vault/features/auth/data/user_model.dart';
 
-class AuthRepoProvider {
-  AuthRepoProvider(this.firebaseAuth, this.dio);
+class AuthRepository {
+  AuthRepository(this.firebaseAuth, this.dio);
 
   final Dio dio;
   final FirebaseAuth firebaseAuth;
