@@ -4,30 +4,29 @@ import 'package:study_vault/features/notes/data/upload_file_repository.dart';
 import 'package:study_vault/features/notes/providers/upload_repo_provider.dart';
 
 class UploadFileNotifier extends AsyncNotifier<void> {
-  late final UploadFileRepository uploadFileRepo;
+  late final UploadFileRepository _uploadFileRepo;
   @override
   Future<void> build() async {
-    uploadFileRepo = ref.read(uploadFileProvider);
+    _uploadFileRepo = ref.read(uploadFileProvider);
   }
 
   Future<void> uploadFile({
     required String title,
     required String subject,
     required String college,
+    required String branch,
+    required String semester,
+    required PlatformFile file,
   }) async {
-    final fileResult = await FilePicker.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ["pdf"],
-    );
-    if (fileResult == null) return;
-    final file = fileResult.files.first;
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      await uploadFileRepo.uploadFile(
+      await _uploadFileRepo.uploadFile(
         file: file,
         title: title,
         subject: subject,
         college: college,
+        branch: branch,
+        semester: semester,
       );
     });
   }

@@ -1,8 +1,8 @@
 const cloudinary = require('../config/cloudinary.config');
 const { Readable } = require('stream');
 
-const uploadToCloudinary = async (fileBuffer, folder = 'studyValut/notes') => {
-    return Promise((resolve, reject) =>{
+const uploadToCloudinary = async (fileBuffer, folder = 'studyVault/notes') => {
+    return new Promise((resolve, reject) =>{
         const uploadStream = cloudinary.uploader.upload_stream(
             {
                 folder,
@@ -10,7 +10,11 @@ const uploadToCloudinary = async (fileBuffer, folder = 'studyValut/notes') => {
             },
             (error, result) => {
                 if (error) {
-                    reject(error);
+                    console.error("Cloudinary Error:");
+                    console.error(error);
+                    console.error("Message:", error.message);
+                    console.error("HTTP Code:", error.http_code);
+                    return reject(error);
                 } else {
                     resolve({
                         cloudinary_url: result.secure_url,

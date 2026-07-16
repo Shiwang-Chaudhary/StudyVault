@@ -3,8 +3,9 @@ const mongoose = require('mongoose');
 const noteSchema = new mongoose.Schema(
   {
     creatorId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      // type: mongoose.Schema.Types.ObjectId,
+      // ref: 'User',
+      type: String,
       required: true,
     //   index: true,
     },
@@ -23,6 +24,14 @@ const noteSchema = new mongoose.Schema(
       required: true,
       trim: true,
     //   index: true,
+    },
+    branch: {
+      type: String,
+      trim: true,
+    },
+    semester: {
+      type: String,
+      trim: true,
     },
     college: {
       type: String,

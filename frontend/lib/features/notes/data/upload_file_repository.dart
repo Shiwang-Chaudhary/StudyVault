@@ -15,12 +15,16 @@ class UploadFileRepository {
     required String subject,
     required String college,
     required PlatformFile file,
+    required String branch,
+    required String semester,
   }) async {
     try {
       final formData = FormData.fromMap({
         'title': title,
         'subject': subject,
         'college': college,
+        'branch': branch,
+        'semester': semester,
         'pdf': await MultipartFile.fromFile(file.path!, filename: file.name),
       });
       final token = await authRepo.getIdToken;
@@ -28,6 +32,10 @@ class UploadFileRepository {
         ApiConstants.uploadFile,
         data: formData,
         options: Options(headers: {"Authorization": "Bearer $token"}),
+        onSendProgress: (sent, total) {
+          final progress = (sent / total * 100).toStringAsFixed(0);
+          log("Uploading: $progress%");
+        },
       );
       log("Response uploadFile: ${response.data}");
     } catch (e) {

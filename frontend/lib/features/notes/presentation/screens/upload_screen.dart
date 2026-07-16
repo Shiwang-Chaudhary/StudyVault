@@ -1,3 +1,5 @@
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:bounce/bounce.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -9,19 +11,67 @@ import 'package:study_vault/core/widgets/custom_auto_complete_text_field.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/features/auth/presentation/widgets/drop_down.dart';
 import 'package:study_vault/features/notes/presentation/widgets/title_text_field.dart';
+import 'package:study_vault/features/notes/presentation/widgets/upload_file_dotted_border.dart';
+import 'package:study_vault/features/notes/providers/branch_semester_file_providers.dart';
+import 'package:study_vault/features/notes/providers/upload_file_notifier.dart';
 
-class UploadScreen extends StatefulWidget {
+class UploadScreen extends ConsumerStatefulWidget {
   const UploadScreen({super.key});
 
   @override
-  State<UploadScreen> createState() => _UploadScreenState();
+  ConsumerState<UploadScreen> createState() => _UploadScreenState();
 }
 
-class _UploadScreenState extends State<UploadScreen> {
+class _UploadScreenState extends ConsumerState<UploadScreen> {
   TextEditingController collegeController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController subjectController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    ref.listenManual<AsyncValue<void>>(uploadFileNotifierProvider, (
+      previous,
+      next,
+    ) {
+      next.whenOrNull(
+        data: (_) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text('Upload successful')));
+
+          titleController.clear();
+          collegeController.clear();
+          subjectController.clear();
+
+          ref.read(branchStateProvider.notifier).state = null;
+          ref.read(semesterStateProvider.notifier).state = null;
+          ref.read(selectedFileProvider.notifier).state = null;
+        },
+        error: (error, _) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(error.toString())));
+        },
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    collegeController.dispose();
+    subjectController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final uploadState = ref.watch(uploadFileNotifierProvider);
+    final selectedBranch = ref.watch(branchStateProvider);
+    final selectedSemester = ref.watch(semesterStateProvider);
+    final selectedFile = ref.watch(selectedFileProvider);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -35,48 +85,29 @@ class _UploadScreenState extends State<UploadScreen> {
             ),
           ),
           const SizedBox(height: 20),
-          DottedBorder(
-            options: RoundedRectDottedBorderOptions(
-              radius: const Radius.circular(16),
-              dashPattern: [8, 4],
-              color: AppColors.surfaceElevated,
-              strokeWidth: 2,
-            ),
-            child: SizedBox(
-              height: 200,
-              width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.cloud_upload_outlined,
-                    size: 35,
-                    color: AppColors.surfaceElevated,
-                  ),
-                  CustomText(
-                    text: "Tap here to select PDF",
-                    size: FontSizes.lg,
-                    weight: FontWeight.w500,
-                  ),
-                  CustomText(
-                    text: "Max 25 MB",
-                    color: AppColors.textSecondary,
-                    size: FontSizes.md,
-                    weight: FontWeight.w500,
-                  ),
-                ],
-              ),
-            ),
+          UploadFileDottedBorder(
+            selectedFileName: selectedFile?.name,
+            onTap: () async {
+              final result = await FilePicker.pickFiles(
+                type: FileType.custom,
+                allowedExtensions: ['pdf'],
+              );
+
+              if (result == null) return;
+
+              ref.read(selectedFileProvider.notifier).state =
+                  result.files.first;
+            },
           ),
           const SizedBox(height: 20),
           CustomText(
             text: "Title",
-            color: AppColors.textSecondary,
+            color: const Color.fromARGB(255, 11, 12, 19),
             size: FontSizes.xl,
             weight: FontWeight.w500,
           ),
           const SizedBox(height: 5),
-          TitleTextField(controller: TextEditingController()),
+          TitleTextField(controller: titleController),
           const SizedBox(height: 20),
           CustomText(
             text: "College/University",
@@ -109,7 +140,9 @@ class _UploadScreenState extends State<UploadScreen> {
                     ),
                     const SizedBox(height: 5),
                     DropDown(
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        ref.read(branchStateProvider.notifier).state = value;
+                      },
                       items: AppConstants.branches,
                       hintText: AppConstants.branches.first,
                     ),
@@ -130,7 +163,9 @@ class _UploadScreenState extends State<UploadScreen> {
                     ),
                     const SizedBox(height: 5),
                     DropDown(
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        ref.read(semesterStateProvider.notifier).state = value;
+                      },
                       items: AppConstants.semesters,
                       hintText: AppConstants.semesters.first,
                     ),
@@ -148,7 +183,7 @@ class _UploadScreenState extends State<UploadScreen> {
           ),
           const SizedBox(height: 5),
           CustomAutocompleteTextField(
-            controller: TextEditingController(),
+            controller: subjectController,
             items: AppConstants.mvpSubjectsByBranch['CSE']!,
             hintText: "e.g. ${AppConstants.mvpSubjectsByBranch['CSE']![1]}",
             onSelected: (String selection) {
@@ -157,7 +192,26 @@ class _UploadScreenState extends State<UploadScreen> {
           ),
           const SizedBox(height: 20),
           Bounce(
-            onTap: () {},
+            onTap: uploadState.isLoading
+                ? null
+                : () {
+                    if (selectedFile == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Please select a PDF")),
+                      );
+                      return;
+                    }
+                    ref
+                        .read(uploadFileNotifierProvider.notifier)
+                        .uploadFile(
+                          title: titleController.text.trim(),
+                          subject: subjectController.text.trim(),
+                          college: collegeController.text.trim(),
+                          branch: selectedBranch ?? '',
+                          semester: selectedSemester ?? '',
+                          file: selectedFile,
+                        );
+                  },
             child: Container(
               height: 60,
               width: double.infinity,

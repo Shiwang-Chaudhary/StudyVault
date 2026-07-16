@@ -4,7 +4,7 @@ import 'package:study_vault/core/config/app_colors.dart';
 import 'package:study_vault/core/config/app_font_size.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/features/auth/presentation/widgets/google_container.dart';
-import 'package:study_vault/features/auth/providers/google_sign_in_provider.dart';
+import 'package:study_vault/features/auth/providers/google_sign_in_notifier.dart';
 
 class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
