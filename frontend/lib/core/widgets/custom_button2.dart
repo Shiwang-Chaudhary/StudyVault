@@ -6,7 +6,7 @@ import 'package:study_vault/core/widgets/custom_text.dart';
 
 class CustomButton2 extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final Color backgroundColor;
   final Color textColor;
   final double height;

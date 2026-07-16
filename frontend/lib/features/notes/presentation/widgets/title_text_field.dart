@@ -15,7 +15,7 @@ class TitleTextField extends StatelessWidget {
         hintText: "e.g. Operating Systems Unit 2",
         hintStyle: const TextStyle(
           color: AppColors.textTertiary,
-          fontSize: FontSizes.xl,
+          fontSize: FontSizes.md,
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),

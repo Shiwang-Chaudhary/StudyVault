@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:study_vault/core/config/app_colors.dart';
 import 'package:study_vault/core/config/app_font_size.dart';
 import 'package:study_vault/core/helperFunc/date_time_format.dart';
+import 'package:study_vault/core/helperFunc/get_inital_char.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/features/auth/providers/user_profile_provider.dart';
 
@@ -13,12 +14,26 @@ class ProfileSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final profileProvider = ref.watch(userProfileProvider);
     return profileProvider.when(
-      loading: () => Scaffold(body: CircularProgressIndicator()),
-      error: (error, stackTrace) => Scaffold(
-        body: SnackBar(content: CustomText(text: error.toString())),
+      loading: () =>
+          Center(child: CircularProgressIndicator(color: AppColors.info)),
+      error: (error, stackTrace) => Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.error_outline),
+            const SizedBox(height: 8),
+            CustomText(text: error.toString()),
+          ],
+        ),
       ),
       data: (user) {
         final date = formatJoinedDate(user.createdAt);
+        Map<String, dynamic> containerData = {
+          "Downloads": user.totalDownloads,
+          "Rating": user.avgRating,
+          "Notes": user.totalNotes,
+        };
+        final items = containerData.entries.toList();
         return Column(
           children: [
             const SizedBox(height: 10),
@@ -26,7 +41,7 @@ class ProfileSection extends ConsumerWidget {
               radius: 45,
               backgroundColor: AppColors.primaryMuted,
               child: CustomText(
-                text: "SC",
+                text: getInitials(user.name),
                 size: FontSizes.hero,
                 color: AppColors.borderFocused,
               ),
@@ -77,7 +92,7 @@ class ProfileSection extends ConsumerWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: List.generate(
-                3,
+                items.length,
                 (index) => Expanded(
                   child: Container(
                     height: 76,
@@ -98,12 +113,12 @@ class ProfileSection extends ConsumerWidget {
                       child: Column(
                         children: [
                           CustomText(
-                            text: "540",
+                            text: items[index].value.toString(),
                             size: FontSizes.xxl,
                             color: AppColors.textPrimary,
                           ),
                           CustomText(
-                            text: "Downloads",
+                            text: items[index].key,
                             size: FontSizes.md,
                             weight: FontWeight.w400,
                             color: AppColors.textSecondary,
