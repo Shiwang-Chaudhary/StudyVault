@@ -1,5 +1,5 @@
 const cloudinary = require('../config/cloudinary.config');
-const streamfier = require('stream-buffers');
+const streamfier = require('streamifier');
 
 const uploadToCloudinary = async (fileBuffer, folder = 'studyValut/notes') => {
     return Promise((resolve, reject) =>{
@@ -29,4 +29,4 @@ const deletePdf = (publicId) => {
   return cloudinary.uploader.destroy(publicId, { resource_type: 'raw' });
 };
 
-module.exports = { uploadPdf, deletePdf };
+module.exports = { uploadToCloudinary, deletePdf };
