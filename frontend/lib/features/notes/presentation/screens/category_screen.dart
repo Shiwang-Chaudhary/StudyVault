@@ -7,14 +7,15 @@ import 'package:study_vault/features/notes/presentation/screens/note_detail_scre
 import 'package:study_vault/features/notes/presentation/widgets/pdf_container.dart';
 
 class CategoryScreen extends StatelessWidget {
-  const CategoryScreen({super.key});
+  final String categoryName;
+  const CategoryScreen({super.key, required this.categoryName});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const CustomText(
-          text: "Operating System",
+        title: CustomText(
+          text: categoryName,
           size: FontSizes.xxl,
           weight: FontWeight.w600,
         ),

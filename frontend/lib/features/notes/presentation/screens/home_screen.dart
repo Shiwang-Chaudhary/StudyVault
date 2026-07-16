@@ -5,10 +5,9 @@ import 'package:study_vault/core/config/app_font_size.dart';
 import 'package:study_vault/core/constans/college_branches.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/core/widgets/custom_text_field.dart';
-import 'package:study_vault/features/notes/presentation/screens/category_screen.dart';
 import 'package:study_vault/features/notes/presentation/screens/note_detail_screen.dart';
+import 'package:study_vault/features/notes/presentation/widgets/home_screen_tab_bar.dart';
 import 'package:study_vault/features/notes/presentation/widgets/pdf_container.dart';
-import 'package:study_vault/features/notes/presentation/widgets/sub_tab.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -60,30 +59,7 @@ class HomeScreen extends StatelessWidget {
               controller: TextEditingController(),
             ),
             const SizedBox(height: 20),
-            SizedBox(
-              height: 40,
-              child: ListView.builder(
-                itemCount: AppConstants.mvpSubjectsByBranch["CSE"]!.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  return SubTab(
-                    title: AppConstants.mvpSubjectsByBranch["CSE"]![index],
-                    isSelected: true,
-                    onTap: () {
-                      print(
-                        "Selected: ${AppConstants.mvpSubjectsByBranch["CSE"]![index]}",
-                      );
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const CategoryScreen(),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
+            const HomeScreenTabBar(),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

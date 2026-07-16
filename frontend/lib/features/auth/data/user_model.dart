@@ -15,7 +15,7 @@ class UserModel {
   final String? college;
   final String? branch;
   final String? semester;
-  final List<String> interests;
+  final List<String> subjects;
 
   // Stats
   final int totalNotes;
@@ -23,6 +23,9 @@ class UserModel {
   final double avgRating;
   final bool isVerified;
 
+  //Created and Update profile time:
+  final String? createdAt;
+  final String? updatedAt;
   // V2 — stored now, used later
   final double walletBalance;
   final double earnings;
@@ -36,11 +39,13 @@ class UserModel {
     this.college,
     this.branch,
     this.semester,
-    this.interests = const [],
+    this.subjects = const [],
     this.totalNotes = 0,
     this.totalDownloads = 0,
     this.avgRating = 0.0,
     this.isVerified = false,
+    this.createdAt,
+    this.updatedAt,
     this.walletBalance = 0,
     this.earnings = 0,
   });
@@ -59,11 +64,13 @@ class UserModel {
       college: json['college'],
       branch: json['branch'],
       semester: json['semester'],
-      interests: List<String>.from(json['interests'] ?? []),
+      subjects: List<String>.from(json['subjects'] ?? []),
       totalNotes: json['totalNotes'] ?? 0,
       totalDownloads: json['totalDownloads'] ?? 0,
       avgRating: (json['avgRating'] ?? 0).toDouble(),
       isVerified: json['isVerified'] ?? false,
+      createdAt: json['createdAt'],
+      updatedAt: json['updatedAt'],
       walletBalance: (json['walletBalance'] ?? 0).toDouble(),
       earnings: (json['earnings'] ?? 0).toDouble(),
     );
@@ -79,11 +86,13 @@ class UserModel {
       'college': college,
       'branch': branch,
       'semester': semester,
-      'interests': interests,
+      'subjects': subjects,
       'totalNotes': totalNotes,
       'totalDownloads': totalDownloads,
       'avgRating': avgRating,
       'isVerified': isVerified,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
       'walletBalance': walletBalance,
       'earnings': earnings,
     };
