@@ -1,5 +1,5 @@
 const cloudinary = require('../config/cloudinary.config');
-const streamfier = require('streamifier');
+const { Readable } = require('stream');
 
 const uploadToCloudinary = async (fileBuffer, folder = 'studyValut/notes') => {
     return Promise((resolve, reject) =>{
@@ -20,7 +20,7 @@ const uploadToCloudinary = async (fileBuffer, folder = 'studyValut/notes') => {
             }
         );
         //We need to convert the file buffer into a readable stream and pipe it to the upload stream because cloudinary needs redable stream to upload the file
-        streamfier.createReadStream(fileBuffer).pipe(uploadStream);
+        Readable.from(fileBuffer).pipe(uploadStream);
 
     });
 }
