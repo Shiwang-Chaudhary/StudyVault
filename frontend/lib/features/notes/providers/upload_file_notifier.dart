@@ -1,6 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:study_vault/features/notes/data/upload_file_repository.dart';
+import 'package:study_vault/features/notes/providers/progress_check_provider.dart';
 import 'package:study_vault/features/notes/providers/upload_repo_provider.dart';
 
 class UploadFileNotifier extends AsyncNotifier<void> {
@@ -27,6 +28,10 @@ class UploadFileNotifier extends AsyncNotifier<void> {
         college: college,
         branch: branch,
         semester: semester,
+        onProgress: (progress) {
+          final progressPercentage = (progress * 100).toInt();
+          ref.read(progressCheckProvider.notifier).state = progressPercentage;
+        },
       );
     });
   }

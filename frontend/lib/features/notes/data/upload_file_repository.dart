@@ -17,6 +17,7 @@ class UploadFileRepository {
     required PlatformFile file,
     required String branch,
     required String semester,
+    required void onProgress(double progress),
   }) async {
     try {
       final formData = FormData.fromMap({
@@ -31,8 +32,13 @@ class UploadFileRepository {
       final response = await dio.post(
         ApiConstants.uploadFile,
         data: formData,
-        options: Options(headers: {"Authorization": "Bearer $token"}),
+        options: Options(
+          sendTimeout: const Duration(minutes: 5),
+          receiveTimeout: const Duration(minutes: 5),
+          headers: {"Authorization": "Bearer $token"},
+        ),
         onSendProgress: (sent, total) {
+          onProgress(sent / total);
           final progress = (sent / total * 100).toStringAsFixed(0);
           log("Uploading: $progress%");
         },

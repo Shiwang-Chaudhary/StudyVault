@@ -13,6 +13,7 @@ import 'package:study_vault/features/auth/presentation/widgets/drop_down.dart';
 import 'package:study_vault/features/notes/presentation/widgets/title_text_field.dart';
 import 'package:study_vault/features/notes/presentation/widgets/upload_file_dotted_border.dart';
 import 'package:study_vault/features/notes/providers/branch_semester_file_providers.dart';
+import 'package:study_vault/features/notes/providers/progress_check_provider.dart';
 import 'package:study_vault/features/notes/providers/upload_file_notifier.dart';
 
 class UploadScreen extends ConsumerStatefulWidget {
@@ -27,36 +28,40 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
   TextEditingController titleController = TextEditingController();
   TextEditingController subjectController = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
+  // @override
+  // void initState() {
+  //   super.initState();
 
-    ref.listenManual<AsyncValue<void>>(uploadFileNotifierProvider, (
-      previous,
-      next,
-    ) {
-      next.whenOrNull(
-        data: (_) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text('Upload successful')));
+  //   ref.listenManual<AsyncValue<void>>(uploadFileNotifierProvider, (
+  //     previous,
+  //     next,
+  //   ) {
+  //     next.whenOrNull(
+  //       data: (_) {
+  //         debugPrint("Previous: ${previous.runtimeType} -> $previous");
+  //         debugPrint("Next: ${next.runtimeType} -> $next");
+  //         if (previous is AsyncLoading && next is AsyncData) {
+  //           ScaffoldMessenger.of(
+  //             context,
+  //           ).showSnackBar(const SnackBar(content: Text("Upload successful")));
+  //         }
 
-          titleController.clear();
-          collegeController.clear();
-          subjectController.clear();
+  //         titleController.clear();
+  //         collegeController.clear();
+  //         subjectController.clear();
 
-          ref.read(branchStateProvider.notifier).state = null;
-          ref.read(semesterStateProvider.notifier).state = null;
-          ref.read(selectedFileProvider.notifier).state = null;
-        },
-        error: (error, _) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(error.toString())));
-        },
-      );
-    });
-  }
+  //         ref.read(branchStateProvider.notifier).state = null;
+  //         ref.read(semesterStateProvider.notifier).state = null;
+  //         ref.read(selectedFileProvider.notifier).state = null;
+  //       },
+  //       error: (error, _) {
+  //         ScaffoldMessenger.of(
+  //           context,
+  //         ).showSnackBar(SnackBar(content: Text(error.toString())));
+  //       },
+  //     );
+  //   });
+  // }
 
   @override
   void dispose() {
@@ -72,6 +77,7 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
     final selectedBranch = ref.watch(branchStateProvider);
     final selectedSemester = ref.watch(semesterStateProvider);
     final selectedFile = ref.watch(selectedFileProvider);
+    final progress = ref.watch(progressCheckProvider);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -140,6 +146,7 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
                     ),
                     const SizedBox(height: 5),
                     DropDown(
+                      value: selectedBranch,
                       onChanged: (value) {
                         ref.read(branchStateProvider.notifier).state = value;
                       },
@@ -163,6 +170,7 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
                     ),
                     const SizedBox(height: 5),
                     DropDown(
+                      value: selectedSemester,
                       onChanged: (value) {
                         ref.read(semesterStateProvider.notifier).state = value;
                       },
@@ -194,23 +202,53 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
           Bounce(
             onTap: uploadState.isLoading
                 ? null
-                : () {
+                : () async {
                     if (selectedFile == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text("Please select a PDF")),
                       );
                       return;
                     }
-                    ref
-                        .read(uploadFileNotifierProvider.notifier)
-                        .uploadFile(
-                          title: titleController.text.trim(),
-                          subject: subjectController.text.trim(),
-                          college: collegeController.text.trim(),
-                          branch: selectedBranch ?? '',
-                          semester: selectedSemester ?? '',
-                          file: selectedFile,
-                        );
+                    if (titleController.text.trim().isEmpty ||
+                        subjectController.text.trim().isEmpty ||
+                        collegeController.text.trim().isEmpty ||
+                        selectedBranch == null ||
+                        selectedSemester == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Please fill all the fields"),
+                        ),
+                      );
+                      return;
+                    }
+                    try {
+                      await ref
+                          .read(uploadFileNotifierProvider.notifier)
+                          .uploadFile(
+                            title: titleController.text.trim(),
+                            subject: subjectController.text.trim(),
+                            college: collegeController.text.trim(),
+                            branch: selectedBranch,
+                            semester: selectedSemester,
+                            file: selectedFile,
+                          );
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Upload successful")),
+                      );
+
+                      titleController.clear();
+                      collegeController.clear();
+                      subjectController.clear();
+
+                      ref.read(branchStateProvider.notifier).state = null;
+                      ref.read(semesterStateProvider.notifier).state = null;
+                      ref.read(selectedFileProvider.notifier).state = null;
+                    } catch (e) {
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(SnackBar(content: Text(e.toString())));
+                    }
                   },
             child: Container(
               height: 60,
@@ -222,14 +260,21 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    Iconsax.document_upload,
-                    color: AppColors.textPrimary,
-                    size: 28,
-                  ),
+                  uploadState.isLoading
+                      ? CircularProgressIndicator(
+                          color: AppColors.textPrimary,
+                          value: progress != null ? progress / 100 : null,
+                        )
+                      : Icon(
+                          Iconsax.document_upload,
+                          color: AppColors.textPrimary,
+                          size: 28,
+                        ),
                   const SizedBox(width: 10),
                   CustomText(
-                    text: "Publish note",
+                    text: uploadState.isLoading
+                        ? "${(progress ?? 0).toInt()}%"
+                        : "Publish note",
                     size: FontSizes.xl,
                     weight: FontWeight.bold,
                   ),

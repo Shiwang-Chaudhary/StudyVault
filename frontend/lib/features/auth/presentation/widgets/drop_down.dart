@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:study_vault/core/widgets/app_drop_down.dart';
 
 class DropDown extends StatelessWidget {
-  // final String header;
+  final String? value;
   final String hintText;
   final List<String> items;
   final ValueChanged<String?> onChanged;
@@ -11,7 +11,7 @@ class DropDown extends StatelessWidget {
     required this.hintText,
     required this.items,
     required this.onChanged,
-    // required this.header,
+    this.value,
   });
 
   @override
@@ -31,7 +31,7 @@ class DropDown extends StatelessWidget {
 
           items: items,
           onChanged: onChanged,
-          value: null,
+          value: value,
         ),
       ],
     );

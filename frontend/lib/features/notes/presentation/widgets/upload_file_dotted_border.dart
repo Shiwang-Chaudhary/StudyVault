@@ -53,7 +53,7 @@ class UploadFileDottedBorder extends StatelessWidget {
                       weight: FontWeight.w500,
                     ),
                     CustomText(
-                      text: "Max 25 MB",
+                      text: "Max 10 MB",
                       color: AppColors.textSecondary,
                       size: FontSizes.md,
                       weight: FontWeight.w500,
