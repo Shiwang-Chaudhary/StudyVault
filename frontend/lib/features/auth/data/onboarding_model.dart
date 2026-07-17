@@ -1,7 +1,7 @@
 class OnboardingModel {
   String college;
-  String branch;
-  String semester;
+  String? branch;
+  String? semester;
   List<String> selectedSubjects;
 
   OnboardingModel({

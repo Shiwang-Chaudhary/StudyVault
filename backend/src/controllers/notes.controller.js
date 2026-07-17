@@ -18,7 +18,7 @@ const uploadNote = asyncHandler(async(req,res)=>{
     if(!title || !subject || !college || !semester || !branch){
         throw new ApiError(400, "Title, subject, college, semester and branch are required");
     }
-
+    
     //Upload the file to cloudinary
     const note = await createNote(firebaseUserid, title, subject, college, semester, branch, uploadedFile.buffer);
     return successResponse(res, 201, note);

@@ -11,7 +11,14 @@ const errorHandler = (err, req, res, next) => {
       error: { message: err.message, details: err.details },
     });
   }
-
+  //File limit exceed error
+  if(err.code === 'LIMIT_FILE_SIZE'){
+    return res.status(400).json({
+      success: false,
+      data: null,
+      error: { message: 'File size limit exceeded', details: err.message },
+    });
+  }
   // Mongoose validation error
   if (err.name === 'ValidationError') {
     return res.status(400).json({

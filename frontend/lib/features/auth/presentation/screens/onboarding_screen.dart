@@ -48,6 +48,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               collegeController: collegeController,
               onboardingData: onboardingData,
               ref: ref,
+              context: context,
             ),
             whatAreYouHereFor(ref, onboardingData),
           ],
@@ -62,109 +63,122 @@ Widget tellUsAboutYou(
   required TextEditingController collegeController,
   required OnboardingModel onboardingData,
   required WidgetRef ref,
+  required BuildContext context,
 }) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      const SizedBox(height: 100),
-      Container(
-        height: 70,
-        width: 70,
-        decoration: BoxDecoration(
-          color: AppColors.infoMuted,
-          borderRadius: BorderRadius.circular(20),
+  return SingleChildScrollView(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 100),
+        Container(
+          height: 70,
+          width: 70,
+          decoration: BoxDecoration(
+            color: AppColors.infoMuted,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: const Icon(Icons.person, color: AppColors.info, size: 45),
         ),
-        child: const Icon(Icons.person, color: AppColors.info, size: 45),
-      ),
-      const SizedBox(height: 10),
-      CustomText(
-        text: "Tell us about you",
-        size: FontSizes.display,
-        weight: FontWeight.w600,
-      ),
-      const SizedBox(height: 5),
-      CustomText(
-        text:
-            "This helps us show you notes relevant to your college and branch",
-        size: FontSizes.lg,
-        color: AppColors.textSecondary,
-        maxLines: 2,
-        weight: FontWeight.w600,
-      ),
-      const SizedBox(height: 30),
-      CustomText(
-        text: "College",
-        size: FontSizes.lg,
-        color: AppColors.textSecondary,
-        maxLines: 2,
-        weight: FontWeight.w500,
-      ),
-      const SizedBox(height: 10),
-      // CustomTextField(
-      //   hintText: "Search your college",
-      //   controller: collegeController,
-      // ),
-      CustomAutocompleteTextField(
-        controller: collegeController,
-        items: AppConstants.colleges,
-        hintText: "e.g. ${AppConstants.colleges.first}",
-        onSelected: (String college) {
-          debugPrint('College: $college');
-          ref.read(onboardingStateProvider.notifier).update(college: college);
-        },
-      ),
-      const SizedBox(height: 30),
-      Row(
-        children: [
-          Expanded(
-            child: DropDown(
-              hintText: "Branch",
-              // header: "Branch",
-              items: AppConstants.branches,
-              onChanged: (String? branchValue) {
-                debugPrint('Branch: $branchValue');
-                ref
-                    .read(onboardingStateProvider.notifier)
-                    .update(branch: branchValue);
-              },
-            ),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: DropDown(
-              hintText: "Semester",
-              items: AppConstants.semesters,
-              onChanged: (String? semesterValue) {
-                debugPrint('Semester: $semesterValue');
-                ref
-                    .read(onboardingStateProvider.notifier)
-                    .update(semester: semesterValue);
-              },
-            ),
-          ),
-        ],
-      ),
-      const SizedBox(height: 20),
-      const Disclaimer(),
-      const Spacer(),
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: CustomButton(
-          text: "Continue",
-          onPressed: () {
-            ref
-                .read(onboardingStateProvider.notifier)
-                .update(college: collegeController.text.trim());
-            pageController.nextPage(
-              duration: const Duration(milliseconds: 1000),
-              curve: Curves.easeInOut,
-            );
+        const SizedBox(height: 10),
+        CustomText(
+          text: "Tell us about you",
+          size: FontSizes.display,
+          weight: FontWeight.w600,
+        ),
+        const SizedBox(height: 5),
+        CustomText(
+          text:
+              "This helps us show you notes relevant to your college and branch",
+          size: FontSizes.lg,
+          color: AppColors.textSecondary,
+          maxLines: 2,
+          weight: FontWeight.w600,
+        ),
+        const SizedBox(height: 30),
+        CustomText(
+          text: "College",
+          size: FontSizes.lg,
+          color: AppColors.textSecondary,
+          maxLines: 2,
+          weight: FontWeight.w500,
+        ),
+        const SizedBox(height: 10),
+        // CustomTextField(
+        //   hintText: "Search your college",
+        //   controller: collegeController,
+        // ),
+        CustomAutocompleteTextField(
+          controller: collegeController,
+          items: AppConstants.colleges,
+          hintText: "e.g. ${AppConstants.colleges.first}",
+          onSelected: (String college) {
+            debugPrint('College: $college');
+            ref.read(onboardingStateProvider.notifier).update(college: college);
           },
-          width: double.infinity,
         ),
-      ),
-      const SizedBox(height: 20),
-    ],
+        const SizedBox(height: 30),
+        Row(
+          children: [
+            Expanded(
+              child: DropDown(
+                hintText: "Branch",
+                // header: "Branch",
+                items: AppConstants.branches,
+                onChanged: (String? branchValue) {
+                  debugPrint('Branch: $branchValue');
+                  ref
+                      .read(onboardingStateProvider.notifier)
+                      .update(branch: branchValue);
+                },
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: DropDown(
+                hintText: "Semester",
+                items: AppConstants.semesters,
+                onChanged: (String? semesterValue) {
+                  debugPrint('Semester: $semesterValue');
+                  ref
+                      .read(onboardingStateProvider.notifier)
+                      .update(semester: semesterValue);
+                },
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
+        const Disclaimer(),
+        const SizedBox(height: 80),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CustomButton(
+            text: "Continue",
+            onPressed: () {
+              if (collegeController.text.trim().isEmpty ||
+                  onboardingData.branch == null ||
+                  onboardingData.semester == null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Please fill in all the fields"),
+                  ),
+                );
+                return;
+              }
+              ref
+                  .read(onboardingStateProvider.notifier)
+                  .update(college: collegeController.text.trim());
+              pageController.nextPage(
+                duration: const Duration(milliseconds: 1000),
+                curve: Curves.easeInOut,
+              );
+            },
+            width: double.infinity,
+          ),
+        ),
+        const SizedBox(height: 20),
+      ],
+    ),
   );
 }
 

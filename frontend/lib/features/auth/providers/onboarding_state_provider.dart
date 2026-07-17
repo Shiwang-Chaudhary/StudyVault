@@ -6,8 +6,8 @@ class OnboardingStateProvider extends Notifier<OnboardingModel> {
   OnboardingModel build() {
     return OnboardingModel(
       college: "",
-      branch: "",
-      semester: "",
+      branch: null,
+      semester: null,
       selectedSubjects: [],
     );
   }
