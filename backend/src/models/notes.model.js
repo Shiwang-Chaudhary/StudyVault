@@ -14,11 +14,6 @@ const noteSchema = new mongoose.Schema(
       required: true,
     //   trim: true,
     },
-    description: {
-      type: String,
-      trim: true,
-      default: '',
-    },
     subject: {
       type: String,
       required: true,

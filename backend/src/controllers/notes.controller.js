@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Note = require("../models/notes.model");
 const { ApiError, successResponse } = require("../utils/apiResponse.utils");
-const { createNote } = require("../services/notes.service");
+const { createNote, getNotes } = require("../services/notes.service");
 
 const uploadNote = asyncHandler(async(req,res)=>{
 
@@ -25,4 +25,11 @@ const uploadNote = asyncHandler(async(req,res)=>{
 
 });
 
-module.exports = { uploadNote };
+const listNotes = asyncHandler(async(req,res) => {
+    const {cursor, subject, college, branch, semester, search, sort} = req.query;
+    const creatorId = req.user ? req.user.uid : null;
+    const notes = await getNotes(cursor, subject, college, branch, semester, creatorId, search, sort);
+    return successResponse(res, 200, notes);
+});
+
+module.exports = { uploadNote, listNotes };
