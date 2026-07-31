@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler');
-const ApiError = require('../utils/apiResponse.utils');
+const {ApiError} = require('../utils/apiResponse.utils');
 const admin = require('../config/firebase.config');
 
 

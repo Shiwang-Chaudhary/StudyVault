@@ -1,17 +1,14 @@
-const asyncHandler = require("express-async-handler");
 const note = require("../models/notes.model");
 const { uploadToCloudinary, deletePdf } = require("../services/cloudinary_upload.service");
 const Note = require('../models/notes.model');
 const User = require("../models/user.model");
 
-//createrId is firebaseUid of the user who created the note
-const createNote = async(createrId, title, subject, college, semester, branch, fileBuffer) =>{
-    try{
-        const result = await uploadToCloudinary(fileBuffer);
-
+//creatorId is firebaseUid of the user who created the note
+const createNote = async(creatorId, title, subject, college, semester, branch, fileBuffer) =>{
+    const result = await uploadToCloudinary(fileBuffer);
     //adding the note to the database
     const note = await Note.create({    
-        creatorId: createrId,
+        creatorId: creatorId,
         title: title,
         subject: subject,
         college: college,
@@ -20,14 +17,11 @@ const createNote = async(createrId, title, subject, college, semester, branch, f
         cloudinaryUrl: result.cloudinary_url,
         cloudinaryPublicId: result.cloudinary_public_id
     });
-    await User.findOneAndUpdate({firebaseUid: createrId}, {$inc: {totalNotes: 1}});
+    await User.findOneAndUpdate({firebaseUid: creatorId}, {$inc: {totalNotes: 1}});
     return note;
-    }catch(err){
-        throw new Error("Error uploading note to cloudinary: " + err.message);
-    }
-    
 };
 
+const PAGE_SIZE = 2; 
 const getNotes = async(
     cursor,
     subject,
@@ -47,9 +41,9 @@ const getNotes = async(
 
     if(search){
         filter.$or = [
-            {title: {$regex: search, $options: "i"}},
-            {subject: {$regex: search, $options: "i"}},
-            {college: {$regex: search, $options: "i"}}
+            {title: {$regex: `^${search}`, $options: "i"}},
+            {subject: {$regex: `^${search}`, $options: "i"}},
+            {college: {$regex: `^${search}`, $options: "i"}}
         ]
     }
     const sortOptions = {
@@ -65,11 +59,11 @@ const getNotes = async(
 
     const notes = await Note.find(filter)
         .sort(sortOptions[sort] || sortOptions.latest)
-        .limit(20+1) // 20 notes + 1 extra to check if there are more notes
-        .populate("creatorId", "name email photoUrl");
+        .limit(PAGE_SIZE + 1) // PAGE_SIZE notes + 1 extra to check if there are more notes
+        // .populate("creatorId", "name email photoUrl");
     let hasMore = false;
     let nextCursor = null;
-    if(notes.length > 20){
+    if(notes.length > PAGE_SIZE){
         hasMore = true;
         notes.pop(); // remove the extra note
         nextCursor = notes[notes.length - 1]._id;
@@ -78,4 +72,60 @@ const getNotes = async(
     return {notes, hasMore, nextCursor};
 };
 
-module.exports = { createNote, getNotes };
+const getMyNotes = async(creatorId, cursor) =>{
+    const filter = {creatorId};
+    if(cursor){
+        filter._id = {$lt: cursor};
+    }
+    const notes = await Note.find(filter)
+    .sort({createdAt: -1})
+    .limit(PAGE_SIZE + 1); // PAGE_SIZE notes + 1 extra to check if there are more notes
+
+    let hasMore = false;
+    let nextCursor = null;
+    if(notes.length > PAGE_SIZE){
+        hasMore = true;
+        notes.pop(); // remove the extra note
+        nextCursor = notes[notes.length - 1]._id;
+    }
+
+    return {notes, hasMore, nextCursor};
+}
+
+const getNoteById = async(noteId) => {
+    const note = await Note.findById(noteId);
+    return note;
+};
+
+const updateNote = async(noteId, creatorId, updateData) => {
+    const note = await Note.findById(noteId);
+    if(!note){
+        return null;
+    }
+    if(note.creatorId !== creatorId){
+        return null;
+    }
+    //Copies updateData properties to note object and saves it to the database
+    //We cant do, note = updateData, because that will create a new object and we will lose the reference to the original note object
+    Object.assign(note, updateData);
+    await note.save();
+    return note;
+}
+
+const deleteNote = async(noteId, creatorId) => {
+    const note = await Note.findById(noteId);
+    if(!note){
+        return null;
+    }
+    if(note.creatorId !== creatorId){
+        return null;
+    }
+    //Delete the note from cloudinary
+    await deletePdf(note.cloudinaryPublicId);
+    //Delete the note from the database
+    await note.remove();
+    await User.findOneAndUpdate({firebaseUid: creatorId}, {$inc: {totalNotes: -1}});
+    return note;
+}
+
+module.exports = { createNote, getNotes, getMyNotes, getNoteById, updateNote, deleteNote };
