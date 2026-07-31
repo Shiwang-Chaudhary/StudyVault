@@ -4,5 +4,5 @@ class ApiConstants {
   static const String googleLogin = "/api/auth/google";
   static const String onboarding = "/api/auth/onboarding";
   static const String uploadFile = "/api/notes/upload";
-  static const String getUserNotes = "/api/notes/list";
+  static const String getUserNotes = "/api/notes/my";
 }
