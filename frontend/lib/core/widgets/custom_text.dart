@@ -35,6 +35,13 @@ class CustomText extends StatelessWidget {
         fontWeight: weight ?? FontWeight.w400,
         color: color ?? Colors.white,
       ),
+      // style: TextStyle(
+      //   height: 1.3,
+      //   letterSpacing: 1,
+      //   fontSize: size ?? 16,
+      //   fontWeight: weight ?? FontWeight.w400,
+      //   color: color ?? Colors.white,
+      // ),
     );
   }
 }

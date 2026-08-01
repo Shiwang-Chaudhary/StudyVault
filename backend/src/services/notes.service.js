@@ -21,7 +21,7 @@ const createNote = async(creatorId, title, subject, college, semester, branch, f
     return note;
 };
 
-const PAGE_SIZE = 2; 
+const PAGE_SIZE = 10; 
 const getNotes = async(
     cursor,
     subject,
@@ -74,11 +74,12 @@ const getNotes = async(
 
 const getMyNotes = async(creatorId, cursor) =>{
     const filter = {creatorId};
+    const totalNotes = await Note.countDocuments(filter);
     if(cursor){
         filter._id = {$lt: cursor};
     }
     const notes = await Note.find(filter)
-    .sort({createdAt: -1})
+    .sort({_id: -1})
     .limit(PAGE_SIZE + 1); // PAGE_SIZE notes + 1 extra to check if there are more notes
 
     let hasMore = false;
@@ -89,7 +90,7 @@ const getMyNotes = async(creatorId, cursor) =>{
         nextCursor = notes[notes.length - 1]._id;
     }
 
-    return {notes, hasMore, nextCursor};
+    return {notes, hasMore, nextCursor, totalNotes};
 }
 
 const getNoteById = async(noteId) => {

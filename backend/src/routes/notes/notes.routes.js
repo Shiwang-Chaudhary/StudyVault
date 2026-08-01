@@ -28,11 +28,11 @@ router.get("/", listNotes);
 
 // GET /api/notes/my
 // Get logged-in user's uploaded notes
-router.get("/my", getMyNotes);
+router.get("/my", authMiddleware, getMyNotes);
 
 // GET /api/notes/:id
 // Get a single note
-router.get("/:id", getNoteById);
+router.get("/:id",authMiddleware, getNoteById);
 
 // PATCH /api/notes/:id
 // Update note details

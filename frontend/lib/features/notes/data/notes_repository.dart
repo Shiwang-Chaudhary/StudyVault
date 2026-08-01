@@ -11,6 +11,7 @@ class NotesRepository {
   NotesRepository(this.dio, this.auth);
 
   Future<NotesResponse> fetchUserNotes({String? nextCursor}) async {
+    log("Fetch User notes called");
     final String? token = await auth.getIdToken;
     final response = await dio.get(
       ApiConstants.getUserNotes,
@@ -18,7 +19,14 @@ class NotesRepository {
       options: Options(headers: {"Authorization": "Bearer $token"}),
     );
     NotesResponse notesResponse = NotesResponse.fromJson(response.data);
-    log("Fetched user notes: $notesResponse");
+    log('''
+      Fetched user notes:
+      - Total Notes : ${notesResponse.totalNotes}
+      - Fetched     : ${notesResponse.notes.length}
+      - Has More    : ${notesResponse.hasMore}
+      - Next Cursor : ${notesResponse.nextCursor}
+      - Titles      : ${notesResponse.notes.map((e) => e.title).join(', ')}
+    ''');
     return notesResponse;
   }
 }

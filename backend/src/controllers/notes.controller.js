@@ -27,16 +27,16 @@ const uploadNote = asyncHandler(async(req,res)=>{
 
 const listNotes = asyncHandler(async(req,res) => {
     const {cursor, subject, college, branch, semester, search, sort} = req.query;
-    // const creatorId = req.user ? req.user.uid : null;
-    const creatorId = "BzUUY9AHmIgqDRMI2AuZ0K6NV7J2";
+    const creatorId = req.user ? req.user.uid : null;
+    // const creatorId = "BzUUY9AHmIgqDRMI2AuZ0K6NV7J2";
     const notes = await noteService.getNotes(cursor, subject, college, branch, semester, creatorId, search, sort);
     return successResponse(res, 200, notes);
 });
 
 const getMyNotes = asyncHandler(async(req,res) => {
     const {cursor} = req.query;
-    // const creatorId = req.user.uid;
-    const creatorId = "PM5hByxxJAdgAWrxiBKiJr5SXD42";
+    const creatorId = req.user.uid;
+    // const creatorId = "PM5hByxxJAdgAWrxiBKiJr5SXD42";
     const notes = await noteService.getMyNotes(creatorId, cursor);
     return successResponse(res, 200, notes);
 });
