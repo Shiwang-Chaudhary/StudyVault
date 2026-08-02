@@ -5,13 +5,22 @@ import 'package:study_vault/core/config/app_colors.dart';
 import 'package:study_vault/core/config/app_font_size.dart';
 import 'package:study_vault/core/widgets/custom_button.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
+import 'package:study_vault/features/notes/data/notes_model.dart';
 import 'package:study_vault/features/profile/presentation/screens/uploader_profile_screen.dart';
 
 class NoteDetailScreen extends StatelessWidget {
-  const NoteDetailScreen({super.key});
+  final Note? note;
+  final int? totalNotes;
+  const NoteDetailScreen({super.key, this.note, this.totalNotes});
 
   @override
   Widget build(BuildContext context) {
+    Map<String, dynamic> containerData = {
+      "Downloads": note?.downloadCount.toString() ?? "0",
+      "Rating": note?.ratingCount.toString() ?? "0.0",
+      "Likes": note?.likeCount.toString() ?? "0",
+    };
+    final items = containerData.entries.toList();
     return Scaffold(
       appBar: AppBar(
         title: const CustomText(
@@ -42,17 +51,17 @@ class NoteDetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             CustomText(
-              text: "Operating Systems Unit 2 — Deadlocks",
+              text: note?.title ?? "Operating Systems Unit 2 — Deadlocks",
               size: FontSizes.xxxl,
               maxLines: 2,
               weight: FontWeight.bold,
               color: AppColors.textPrimary,
             ),
             CustomText(
-              text: "CSE · Semester IV · 18 pages",
+              text:
+                  "${note?.branch ?? "CSE"} · Semester ${note?.semester ?? "IV"} · 18 pages",
               size: FontSizes.xl,
               maxLines: 2,
-              // weight: FontWeight.bold,
               color: AppColors.textSecondary,
             ),
             const SizedBox(height: 20),
@@ -87,7 +96,7 @@ class NoteDetailScreen extends StatelessWidget {
                         weight: FontWeight.w600,
                       ),
                       CustomText(
-                        text: "42 notes uploaded",
+                        text: "${totalNotes ?? "0"} notes uploaded",
                         size: FontSizes.md,
                         color: AppColors.textSecondary,
                       ),
@@ -99,7 +108,7 @@ class NoteDetailScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: List.generate(
-                3,
+                items.length,
                 (index) => Expanded(
                   child: Container(
                     height: 80,
@@ -120,12 +129,12 @@ class NoteDetailScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           CustomText(
-                            text: "540",
+                            text: items[index].value,
                             size: FontSizes.xxl,
                             color: AppColors.textPrimary,
                           ),
                           CustomText(
-                            text: "Downloads",
+                            text: items[index].key,
                             size: FontSizes.md,
                             weight: FontWeight.w400,
                             color: AppColors.textSecondary,

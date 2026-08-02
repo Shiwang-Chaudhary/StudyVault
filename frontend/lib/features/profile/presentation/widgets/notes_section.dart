@@ -4,6 +4,7 @@ import 'package:study_vault/core/config/app_colors.dart';
 import 'package:study_vault/core/config/app_font_size.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/features/notes/data/notes_model.dart';
+import 'package:study_vault/features/notes/presentation/screens/note_detail_screen.dart';
 import 'package:study_vault/features/notes/presentation/widgets/pdf_container.dart';
 import 'package:study_vault/features/notes/providers/my_notes_notifier.dart';
 
@@ -61,10 +62,28 @@ class _NotesSectionState extends ConsumerState<NotesSection> {
               child: ListView.builder(
                 controller: _scrollController,
                 padding: EdgeInsets.all(0),
-                itemCount: notes.length,
+                itemCount: notes.length + (data.isLoadingMore ? 1 : 0),
                 itemBuilder: (context, index) {
+                  if (index == notes.length) {
+                    return const Center(
+                      child: CircularProgressIndicator(color: AppColors.info),
+                    );
+                  }
                   final Note note = notes[index];
-                  return PdfContainer(note: note);
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => NoteDetailScreen(
+                            note: note,
+                            totalNotes: data.totalNotes,
+                          ),
+                        ),
+                      );
+                    },
+                    child: PdfContainer(note: note),
+                  );
                 },
               ),
             ),
