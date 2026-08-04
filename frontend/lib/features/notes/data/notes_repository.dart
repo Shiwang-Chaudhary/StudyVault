@@ -30,8 +30,30 @@ class NotesRepository {
     return notesResponse;
   }
 
-  Future<void> getFilteredNotes() async {
+  Future<void> getFilteredNotes({
+    String? newCursor,
+    String? subject,
+    String? college,
+    String? branch,
+    String? semester,
+    String? search,
+    String? sort,
+    String? userId,
+  }) async {
     final String? token = await auth.getIdToken;
-    // final response = await dio.get()
+    final response = await dio.get(
+      ApiConstants.getFilteredNotes,
+      options: Options(headers: {"Authorization": "Bearer $token"}),
+      queryParameters: {
+        if (newCursor != null) 'cursor': newCursor,
+        if (subject != null) 'subject': subject,
+        if (college != null) 'college': college,
+        if (branch != null) 'branch': branch,
+        if (semester != null) 'semester': semester,
+        if (search != null) 'search': search,
+        if (sort != null) 'sort': sort,
+        if (userId != null) 'userId': userId,
+      },
+    );
   }
 }
