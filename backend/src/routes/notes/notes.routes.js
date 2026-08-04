@@ -28,7 +28,7 @@ router.get("/", listNotes);
 
 // GET /api/notes/my
 // Get logged-in user's uploaded notes
-router.get("/my", authMiddleware, getMyNotes);
+router.get("/my", getMyNotes);
 
 // GET /api/notes/:id
 // Get a single note

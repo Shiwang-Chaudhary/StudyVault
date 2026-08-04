@@ -9,11 +9,18 @@ mongoose.connect(
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function seed() {
-  const creatorId = "PM5hByxxJAdgAWrxiBKiJr5SXD42";
+  const firebaseUid = "PM5hByxxJAdgAWrxiBKiJr5SXD42";
+
+  // Find the MongoDB user
+  const user = await User.findOne({ firebaseUid });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
 
   for (let i = 1; i <= 50; i++) {
     await Note.create({
-      creatorId,
+      userId: user._id,
       title: `Test Note ${i}`,
       subject: "Operating Systems",
       branch: "CSE",
@@ -25,18 +32,18 @@ async function seed() {
 
     console.log(`Inserted Test Note ${i}`);
 
-    // Wait 1 second before inserting the next note
     if (i < 50) {
       await sleep(1000);
     }
   }
 
-  const totalNotes = await Note.countDocuments({ creatorId });
+  const totalNotes = await Note.countDocuments({
+    userId: user._id,
+  });
 
-  await User.findOneAndUpdate(
-    { firebaseUid: creatorId },
-    { totalNotes }
-  );
+  await User.findByIdAndUpdate(user._id, {
+    totalNotes,
+  });
 
   console.log("50 notes inserted!");
 

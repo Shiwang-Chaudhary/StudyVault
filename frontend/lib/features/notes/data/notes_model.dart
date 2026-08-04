@@ -1,6 +1,8 @@
+import 'package:study_vault/features/notes/data/notes_user_model.dart';
+
 class Note {
   final String id;
-  final String creatorId;
+  final NoteUserModel user;
   final String title;
   final String description;
   final String subject;
@@ -18,7 +20,7 @@ class Note {
 
   const Note({
     required this.id,
-    required this.creatorId,
+    required this.user,
     required this.title,
     required this.description,
     required this.subject,
@@ -38,7 +40,7 @@ class Note {
   factory Note.fromJson(Map<String, dynamic> json) {
     return Note(
       id: json["_id"],
-      creatorId: json["creatorId"],
+      user: NoteUserModel.fromJson(json["userId"]),
       title: json["title"],
       description: json["description"] ?? "",
       subject: json["subject"],
@@ -49,7 +51,7 @@ class Note {
       cloudinaryPublicId: json["cloudinaryPublicId"],
       likeCount: json["likeCount"] ?? 0,
       downloadCount: json["downloadCount"] ?? 0,
-      avgRating: (json["avgRating"] as num).toDouble(),
+      avgRating: (json["avgRating"] as num?)?.toDouble() ?? 0.0,
       ratingCount: json["ratingCount"] ?? 0,
       createdAt: DateTime.parse(json["createdAt"]),
       updatedAt: DateTime.parse(json["updatedAt"]),
@@ -59,7 +61,7 @@ class Note {
   Map<String, dynamic> toJson() {
     return {
       "_id": id,
-      "creatorId": creatorId,
+      "userId": user.toJson(),
       "title": title,
       "description": description,
       "subject": subject,

@@ -5,7 +5,7 @@ const noteService = require("../services/notes.service");
 
 const uploadNote = asyncHandler(async(req,res)=>{
 
-    const firebaseUserid = req.user.uid;
+    const userId = req.user._id;
     const {title, subject, college, semester, branch} = req.body;
     console.log("Body:", req.body);
     console.log("File:", req.file);
@@ -20,25 +20,25 @@ const uploadNote = asyncHandler(async(req,res)=>{
     }
     
     //Upload the file to cloudinary
-    const note = await noteService.createNote(firebaseUserid, title, subject, college, semester, branch, uploadedFile.buffer);
+    const note = await noteService.createNote(userId, title, subject, college, semester, branch, uploadedFile.buffer);
     return successResponse(res, 201, note);
 
 });
 
 const listNotes = asyncHandler(async(req,res) => {
     //I have to remove creatorId from query params 
-    const {cursor, subject, college, branch, semester, search, sort, creatorId} = req.query;
+    const {cursor, subject, college, branch, semester, search, sort, userId} = req.query;
     // const creatorId = req.user ? req.user.uid : null;
     // const creatorId = "BzUUY9AHmIgqDRMI2AuZ0K6NV7J2";
-    const notes = await noteService.getNotes(cursor, subject, college, branch, semester, creatorId, search, sort);
+    const notes = await noteService.getNotes(cursor, subject, college, branch, semester, userId, search, sort);
     return successResponse(res, 200, notes);
 });
 
 const getMyNotes = asyncHandler(async(req,res) => {
     const {cursor} = req.query;
-    const creatorId = req.user.uid;
-    // const creatorId = "PM5hByxxJAdgAWrxiBKiJr5SXD42";
-    const notes = await noteService.getMyNotes(creatorId, cursor);
+    // const userId = req.user._id;
+    const userId = "6a6ef0ada2d4366d71437583";
+    const notes = await noteService.getMyNotes(userId, cursor);
     return successResponse(res, 200, notes);
 });
 
@@ -53,12 +53,12 @@ const getNoteById = asyncHandler(async(req,res) => {
 
 const updateNote = asyncHandler(async(req,res) =>{
     const noteId = req.params.id;
-    const creatorId = req.user.uid;
-    const note = await noteService.updateNote(noteId, creatorId, req.body);
+    const userId = req.user._id;
+    const note = await noteService.updateNote(noteId, userId, req.body);
     if(!note){
         throw new ApiError(404, "Note not found");
     }
-    if(note.creatorId !== creatorId){
+    if(note.userId !== userId){
         throw new ApiError(403, "You are not authorized to update this note");
     }
     return successResponse(res, 200, note);
@@ -66,12 +66,12 @@ const updateNote = asyncHandler(async(req,res) =>{
 
 const deleteNote = asyncHandler(async(req,res) =>{
     const noteId = req.params.id;
-    const creatorId = req.user.uid;
-    const note = await noteService.deleteNote(noteId, creatorId);
+    const userId = req.user._id;
+    const note = await noteService.deleteNote(noteId, userId);
     if(!note){
         throw new ApiError(404, "Note not found");
     }
-    if(note.creatorId !== creatorId){
+    if(note.userId !== userId){
         throw new ApiError(403, "You are not authorized to delete this note");
     }
     return successResponse(res, 200, {message: "Note deleted successfully"});
