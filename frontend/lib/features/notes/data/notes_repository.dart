@@ -29,4 +29,9 @@ class NotesRepository {
     ''');
     return notesResponse;
   }
+
+  Future<void> getFilteredNotes() async {
+    final String? token = await auth.getIdToken;
+    // final response = await dio.get()
+  }
 }

@@ -26,8 +26,9 @@ const uploadNote = asyncHandler(async(req,res)=>{
 });
 
 const listNotes = asyncHandler(async(req,res) => {
-    const {cursor, subject, college, branch, semester, search, sort} = req.query;
-    const creatorId = req.user ? req.user.uid : null;
+    //I have to remove creatorId from query params 
+    const {cursor, subject, college, branch, semester, search, sort, creatorId} = req.query;
+    // const creatorId = req.user ? req.user.uid : null;
     // const creatorId = "BzUUY9AHmIgqDRMI2AuZ0K6NV7J2";
     const notes = await noteService.getNotes(cursor, subject, college, branch, semester, creatorId, search, sort);
     return successResponse(res, 200, notes);

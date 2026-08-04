@@ -59,7 +59,7 @@ const getNotes = async(
 
     const notes = await Note.find(filter)
         .sort(sortOptions[sort] || sortOptions.latest)
-        .limit(PAGE_SIZE + 1) // PAGE_SIZE notes + 1 extra to check if there are more notes
+        .limit(PAGE_SIZE + 1); // PAGE_SIZE notes + 1 extra to check if there are more notes
         // .populate("creatorId", "name email photoUrl");
     let hasMore = false;
     let nextCursor = null;

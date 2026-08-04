@@ -26,7 +26,6 @@ class _NotesSectionState extends ConsumerState<NotesSection> {
         ref.read(myNotesNotifierProvider.notifier).fetchMoreNotes();
       }
     });
-    // TODO: implement initState
     super.initState();
   }
 

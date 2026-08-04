@@ -1,7 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const {ApiError} = require('../utils/apiResponse.utils');
 const admin = require('../config/firebase.config');
-
+const User = require('../models/user.model');
 
 const authMiddleware = asyncHandler(async (req, res, next) => {
 
@@ -28,23 +28,12 @@ const authMiddleware = asyncHandler(async (req, res, next) => {
             exp: 1720403600
         }
     */
-    req.user = decodedToken;
-    //req become like this:
-    /*
-    req = {
-        headers: {...},
-        body: {},
-        params: {},
-        query: {},
-
-        user: {
-            uid: "fJ3kLp92abc",
-            email: "john@gmail.com",
-            email_verified: true,
-            ...
-        }
+    const user = await User.findOne({firebaseUid: decodedToken.uid});
+    if(!user){
+        throw new ApiError(401, "Unauthorized: User not found");
     }
-  */
+    req.user = user; // Attach the user object to the request for further use in the route handlers
+    req.firebaseUser = decodedToken; // Attach the decoded Firebase user information to the request
     next();
 });
 

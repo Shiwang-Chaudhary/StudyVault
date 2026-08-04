@@ -5,6 +5,7 @@ class NotesResponse {
   final int totalNotes;
   final bool hasMore;
   final String? nextCursor;
+  //NOT IN BACKEND RESPONSE (isLoadingMore)
   final bool isLoadingMore;
 
   const NotesResponse({
