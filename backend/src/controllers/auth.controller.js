@@ -4,7 +4,7 @@ const { ApiError, successResponse } = require("../utils/apiResponse.utils");
 
 const authController = asyncHandler(async (req, res) => {
   try {
-    const { uid, name, email, picture } = req.user;
+    const { uid, name, email, picture } = req.firebaseUser;
 
     let user = await User.findOne({
       firebaseUid: uid,
