@@ -13,6 +13,7 @@ class PdfContainer extends StatelessWidget {
   final String downloads;
   final Color iconColor;
   final Color iconBgColor;
+  final double? height;
 
   const PdfContainer({
     super.key,
@@ -24,12 +25,13 @@ class PdfContainer extends StatelessWidget {
     this.downloads = "540",
     this.iconColor = AppColors.accentCoral,
     this.iconBgColor = AppColors.accentCoralMuted,
+    this.height = 93,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 93,
+      height: height,
       width: double.infinity,
       padding: const EdgeInsets.all(8.0),
       margin: const EdgeInsets.only(right: 6, bottom: 12),

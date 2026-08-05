@@ -50,7 +50,7 @@ class NotesRepository {
         if (college != null) 'college': college,
         if (branch != null) 'branch': branch,
         if (semester != null) 'semester': semester,
-        // if (search != null) 'search': search,
+        if (search != null) 'search': search,
         if (sort != null) 'sort': sort,
         if (userId != null) 'userId': userId,
       },

@@ -61,11 +61,137 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 20),
             const HomeScreenTabBar(),
             const SizedBox(height: 20),
+            SizedBox(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    height: 150,
+                    width: 180,
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryMuted,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Spacer(),
+                          Icon(
+                            Icons.bookmark,
+                            color: AppColors.primaryPressed,
+                            size: 50,
+                          ),
+                          SizedBox(height: 10),
+                          CustomText(
+                            text: "Saved",
+                            color: AppColors.borderFocused,
+                            size: FontSizes.xxl,
+                          ),
+                          Spacer(),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 5),
+                  Container(
+                    height: 150,
+                    width: 180,
+                    decoration: BoxDecoration(
+                      color: AppColors.accentTealMuted,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Spacer(),
+                          Icon(Icons.download, color: Colors.teal, size: 50),
+                          SizedBox(height: 5),
+                          CustomText(
+                            text: "Downloads",
+                            color: Colors.teal,
+                            size: FontSizes.xxl,
+                          ),
+                          Spacer(),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                  text: "Trending Notes",
+                  text: "Recently opened",
+                  size: FontSizes.xxl,
+                  weight: FontWeight.w600,
+                ),
+                CustomText(
+                  text: "See All",
+                  size: FontSizes.lg,
+                  weight: FontWeight.w600,
+                  color: AppColors.primary,
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Column(
+              children: List.generate(
+                2,
+                (_) => Bounce(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const NoteDetailScreen(),
+                      ),
+                    );
+                  },
+                  child: const PdfContainer(),
+                ),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomText(
+                  text: "Trending",
+                  size: FontSizes.xxl,
+                  weight: FontWeight.w600,
+                  // color: AppColors.info,
+                ),
+                CustomText(
+                  text: "See All",
+                  size: FontSizes.lg,
+                  weight: FontWeight.w600,
+                  color: AppColors.primary,
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Column(
+              children: List.generate(
+                3,
+                (_) => Bounce(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const NoteDetailScreen(),
+                      ),
+                    );
+                  },
+                  child: const PdfContainer(),
+                ),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomText(
+                  text: "Recommended for you",
                   size: FontSizes.xxl,
                   weight: FontWeight.w600,
                 ),
@@ -94,54 +220,54 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.only(top: 10),
-              itemCount: AppConstants.mvpSubjectsByBranch["CSE"]!.length,
-              scrollDirection: Axis.vertical,
-              itemBuilder: (context, index) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomText(
-                          text: AppConstants.mvpSubjectsByBranch["CSE"]![index],
-                          size: FontSizes.xxl,
-                          weight: FontWeight.w600,
-                        ),
-                        CustomText(
-                          text: "See All",
-                          size: FontSizes.lg,
-                          weight: FontWeight.w600,
-                          color: AppColors.primary,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Column(
-                      children: List.generate(
-                        3,
-                        (_) => Bounce(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const NoteDetailScreen(),
-                              ),
-                            );
-                          },
-                          child: const PdfContainer(),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                  ],
-                );
-              },
-            ),
+            // ListView.builder(
+            //   shrinkWrap: true,
+            //   physics: const NeverScrollableScrollPhysics(),
+            //   padding: const EdgeInsets.only(top: 10),
+            //   itemCount: AppConstants.mvpSubjectsByBranch["CSE"]!.length,
+            //   scrollDirection: Axis.vertical,
+            //   itemBuilder: (context, index) {
+            //     return Column(
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //         Row(
+            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //           children: [
+            //             CustomText(
+            //               text: AppConstants.mvpSubjectsByBranch["CSE"]![index],
+            //               size: FontSizes.xxl,
+            //               weight: FontWeight.w600,
+            //             ),
+            //             CustomText(
+            //               text: "See All",
+            //               size: FontSizes.lg,
+            //               weight: FontWeight.w600,
+            //               color: AppColors.primary,
+            //             ),
+            //           ],
+            //         ),
+            //         const SizedBox(height: 10),
+            //         Column(
+            //           children: List.generate(
+            //             3,
+            //             (_) => Bounce(
+            //               onTap: () {
+            //                 Navigator.push(
+            //                   context,
+            //                   MaterialPageRoute(
+            //                     builder: (context) => const NoteDetailScreen(),
+            //                   ),
+            //                 );
+            //               },
+            //               child: const PdfContainer(),
+            //             ),
+            //           ),
+            //         ),
+            //         const SizedBox(height: 10),
+            //       ],
+            //     );
+            //   },
+            // ),
           ],
         ),
       ),
