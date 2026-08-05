@@ -24,11 +24,11 @@ router.post("/", authMiddleware, upload.single("pdf"), uploadNote);
 // GET /api/notes?college=ABC
 // GET /api/notes?semester=5
 // GET /api/notes?sort=latest
-router.get("/", listNotes);
+router.get("/", authMiddleware, listNotes);
 
 // GET /api/notes/my
 // Get logged-in user's uploaded notes
-router.get("/my", getMyNotes);
+router.get("/my", authMiddleware, getMyNotes);
 
 // GET /api/notes/:id
 // Get a single note

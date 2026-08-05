@@ -30,7 +30,7 @@ class NotesRepository {
     return notesResponse;
   }
 
-  Future<void> getFilteredNotes({
+  Future<NotesResponse> fetchNotes({
     String? newCursor,
     String? subject,
     String? college,
@@ -50,10 +50,11 @@ class NotesRepository {
         if (college != null) 'college': college,
         if (branch != null) 'branch': branch,
         if (semester != null) 'semester': semester,
-        if (search != null) 'search': search,
+        // if (search != null) 'search': search,
         if (sort != null) 'sort': sort,
         if (userId != null) 'userId': userId,
       },
     );
+    return NotesResponse.fromJson(response.data['data']);
   }
 }

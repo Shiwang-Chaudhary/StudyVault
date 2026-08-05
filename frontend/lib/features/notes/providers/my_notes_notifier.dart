@@ -8,7 +8,7 @@ import 'package:study_vault/features/notes/providers/notes_repo_provider.dart';
 class MyNotesNotifier extends AsyncNotifier<NotesResponse> {
   String? _nextCursor;
   bool _hasMore = true;
-  //Late final _notesRepo wasnt working
+  //Late final _notesRepo wasnt working (causing _notesRepo is already initialized)
   NotesRepository get _notesRepo => ref.read(notesRepositoryProvider);
 
   @override
