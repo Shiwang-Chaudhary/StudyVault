@@ -2,7 +2,7 @@ import 'package:study_vault/features/notes/data/notes_model.dart';
 
 class NotesResponse {
   final List<Note> notes;
-  final int totalNotes;
+  final int? totalNotes;
   final bool hasMore;
   final String? nextCursor;
   //NOT IN BACKEND RESPONSE (isLoadingMore)
@@ -10,7 +10,7 @@ class NotesResponse {
 
   const NotesResponse({
     required this.notes,
-    required this.totalNotes,
+    this.totalNotes,
     required this.hasMore,
     required this.nextCursor,
     required this.isLoadingMore,

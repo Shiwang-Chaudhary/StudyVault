@@ -25,7 +25,7 @@ class PdfContainer extends StatelessWidget {
     this.downloads = "540",
     this.iconColor = AppColors.accentCoral,
     this.iconBgColor = AppColors.accentCoralMuted,
-    this.height = 93,
+    this.height = 85,
   });
 
   @override
@@ -62,7 +62,7 @@ class PdfContainer extends StatelessWidget {
                 children: [
                   CustomText(
                     text: note?.title ?? title,
-                    size: FontSizes.lg,
+                    size: FontSizes.md,
                     weight: FontWeight.w600,
                     color: AppColors.textPrimary,
                   ),
@@ -70,7 +70,7 @@ class PdfContainer extends StatelessWidget {
                   CustomText(
                     text:
                         "${note?.branch ?? "CSE"} · Semester ${note?.semester ?? "IV"}",
-                    size: FontSizes.md,
+                    size: FontSizes.sm,
                     weight: FontWeight.w600,
                     color: AppColors.textSecondary,
                   ),
@@ -85,7 +85,7 @@ class PdfContainer extends StatelessWidget {
                       const SizedBox(width: 4),
                       CustomText(
                         text: note?.ratingCount.toString() ?? rating,
-                        size: FontSizes.md,
+                        size: FontSizes.sm,
                         weight: FontWeight.w600,
                         color: AppColors.textSecondary,
                       ),
@@ -98,7 +98,7 @@ class PdfContainer extends StatelessWidget {
                       const SizedBox(width: 4),
                       CustomText(
                         text: note?.likeCount.toString() ?? likes,
-                        size: FontSizes.md,
+                        size: FontSizes.sm,
                         weight: FontWeight.w600,
                         color: AppColors.textSecondary,
                       ),
@@ -111,7 +111,7 @@ class PdfContainer extends StatelessWidget {
                       const SizedBox(width: 4),
                       CustomText(
                         text: note?.downloadCount.toString() ?? downloads,
-                        size: FontSizes.md,
+                        size: FontSizes.sm,
                         weight: FontWeight.w600,
                         color: AppColors.textSecondary,
                       ),

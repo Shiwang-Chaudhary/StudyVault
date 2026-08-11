@@ -31,7 +31,7 @@ class NotesRepository {
   }
 
   Future<NotesResponse> fetchNotes({
-    String? newCursor,
+    String? nextCursor,
     String? subject,
     String? college,
     String? branch,
@@ -45,7 +45,7 @@ class NotesRepository {
       ApiConstants.getFilteredNotes,
       options: Options(headers: {"Authorization": "Bearer $token"}),
       queryParameters: {
-        if (newCursor != null) 'cursor': newCursor,
+        if (nextCursor != null) 'cursor': nextCursor,
         if (subject != null) 'subject': subject,
         if (college != null) 'college': college,
         if (branch != null) 'branch': branch,
@@ -55,6 +55,6 @@ class NotesRepository {
         if (userId != null) 'userId': userId,
       },
     );
-    return NotesResponse.fromJson(response.data['data']);
+    return NotesResponse.fromJson(response.data);
   }
 }

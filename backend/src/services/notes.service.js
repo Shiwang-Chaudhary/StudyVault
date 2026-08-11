@@ -198,7 +198,8 @@ const getNotes = async (
     if (cursor && sort === "latest") {
         filter._id = {$lt: cursor};
     }
-
+    
+    const totalNotes = await Note.countDocuments(filter);
     const notes = await Note.find(filter)
         .populate(
             "userId",
@@ -217,7 +218,8 @@ const getNotes = async (
     return {
         notes,
         hasMore,
-        nextCursor
+        nextCursor,
+        totalNotes
     };
 };
 

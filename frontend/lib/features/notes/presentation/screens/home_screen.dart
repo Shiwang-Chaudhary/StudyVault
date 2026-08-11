@@ -66,7 +66,7 @@ class HomeScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
-                    height: 150,
+                    height: 120,
                     width: 180,
                     decoration: BoxDecoration(
                       color: AppColors.primaryMuted,
@@ -79,13 +79,14 @@ class HomeScreen extends StatelessWidget {
                           Icon(
                             Icons.bookmark,
                             color: AppColors.primaryPressed,
-                            size: 50,
+                            size: 40,
                           ),
                           SizedBox(height: 10),
                           CustomText(
                             text: "Saved",
                             color: AppColors.borderFocused,
-                            size: FontSizes.xxl,
+                            size: FontSizes.lg,
+                            weight: FontWeight.w600,
                           ),
                           Spacer(),
                         ],
@@ -94,7 +95,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   SizedBox(width: 5),
                   Container(
-                    height: 150,
+                    height: 120,
                     width: 180,
                     decoration: BoxDecoration(
                       color: AppColors.accentTealMuted,
@@ -104,12 +105,13 @@ class HomeScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           Spacer(),
-                          Icon(Icons.download, color: Colors.teal, size: 50),
+                          Icon(Icons.download, color: Colors.teal, size: 40),
                           SizedBox(height: 5),
                           CustomText(
                             text: "Downloads",
                             color: Colors.teal,
-                            size: FontSizes.xxl,
+                            size: FontSizes.lg,
+                            weight: FontWeight.w600,
                           ),
                           Spacer(),
                         ],
@@ -125,12 +127,12 @@ class HomeScreen extends StatelessWidget {
               children: [
                 CustomText(
                   text: "Recently opened",
-                  size: FontSizes.xxl,
+                  size: FontSizes.xl,
                   weight: FontWeight.w600,
                 ),
                 CustomText(
                   text: "See All",
-                  size: FontSizes.lg,
+                  size: FontSizes.md,
                   weight: FontWeight.w600,
                   color: AppColors.primary,
                 ),
@@ -158,13 +160,13 @@ class HomeScreen extends StatelessWidget {
               children: [
                 CustomText(
                   text: "Trending",
-                  size: FontSizes.xxl,
+                  size: FontSizes.xl,
                   weight: FontWeight.w600,
                   // color: AppColors.info,
                 ),
                 CustomText(
                   text: "See All",
-                  size: FontSizes.lg,
+                  size: FontSizes.md,
                   weight: FontWeight.w600,
                   color: AppColors.primary,
                 ),
@@ -192,12 +194,12 @@ class HomeScreen extends StatelessWidget {
               children: [
                 CustomText(
                   text: "Recommended for you",
-                  size: FontSizes.xxl,
+                  size: FontSizes.xl,
                   weight: FontWeight.w600,
                 ),
                 CustomText(
                   text: "See All",
-                  size: FontSizes.lg,
+                  size: FontSizes.md,
                   weight: FontWeight.w600,
                   color: AppColors.primary,
                 ),

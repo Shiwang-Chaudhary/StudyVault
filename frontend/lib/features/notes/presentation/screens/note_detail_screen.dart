@@ -51,7 +51,7 @@ class NoteDetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             CustomText(
-              text: note?.title ?? "Operating Systems Unit 2 — Deadlocks",
+              text: note?.title ?? "Operating ////Systems Unit 2 — Deadlocks",
               size: FontSizes.xxxl,
               maxLines: 2,
               weight: FontWeight.bold,
