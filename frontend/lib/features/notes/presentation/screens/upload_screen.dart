@@ -1,7 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:bounce/bounce.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:study_vault/core/config/app_colors.dart';
@@ -52,7 +51,7 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
             AppBar(
               title: const CustomText(
                 text: "Upload Screen",
-                size: 24,
+                size: FontSizes.xxxl,
                 weight: FontWeight.w600,
               ),
             ),

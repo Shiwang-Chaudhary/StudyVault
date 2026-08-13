@@ -23,6 +23,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: pages[index],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,

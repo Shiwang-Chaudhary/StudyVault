@@ -6,6 +6,7 @@ import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/features/notes/data/notes_model.dart';
 import 'package:study_vault/features/notes/presentation/screens/note_detail_screen.dart';
 import 'package:study_vault/features/notes/presentation/widgets/pdf_container.dart';
+import 'package:study_vault/features/notes/presentation/widgets/search_skeleton_loader.dart';
 import 'package:study_vault/features/notes/providers/my_notes_notifier.dart';
 
 class NotesSection extends ConsumerStatefulWidget {
@@ -38,7 +39,7 @@ class _NotesSectionState extends ConsumerState<NotesSection> {
   Widget build(BuildContext context) {
     final myNotesState = ref.watch(myNotesNotifierProvider);
     return myNotesState.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const Center(child: SearchSkeletonLoader()),
       error: (error, stackTrace) => Center(child: Text(error.toString())),
       data: (data) {
         final notes = data.notes;
