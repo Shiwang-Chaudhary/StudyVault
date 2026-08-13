@@ -195,11 +195,12 @@ const getNotes = async (
         mostDownloaded: { downloadCount: -1 },
         highestRated: { avgRating: -1 }
     };
+    const totalNotes = await Note.countDocuments(filter);
+    
     if (cursor && sort === "latest") {
         filter._id = {$lt: cursor};
     }
     
-    const totalNotes = await Note.countDocuments(filter);
     const notes = await Note.find(filter)
         .populate(
             "userId",

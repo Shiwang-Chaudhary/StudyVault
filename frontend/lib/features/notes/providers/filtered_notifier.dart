@@ -31,6 +31,7 @@ class FilteredNotesNotifier extends AsyncNotifier<NotesResponse> {
   }
 
   Future<void> fetchMoreNotes() async {
+    log("Fetch more notes called...........................................");
     final currentState = state.value;
     if (currentState == null) return;
     if (currentState.isLoadingMore) return;
@@ -66,9 +67,7 @@ class FilteredNotesNotifier extends AsyncNotifier<NotesResponse> {
   }
 }
 
-final filteredNotesProvider =
-    AsyncNotifierProvider.family<
-      FilteredNotesNotifier,
-      NotesResponse,
-      NotesQueryParams
-    >(FilteredNotesNotifier.new);
+final filteredNotesProvider = AsyncNotifierProvider.autoDispose
+    .family<FilteredNotesNotifier, NotesResponse, NotesQueryParams>(
+      FilteredNotesNotifier.new,
+    );

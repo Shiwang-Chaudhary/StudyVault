@@ -21,12 +21,17 @@ class _NotesSectionState extends ConsumerState<NotesSection> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent - 200) {
+      if (_scrollController.position.extentAfter < 200) {
         ref.read(myNotesNotifierProvider.notifier).fetchMoreNotes();
       }
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
