@@ -6,7 +6,9 @@ const uploadToCloudinary = async (fileBuffer, folder = 'studyVault/notes') => {
         const uploadStream = cloudinary.uploader.upload_stream(
             {
                 folder,
-                resource_type: 'raw',
+                resource_type: 'image',
+                format: 'pdf',
+                pages: true,
             },
             (error, result) => {
                 if (error) {
@@ -19,6 +21,7 @@ const uploadToCloudinary = async (fileBuffer, folder = 'studyVault/notes') => {
                     resolve({
                         cloudinary_url: result.secure_url,
                         cloudinary_public_id: result.public_id,
+                        pageCount: result.pages || 1,
                     });
                 }
             }

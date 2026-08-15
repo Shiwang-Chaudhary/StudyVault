@@ -35,7 +35,7 @@ const noteSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-
+    pageCount: { type: Number, default: 1 },
     cloudinaryUrl: {
       type: String,
       required: true,
@@ -79,7 +79,7 @@ const noteSchema = new mongoose.Schema(
 // ---------- Indexes ----------
 
 // My Notes
-noteSchema.index({ creatorId: 1 });
+noteSchema.index({ userId: 1 });
 
 // Search
 noteSchema.index({ title: 1 });
@@ -89,6 +89,7 @@ noteSchema.index({ college: 1 });
 // Filters
 noteSchema.index({ branch: 1 });
 noteSchema.index({ semester: 1 });
+noteSchema.index({ pageCount: 1 });
 
 // Sorting
 noteSchema.index({ createdAt: -1 });

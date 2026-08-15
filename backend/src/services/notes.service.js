@@ -157,7 +157,8 @@ const createNote = async (
         semester,
         branch,
         cloudinaryUrl: result.cloudinary_url,
-        cloudinaryPublicId: result.cloudinary_public_id
+        cloudinaryPublicId: result.cloudinary_public_id,
+        pageCount: result.pageCount
     });
     await User.findByIdAndUpdate(userId, {$inc: {totalNotes: 1}});
     return note;
@@ -196,7 +197,7 @@ const getNotes = async (
         highestRated: { avgRating: -1 }
     };
     const totalNotes = await Note.countDocuments(filter);
-    
+
     if (cursor && sort === "latest") {
         filter._id = {$lt: cursor};
     }

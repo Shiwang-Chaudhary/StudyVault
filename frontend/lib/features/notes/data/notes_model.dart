@@ -9,6 +9,7 @@ class Note {
   final String branch;
   final String semester;
   final String college;
+  final int pageCount;
   final String cloudinaryUrl;
   final String cloudinaryPublicId;
   final int likeCount;
@@ -27,6 +28,7 @@ class Note {
     required this.branch,
     required this.semester,
     required this.college,
+    required this.pageCount,
     required this.cloudinaryUrl,
     required this.cloudinaryPublicId,
     required this.likeCount,
@@ -47,6 +49,7 @@ class Note {
       branch: json["branch"],
       semester: json["semester"],
       college: json["college"],
+      pageCount: json['pageCount'],
       cloudinaryUrl: json["cloudinaryUrl"],
       cloudinaryPublicId: json["cloudinaryPublicId"],
       likeCount: json["likeCount"] ?? 0,
@@ -68,6 +71,7 @@ class Note {
       "branch": branch,
       "semester": semester,
       "college": college,
+      "pageCount": pageCount,
       "cloudinaryUrl": cloudinaryUrl,
       "cloudinaryPublicId": cloudinaryPublicId,
       "likeCount": likeCount,

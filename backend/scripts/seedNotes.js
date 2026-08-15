@@ -26,8 +26,9 @@ async function seed() {
       branch: "CSE",
       semester: "Semester IV",
       college: "Gurugram University",
-      cloudinaryUrl: "https://dummy-url.com/file.pdf",
+      cloudinaryUrl: "https://res.cloudinary.com/demo/image/upload/sample.pdf",
       cloudinaryPublicId: "dummy-public-id",
+      pageCount: 1,
     });
 
     console.log(`Inserted Test Note ${i}`);

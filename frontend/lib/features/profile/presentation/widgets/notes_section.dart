@@ -2,9 +2,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:study_vault/core/config/app_colors.dart';
 import 'package:study_vault/core/config/app_font_size.dart';
+import 'package:study_vault/core/widgets/custom_button.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/features/notes/data/notes_model.dart';
 import 'package:study_vault/features/notes/presentation/screens/note_detail_screen.dart';
+import 'package:study_vault/features/notes/presentation/screens/upload_screen.dart';
 import 'package:study_vault/features/notes/presentation/widgets/pdf_container.dart';
 import 'package:study_vault/features/notes/presentation/widgets/search_skeleton_loader.dart';
 import 'package:study_vault/features/notes/providers/my_notes_notifier.dart';
@@ -43,6 +45,17 @@ class _NotesSectionState extends ConsumerState<NotesSection> {
       error: (error, stackTrace) => Center(child: Text(error.toString())),
       data: (data) {
         final notes = data.notes;
+        if (notes.isEmpty) {
+          return Center(
+            child: Column(
+              children: [
+                SizedBox(height: 20),
+                CustomText(text: "No notes found."),
+                SizedBox(height: 10),
+              ],
+            ),
+          );
+        }
         return Column(
           children: [
             Row(

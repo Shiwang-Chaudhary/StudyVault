@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bounce/bounce.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
@@ -6,6 +8,7 @@ import 'package:study_vault/core/config/app_font_size.dart';
 import 'package:study_vault/core/widgets/custom_button.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/features/notes/data/notes_model.dart';
+import 'package:study_vault/features/notes/presentation/screens/pdf_view_screen.dart';
 import 'package:study_vault/features/profile/presentation/screens/uploader_profile_screen.dart';
 
 class NoteDetailScreen extends StatelessWidget {
@@ -34,18 +37,35 @@ class NoteDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 170,
-              // margin: const EdgeInsets.all(16.0),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: AppColors.textPrimary,
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-              child: const Center(
-                child: CustomText(
-                  text: "PDF Viewer Placeholder",
-                  color: AppColors.background,
+            GestureDetector(
+              onTap: () {
+                log("Pdf name: ${note?.title}");
+                log("Pdf url: ${note?.cloudinaryUrl}");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => PdfViewScreen(
+                      name: note?.title ?? "Dummy title",
+                      url:
+                          note?.cloudinaryUrl ??
+                          "https://res.cloudinary.com/demo/image/upload/sample.pdf",
+                    ),
+                  ),
+                );
+              },
+              child: Container(
+                height: 170,
+                // margin: const EdgeInsets.all(16.0),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: AppColors.textPrimary,
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                child: const Center(
+                  child: CustomText(
+                    text: "PDF Viewer Placeholder",
+                    color: AppColors.background,
+                  ),
                 ),
               ),
             ),
@@ -59,7 +79,7 @@ class NoteDetailScreen extends StatelessWidget {
             ),
             CustomText(
               text:
-                  "${note?.branch ?? "CSE"} · Semester ${note?.semester ?? "IV"} · 18 pages",
+                  "${note?.branch ?? "CSE"} · Semester ${note?.semester ?? "IV"} · ${note?.pageCount ?? 0} pages",
               size: FontSizes.xl,
               maxLines: 2,
               color: AppColors.textSecondary,
