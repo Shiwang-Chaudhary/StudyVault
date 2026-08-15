@@ -1,6 +1,8 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:study_vault/core/constans/api_constants.dart';
 import 'package:study_vault/features/auth/data/auth_repository.dart';
 import 'package:study_vault/features/notes/data/notes_response_model.dart';
@@ -56,5 +58,33 @@ class NotesRepository {
       },
     );
     return NotesResponse.fromJson(response.data);
+  }
+
+  Future<({String downloadUrl, int downloadCount})> downloadNote(
+    String noteId,
+  ) async {
+    final token = await auth.getIdToken;
+    final response = await dio.get(
+      "/api/$noteId/download",
+      options: Options(headers: {"Authorization": "Bearer $token"}),
+    );
+    final data = response.data;
+    return (
+      downloadUrl: data["downloadUrl"] as String,
+      downloadCount: data["downloadCount"] as int,
+    );
+  }
+
+  Future<File?> saveNoteToLocalStorage(String noteId) async {
+    try {
+      final result = await downloadNote(noteId);
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File("${directory.path}/note_$noteId.pdf");
+      await dio.download(result.downloadUrl, file);
+      return file;
+    } catch (e) {
+      log("Error downloading file locally: $e");
+      return null;
+    }
   }
 }

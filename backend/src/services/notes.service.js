@@ -266,6 +266,23 @@ const getNoteById = async (noteId) => {
         );
 };
 
+// ==================== DOWNLOAD NOTE ====================
+
+const downloadNote = async(noteId)=>{
+    const note = await Note.findByIdAndUpdate(noteId, {$inc: {downloadCount: 1}}, {new: true});
+    if(!note){
+        return null;
+    }
+    let downloadUrl = note.cloudinaryUrl;
+    if(downloadUrl.includes("res.cloudinary.com") && !downloadUrl.includes('fl_attachment')){
+        downloadUrl = downloadUrl.replace('/upload/', '/upload/fl_attachment/');
+    }
+    return { 
+        note, 
+        downloadUrl
+    }
+}
+
 // ==================== UPDATE NOTE ====================
 
 const updateNote = async (noteId, userId, updateData) => {
@@ -300,5 +317,6 @@ module.exports = {
     getMyNotes,
     getNoteById,
     updateNote,
-    deleteNote
+    deleteNote,
+    downloadNote
 };

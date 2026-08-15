@@ -7,4 +7,5 @@ class ApiConstants {
   static const String uploadFile = "/api/notes/"; //POST
   static const String getUserNotes = "/api/notes/my";
   static const String getFilteredNotes = "/api/notes/"; //GET
+  static const String downloadNote = "/api/noteId/download";
 }

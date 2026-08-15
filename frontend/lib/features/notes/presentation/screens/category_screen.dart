@@ -9,7 +9,7 @@ import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/features/notes/data/notes_query_params.dart';
 import 'package:study_vault/features/notes/presentation/screens/note_detail_screen.dart';
 import 'package:study_vault/features/notes/presentation/widgets/pdf_container.dart';
-import 'package:study_vault/features/notes/providers/filtered_notifier.dart';
+import 'package:study_vault/features/notes/providers/filtered_notes_notifier.dart';
 
 class CategoryScreen extends ConsumerStatefulWidget {
   final String categoryName;

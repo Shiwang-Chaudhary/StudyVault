@@ -14,7 +14,7 @@ import 'package:study_vault/features/notes/presentation/widgets/lottie_search_co
 import 'package:study_vault/features/notes/presentation/widgets/pdf_container.dart';
 import 'package:study_vault/features/notes/presentation/widgets/recent_search_element.dart';
 import 'package:study_vault/features/notes/presentation/widgets/search_skeleton_loader.dart';
-import 'package:study_vault/features/notes/providers/filtered_notifier.dart';
+import 'package:study_vault/features/notes/providers/filtered_notes_notifier.dart';
 import 'package:study_vault/features/notes/providers/search_query_provider.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {

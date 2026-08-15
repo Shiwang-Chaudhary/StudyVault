@@ -10,6 +10,7 @@ const {
   getNoteById,
   updateNote,
   deleteNote,
+  downloadNote
 } = require("../../controllers/notes.controller");
 
 // POST /api/notes
@@ -35,6 +36,9 @@ router.get("/my", authMiddleware, getMyNotes);
 // GET /api/notes/:id
 // Get a single note
 router.get("/:id",authMiddleware, getNoteById);
+router.get("/:id/download",
+    // authMiddleware,
+    downloadNote);
 
 // PATCH /api/notes/:id
 // Update note details

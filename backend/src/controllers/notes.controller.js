@@ -51,6 +51,15 @@ const getNoteById = asyncHandler(async(req,res) => {
     return successResponse(res, 200, note);
 });
 
+const downloadNote = asyncHandler(async(req,res) => {
+    const noteId = req.params.id;
+    const {note, downloadUrl} = await noteService.downloadNote(noteId);
+     if(!note){
+        throw new ApiError(404, "Note not found");
+    }
+    return successResponse(res, 200, {downloadCount: note.downloadCount, downloadUrl});
+});
+
 const updateNote = asyncHandler(async(req,res) =>{
     const noteId = req.params.id;
     const userId = req.user._id;
@@ -77,4 +86,4 @@ const deleteNote = asyncHandler(async(req,res) =>{
     return successResponse(res, 200, {message: "Note deleted successfully"});
     });
 
-module.exports = { uploadNote, listNotes, getMyNotes, getNoteById, updateNote, deleteNote };
+module.exports = { uploadNote, listNotes, getMyNotes, getNoteById, updateNote, deleteNote, downloadNote };
