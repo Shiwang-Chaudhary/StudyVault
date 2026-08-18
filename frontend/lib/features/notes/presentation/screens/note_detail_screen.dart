@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:developer';
 
 import 'package:bounce/bounce.dart';
@@ -8,18 +9,25 @@ import 'package:study_vault/core/config/app_font_size.dart';
 import 'package:study_vault/core/widgets/custom_button.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/features/notes/data/notes_model.dart';
+import 'package:study_vault/features/notes/data/notes_query_params.dart';
 import 'package:study_vault/features/notes/presentation/screens/pdf_view_screen.dart';
+import 'package:study_vault/features/notes/providers/filtered_notes_notifier.dart';
+import 'package:study_vault/features/notes/providers/notes_download_notifier.dart';
 import 'package:study_vault/features/profile/presentation/screens/uploader_profile_screen.dart';
 
-class NoteDetailScreen extends StatelessWidget {
+class NoteDetailScreen extends ConsumerWidget {
   final Note? note;
   final int? totalNotes;
-  const NoteDetailScreen({super.key, this.note, this.totalNotes});
+  final String? params;
+  const NoteDetailScreen({super.key, this.note, this.totalNotes, this.params});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final downloadNote = ref.watch(noteDownloadProvider);
     Map<String, dynamic> containerData = {
-      "Downloads": note?.downloadCount.toString() ?? "0",
+      "Downloads":
+          downloadNote.value?.downloadCount.toString() ??
+          note?.downloadCount.toString(),
       "Rating": note?.ratingCount.toString() ?? "0.0",
       "Likes": note?.likeCount.toString() ?? "0",
     };
@@ -168,7 +176,25 @@ class NoteDetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Bounce(
-              onTap: () {},
+              onTap: downloadNote.isLoading
+                  ? null
+                  : () async {
+                      if (note?.id == null) return;
+                      final downloadUrl = await ref
+                          .read(noteDownloadProvider.notifier)
+                          .downloadNote(note!.id);
+                      //if user leaves screen then snackbar still runs so we need to stop that using this:
+                      if (!context.mounted) return;
+                      // Download failed.
+                      if (downloadUrl == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Failed to download note"),
+                          ),
+                        );
+                        return;
+                      }
+                    },
               child: Container(
                 height: 60,
                 width: double.infinity,

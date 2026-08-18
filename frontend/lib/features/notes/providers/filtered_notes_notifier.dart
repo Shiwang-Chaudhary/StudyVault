@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:study_vault/features/notes/data/notes_query_params.dart';
 import 'package:study_vault/features/notes/data/notes_repository.dart';
@@ -66,14 +65,6 @@ class FilteredNotesNotifier extends AsyncNotifier<NotesResponse> {
       state = AsyncData(currentState.copyWith(isLoadingMore: false));
     }
   }
-
-  // Future<File?> downloadNote(String noteId){
-  //   try {
-
-  //   } catch (e) {
-
-  //   }
-  // }
 }
 
 final filteredNotesProvider = AsyncNotifierProvider.autoDispose

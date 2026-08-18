@@ -6,6 +6,7 @@ class NoteUserModel {
   final String branch;
   final String semester;
   final bool isVerified;
+  final int totalNotes;
 
   const NoteUserModel({
     required this.id,
@@ -15,6 +16,7 @@ class NoteUserModel {
     required this.branch,
     required this.semester,
     required this.isVerified,
+    required this.totalNotes,
   });
 
   factory NoteUserModel.fromJson(Map<String, dynamic> json) {
@@ -26,6 +28,7 @@ class NoteUserModel {
       branch: json['branch'] as String,
       semester: json['semester'] as String,
       isVerified: json['isVerified'] as bool,
+      totalNotes: json['totalNotes'] as int,
     );
   }
 
@@ -38,6 +41,7 @@ class NoteUserModel {
       'branch': branch,
       'semester': semester,
       'isVerified': isVerified,
+      'totalNotes': totalNotes,
     };
   }
 
@@ -49,6 +53,7 @@ class NoteUserModel {
     String? branch,
     String? semester,
     bool? isVerified,
+    int? totalNotes,
   }) {
     return NoteUserModel(
       id: id ?? this.id,
@@ -58,6 +63,7 @@ class NoteUserModel {
       branch: branch ?? this.branch,
       semester: semester ?? this.semester,
       isVerified: isVerified ?? this.isVerified,
+      totalNotes: totalNotes ?? this.totalNotes,
     );
   }
 }

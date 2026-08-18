@@ -184,7 +184,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => NoteDetailScreen(note: note),
+                          builder: (_) => NoteDetailScreen(
+                            note: note,
+                            totalNotes: note.user.totalNotes,
+                          ),
                         ),
                       );
                     },

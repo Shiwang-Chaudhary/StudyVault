@@ -205,7 +205,7 @@ const getNotes = async (
     const notes = await Note.find(filter)
         .populate(
             "userId",
-            "name photoUrl college branch semester isVerified"
+            "name photoUrl college branch semester isVerified totalNotes"
         )
         .sort(sortOptions[sort] || sortOptions.latest)
         .limit(PAGE_SIZE + 1);
@@ -236,7 +236,7 @@ const getMyNotes = async (userId, cursor) => {
     const notes = await Note.find(filter)
         .populate(
             "userId",
-            "name photoUrl college branch semester isVerified"
+            "name photoUrl college branch semester isVerified totalNotes"
         )
         .sort({_id: -1})
         .limit(PAGE_SIZE + 1);

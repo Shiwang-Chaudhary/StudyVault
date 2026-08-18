@@ -65,10 +65,10 @@ class NotesRepository {
   ) async {
     final token = await auth.getIdToken;
     final response = await dio.get(
-      "/api/$noteId/download",
+      "/api/notes/$noteId/download",
       options: Options(headers: {"Authorization": "Bearer $token"}),
     );
-    final data = response.data;
+    final data = response.data["data"];
     return (
       downloadUrl: data["downloadUrl"] as String,
       downloadCount: data["downloadCount"] as int,

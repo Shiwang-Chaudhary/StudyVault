@@ -49,7 +49,7 @@ class Note {
       branch: json["branch"],
       semester: json["semester"],
       college: json["college"],
-      pageCount: json['pageCount'],
+      pageCount: json["pageCount"],
       cloudinaryUrl: json["cloudinaryUrl"],
       cloudinaryPublicId: json["cloudinaryPublicId"],
       likeCount: json["likeCount"] ?? 0,
@@ -81,5 +81,45 @@ class Note {
       "createdAt": createdAt.toIso8601String(),
       "updatedAt": updatedAt.toIso8601String(),
     };
+  }
+
+  Note copyWith({
+    String? id,
+    NoteUserModel? user,
+    String? title,
+    String? description,
+    String? subject,
+    String? branch,
+    String? semester,
+    String? college,
+    int? pageCount,
+    String? cloudinaryUrl,
+    String? cloudinaryPublicId,
+    int? likeCount,
+    int? downloadCount,
+    double? avgRating,
+    int? ratingCount,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) {
+    return Note(
+      id: id ?? this.id,
+      user: user ?? this.user,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      subject: subject ?? this.subject,
+      branch: branch ?? this.branch,
+      semester: semester ?? this.semester,
+      college: college ?? this.college,
+      pageCount: pageCount ?? this.pageCount,
+      cloudinaryUrl: cloudinaryUrl ?? this.cloudinaryUrl,
+      cloudinaryPublicId: cloudinaryPublicId ?? this.cloudinaryPublicId,
+      likeCount: likeCount ?? this.likeCount,
+      downloadCount: downloadCount ?? this.downloadCount,
+      avgRating: avgRating ?? this.avgRating,
+      ratingCount: ratingCount ?? this.ratingCount,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
   }
 }
