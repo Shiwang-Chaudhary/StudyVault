@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:study_vault/core/constans/college_branches.dart';
 import 'package:study_vault/features/auth/providers/user_profile_provider.dart';
 import 'package:study_vault/features/notes/presentation/screens/category_screen.dart';
 import 'package:study_vault/features/notes/presentation/widgets/sub_tab.dart';

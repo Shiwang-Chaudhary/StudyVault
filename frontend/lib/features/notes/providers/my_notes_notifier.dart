@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:study_vault/features/notes/data/notes_repository.dart';
-import 'package:study_vault/features/notes/data/notes_response_model.dart';
+import 'package:study_vault/features/notes/data/models/notes_response_model.dart';
 import 'package:study_vault/features/notes/providers/notes_repo_provider.dart';
 
 class MyNotesNotifier extends AsyncNotifier<NotesResponse> {

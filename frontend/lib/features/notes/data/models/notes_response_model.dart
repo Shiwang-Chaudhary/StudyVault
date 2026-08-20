@@ -1,4 +1,4 @@
-import 'package:study_vault/features/notes/data/notes_model.dart';
+import 'package:study_vault/features/notes/data/models/notes_model.dart';
 
 class NotesResponse {
   final List<Note> notes;

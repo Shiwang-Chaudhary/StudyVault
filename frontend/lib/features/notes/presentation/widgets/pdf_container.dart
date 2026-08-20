@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:study_vault/core/config/app_colors.dart';
 import 'package:study_vault/core/config/app_font_size.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
-import 'package:study_vault/features/notes/data/notes_model.dart';
+import 'package:study_vault/features/notes/data/models/notes_model.dart';
 
 class PdfContainer extends StatelessWidget {
   final Note? note;

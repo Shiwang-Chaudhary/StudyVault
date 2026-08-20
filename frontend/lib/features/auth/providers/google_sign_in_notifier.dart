@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:study_vault/features/auth/data/onboarding_model.dart';
 import 'package:study_vault/features/auth/providers/auth_repo_provider.dart';
 import 'package:study_vault/features/auth/providers/user_profile_provider.dart';
 

@@ -8,7 +8,7 @@ import 'package:study_vault/core/config/app_font_size.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/core/widgets/custom_text_field.dart';
 import 'package:study_vault/features/notes/data/notes_query_params.dart';
-import 'package:study_vault/features/notes/data/notes_response_model.dart';
+import 'package:study_vault/features/notes/data/models/notes_response_model.dart';
 import 'package:study_vault/features/notes/presentation/screens/note_detail_screen.dart';
 import 'package:study_vault/features/notes/presentation/widgets/lottie_search_container.dart';
 import 'package:study_vault/features/notes/presentation/widgets/pdf_container.dart';

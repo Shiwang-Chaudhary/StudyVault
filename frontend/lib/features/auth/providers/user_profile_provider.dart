@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:study_vault/features/auth/data/user_model.dart';
 import 'package:study_vault/features/auth/providers/auth_repo_provider.dart';
-import 'package:study_vault/features/auth/providers/auth_state_provider.dart';
 
 final userProfileProvider = FutureProvider.autoDispose<UserModel>((ref) async {
   log("userProfileProvider started");

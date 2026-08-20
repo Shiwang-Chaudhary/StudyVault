@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:study_vault/features/auth/providers/user_profile_provider.dart';
 import 'package:study_vault/features/notes/data/upload_file_repository.dart';
 import 'package:study_vault/features/notes/providers/my_notes_notifier.dart';
-import 'package:study_vault/features/notes/providers/notes_repo_provider.dart';
 import 'package:study_vault/features/notes/providers/progress_check_provider.dart';
 import 'package:study_vault/features/notes/providers/upload_repo_provider.dart';
 

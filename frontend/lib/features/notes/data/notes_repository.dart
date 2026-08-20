@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:study_vault/core/constans/api_constants.dart';
 import 'package:study_vault/features/auth/data/auth_repository.dart';
-import 'package:study_vault/features/notes/data/notes_response_model.dart';
+import 'package:study_vault/features/notes/data/models/notes_response_model.dart';
 
 class NotesRepository {
   final Dio dio;

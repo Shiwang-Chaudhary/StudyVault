@@ -2,7 +2,6 @@ import 'package:bounce/bounce.dart';
 import 'package:flutter/material.dart';
 import 'package:study_vault/core/config/app_colors.dart';
 import 'package:study_vault/core/config/app_font_size.dart';
-import 'package:study_vault/core/constans/college_branches.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/core/widgets/custom_text_field.dart';
 import 'package:study_vault/features/notes/presentation/screens/note_detail_screen.dart';

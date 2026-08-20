@@ -6,12 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:study_vault/core/config/app_colors.dart';
 import 'package:study_vault/core/config/app_font_size.dart';
-import 'package:study_vault/core/widgets/custom_button.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
-import 'package:study_vault/features/notes/data/notes_model.dart';
-import 'package:study_vault/features/notes/data/notes_query_params.dart';
+import 'package:study_vault/features/notes/data/models/notes_model.dart';
 import 'package:study_vault/features/notes/presentation/screens/pdf_view_screen.dart';
-import 'package:study_vault/features/notes/providers/filtered_notes_notifier.dart';
 import 'package:study_vault/features/notes/providers/notes_download_notifier.dart';
 import 'package:study_vault/features/profile/presentation/screens/uploader_profile_screen.dart';
 

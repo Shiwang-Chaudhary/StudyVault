@@ -37,7 +37,7 @@ dependencies:
   flutter_riverpod: ^3.3.2
   riverpod_lint: ^3.0.0-dev.4
   riverpod_generator: ^3.0.0-dev.11
-  custom_lint: ^0.5.11
+  # custom_lint: ^0.8.1
   google_fonts: ^8.1.0
   bounce: ^1.0.2
   iconsax_flutter: ^1.0.1
@@ -53,10 +53,13 @@ dependencies:
   shimmer: ^3.0.0
   syncfusion_flutter_pdfviewer: ^33.2.13
   path_provider: ^2.1.5
+  hive_ce: ^2.19.3
+  hive_ce_flutter: ^2.3.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  hive_ce_generator: ^1.4.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

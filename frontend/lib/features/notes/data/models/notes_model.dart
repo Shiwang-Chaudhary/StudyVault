@@ -1,4 +1,4 @@
-import 'package:study_vault/features/notes/data/notes_user_model.dart';
+import 'package:study_vault/features/notes/data/models/notes_user_model.dart';
 
 class Note {
   final String id;

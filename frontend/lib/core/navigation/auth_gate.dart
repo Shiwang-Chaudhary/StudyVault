@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:study_vault/core/navigation/main_screen.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
-import 'package:study_vault/features/auth/presentation/screens/get_started_screen.dart';
 
 import 'package:study_vault/features/auth/presentation/screens/login_screen.dart';
 import 'package:study_vault/features/auth/presentation/screens/onboarding_screen.dart';

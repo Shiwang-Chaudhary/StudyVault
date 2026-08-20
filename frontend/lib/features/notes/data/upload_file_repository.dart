@@ -17,7 +17,7 @@ class UploadFileRepository {
     required PlatformFile file,
     required String branch,
     required String semester,
-    required void onProgress(double progress),
+    required void Function(double progress) onProgress,
   }) async {
     try {
       final formData = FormData.fromMap({

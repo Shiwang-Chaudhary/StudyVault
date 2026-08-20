@@ -6,7 +6,6 @@ import 'package:study_vault/core/constans/college_branches.dart';
 import 'package:study_vault/core/widgets/custom_auto_complete_text_field.dart';
 import 'package:study_vault/core/widgets/custom_button.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
-import 'package:study_vault/core/widgets/custom_text_field.dart';
 import 'package:study_vault/features/auth/data/onboarding_model.dart';
 import 'package:study_vault/features/auth/presentation/widgets/disclaimer.dart';
 import 'package:study_vault/features/auth/presentation/widgets/drop_down.dart';

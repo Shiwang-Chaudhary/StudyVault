@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_vault/core/config/app_colors.dart';
 import 'package:study_vault/core/config/app_font_size.dart';
 import 'package:study_vault/core/config/app_prefrences.dart';
@@ -7,7 +6,6 @@ import 'package:study_vault/core/navigation/auth_gate.dart';
 import 'package:study_vault/core/widgets/custom_button.dart';
 import 'package:study_vault/core/widgets/custom_list_tile.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
-import 'package:study_vault/features/auth/presentation/screens/login_screen.dart';
 
 class GetStartedScreen extends StatelessWidget {
   const GetStartedScreen({super.key});

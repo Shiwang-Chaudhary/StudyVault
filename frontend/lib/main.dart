@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_vault/core/config/app_prefrences.dart';
 import 'package:study_vault/core/config/app_themes.dart';
 import 'package:study_vault/core/navigation/auth_gate.dart';

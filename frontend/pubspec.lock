@@ -242,7 +242,7 @@ packages:
     source: hosted
     version: "1.0.9"
   custom_lint:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: custom_lint
       sha256: "22bd87a362f433ba6aae127a7bac2838645270737f3721b180916d7c5946cb5d"
@@ -536,6 +536,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.2"
+  hive_ce:
+    dependency: "direct main"
+    description:
+      name: hive_ce
+      sha256: "8e9980e68643afb1e765d3af32b47996552a64e190d03faf622cea07c1294418"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.19.3"
+  hive_ce_flutter:
+    dependency: "direct main"
+    description:
+      name: hive_ce_flutter
+      sha256: "2677e95a333ff15af43ccd06af7eb7abbf1a4f154ea071997f3de4346cae913a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.4"
+  hive_ce_generator:
+    dependency: "direct dev"
+    description:
+      name: hive_ce_generator
+      sha256: "97a9917c1651b13a20aa0243c3c372960295b9dd848ced2f3737789045f4f08b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.0"
   hotreloader:
     dependency: transitive
     description:
@@ -592,6 +616,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
+  isolate_channel:
+    dependency: transitive
+    description:
+      name: isolate_channel
+      sha256: a9d3d620695bc984244dafae00b95e4319d6974b2d77f4b9e1eb4f2efe099094
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.6.1"
   js:
     dependency: transitive
     description:
@@ -973,6 +1005,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.0"
+  source_helper:
+    dependency: transitive
+    description:
+      name: source_helper
+      sha256: "86d247119aedce8e63f4751bd9626fc9613255935558447569ad42f9f5b48b3c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.3.5"
   source_map_stack_trace:
     dependency: transitive
     description:
