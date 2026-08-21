@@ -59,21 +59,21 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
             UploadFileDottedBorder(
               selectedFileName: selectedFile?.name,
               onTap: () async {
-                final result = await FilePicker.pickFiles(
+                final selectedFile = await FilePicker.pickFile(
                   type: FileType.custom,
                   allowedExtensions: ['pdf'],
                 );
 
-                if (result == null) return;
-                if (result.files.first.size > 10 * 1024 * 1024) {
+                if (selectedFile == null) return;
+                final fileSize = await selectedFile.length();
+                if (fileSize > 10 * 1024 * 1024) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text("File size exceeds 10 MB")),
                   );
                   return;
                 }
 
-                ref.read(selectedFileProvider.notifier).state =
-                    result.files.first;
+                ref.read(selectedFileProvider.notifier).state = selectedFile;
               },
             ),
             const SizedBox(height: 20),
@@ -181,7 +181,7 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
                         );
                         return;
                       }
-                      if (selectedFile.size > 10 * 1024 * 1024) {
+                      if (await selectedFile.length() > 10 * 1024 * 1024) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text("File size exceeds 10 MB"),

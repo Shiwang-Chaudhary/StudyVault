@@ -36,8 +36,8 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter_riverpod: ^3.3.2
   riverpod_lint: ^3.0.0-dev.4
-  riverpod_generator: ^3.0.0-dev.11
-  # custom_lint: ^0.8.1
+  riverpod_generator: ^4.0.4
+  # custom_lint: ^0.5.11
   google_fonts: ^8.1.0
   bounce: ^1.0.2
   iconsax_flutter: ^1.0.1
@@ -48,10 +48,10 @@ dependencies:
   dio: ^5.10.0
   shared_preferences: ^2.5.5
   intl: ^0.20.3
-  file_picker: ^11.0.2
+  file_picker: ^12.0.0
   lottie: ^3.3.3
   shimmer: ^3.0.0
-  syncfusion_flutter_pdfviewer: ^33.2.13
+  syncfusion_flutter_pdfviewer: ^34.2.4
   path_provider: ^2.1.5
   hive_ce: ^2.19.3
   hive_ce_flutter: ^2.3.4
@@ -59,15 +59,15 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  hive_ce_generator: ^1.4.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
   build_runner: ^2.4.13
+  hive_ce_generator: ^1.4.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
