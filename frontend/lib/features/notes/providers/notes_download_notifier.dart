@@ -1,24 +1,23 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:study_vault/features/notes/data/notes_repository.dart';
 import 'package:study_vault/features/notes/providers/notes_repo_provider.dart';
 
 class NoteDownloadNotifier
-    extends AsyncNotifier<({int downloadCount, String downloadUrl})?> {
+    extends AsyncNotifier<({int downloadCount, File file})?> {
   NotesRepository get _notesRepo => ref.read(notesRepositoryProvider);
 
   @override
-  Future<({int downloadCount, String downloadUrl})?> build() async {
+  Future<({int downloadCount, File file})?> build() async {
     return null;
   }
 
-  Future<({int downloadCount, String downloadUrl})?> downloadNote(
-    String noteId,
-  ) async {
+  Future<({int downloadCount, File file})?> downloadNote(String noteId) async {
     try {
       state = const AsyncLoading();
-      final result = await _notesRepo.downloadNote(noteId);
+      final result = await _notesRepo.saveNoteToLocalStorage(noteId);
       // Store the result in the notifier state.
       state = AsyncData(result);
 
@@ -34,5 +33,5 @@ class NoteDownloadNotifier
 final noteDownloadProvider =
     AsyncNotifierProvider.autoDispose<
       NoteDownloadNotifier,
-      ({int downloadCount, String downloadUrl})?
+      ({int downloadCount, File file})?
     >(NoteDownloadNotifier.new);

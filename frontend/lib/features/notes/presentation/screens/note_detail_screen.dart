@@ -7,7 +7,9 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:study_vault/core/config/app_colors.dart';
 import 'package:study_vault/core/config/app_font_size.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
+import 'package:study_vault/features/notes/data/models/local_pdf_model.dart';
 import 'package:study_vault/features/notes/data/models/notes_model.dart';
+import 'package:study_vault/features/notes/data/pdf_local_data_source.dart';
 import 'package:study_vault/features/notes/presentation/screens/pdf_view_screen.dart';
 import 'package:study_vault/features/notes/providers/notes_download_notifier.dart';
 import 'package:study_vault/features/profile/presentation/screens/uploader_profile_screen.dart';
@@ -50,8 +52,9 @@ class NoteDetailScreen extends ConsumerWidget {
                   context,
                   MaterialPageRoute(
                     builder: (_) => PdfViewScreen(
-                      name: note?.title ?? "Dummy title",
-                      url:
+                      isLocal: false,
+                      title: note?.title ?? "Dummy title",
+                      pathOrUrl:
                           note?.cloudinaryUrl ??
                           "https://res.cloudinary.com/demo/image/upload/sample.pdf",
                     ),
@@ -177,13 +180,31 @@ class NoteDetailScreen extends ConsumerWidget {
                   ? null
                   : () async {
                       if (note?.id == null) return;
-                      final downloadUrl = await ref
+                      final result = await ref
                           .read(noteDownloadProvider.notifier)
                           .downloadNote(note!.id);
-                      //if user leaves screen then snackbar still runs so we need to stop that using this:
+                      final file = result?.file;
+                      if (file != null) {
+                        final pdfDoc = LocalPdfModel(
+                          id: note!.id,
+                          title: note!.title,
+                          localPath: file.path,
+                          downloadedAt: DateTime.now(),
+                          fileSize: (await file.length()).toString(),
+                        );
+                        await ref
+                            .read(pdfLocalDataSourceProvider)
+                            .savePdf(pdfDoc);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Note downloaded successfully"),
+                          ),
+                        );
+                      }
+                      //if user leaves screen, snackbar still runs so we need to stop that using this:
                       if (!context.mounted) return;
                       // Download failed.
-                      if (downloadUrl == null) {
+                      if (result == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text("Failed to download note"),

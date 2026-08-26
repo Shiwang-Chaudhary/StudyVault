@@ -17,7 +17,7 @@ class NotesRepository {
     final String? token = await auth.getIdToken;
     final response = await dio.get(
       ApiConstants.getUserNotes,
-      queryParameters: {"cursor": ?nextCursor},
+      queryParameters: {if (nextCursor != null) "cursor": nextCursor},
       options: Options(headers: {"Authorization": "Bearer $token"}),
     );
     NotesResponse notesResponse = NotesResponse.fromJson(response.data);
@@ -47,14 +47,14 @@ class NotesRepository {
       ApiConstants.getFilteredNotes,
       options: Options(headers: {"Authorization": "Bearer $token"}),
       queryParameters: {
-        'cursor': ?nextCursor,
-        'subject': ?subject,
-        'college': ?college,
-        'branch': ?branch,
-        'semester': ?semester,
-        'search': ?search,
-        'sort': ?sort,
-        'userId': ?userId,
+        if (nextCursor != null) 'cursor': nextCursor,
+        if (subject != null) 'subject': subject,
+        if (college != null) 'college': college,
+        if (branch != null) 'branch': branch,
+        if (semester != null) 'semester': semester,
+        if (search != null) 'search': search,
+        if (sort != null) 'sort': sort,
+        if (userId != null) 'userId': userId,
       },
     );
     return NotesResponse.fromJson(response.data);
@@ -75,13 +75,15 @@ class NotesRepository {
     );
   }
 
-  Future<File?> saveNoteToLocalStorage(String noteId) async {
+  Future<({int downloadCount, File file})?> saveNoteToLocalStorage(
+    String noteId,
+  ) async {
     try {
       final result = await downloadNote(noteId);
       final directory = await getApplicationDocumentsDirectory();
       final file = File("${directory.path}/note_$noteId.pdf");
-      await dio.download(result.downloadUrl, file);
-      return file;
+      await dio.download(result.downloadUrl, file.path);
+      return (downloadCount: result.downloadCount, file: file);
     } catch (e) {
       log("Error downloading file locally: $e");
       return null;

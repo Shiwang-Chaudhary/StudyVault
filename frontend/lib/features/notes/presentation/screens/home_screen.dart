@@ -4,6 +4,7 @@ import 'package:study_vault/core/config/app_colors.dart';
 import 'package:study_vault/core/config/app_font_size.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/core/widgets/custom_text_field.dart';
+import 'package:study_vault/features/notes/presentation/screens/download_screen.dart';
 import 'package:study_vault/features/notes/presentation/screens/note_detail_screen.dart';
 import 'package:study_vault/features/notes/presentation/widgets/home_screen_tab_bar.dart';
 import 'package:study_vault/features/notes/presentation/widgets/pdf_container.dart';
@@ -93,27 +94,35 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: 5),
-                  Container(
-                    height: 120,
-                    width: 180,
-                    decoration: BoxDecoration(
-                      color: AppColors.accentTealMuted,
-                      borderRadius: BorderRadius.circular(20),
+                  GestureDetector(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const DownloadScreen(),
+                      ),
                     ),
-                    child: Center(
-                      child: Column(
-                        children: [
-                          Spacer(),
-                          Icon(Icons.download, color: Colors.teal, size: 40),
-                          SizedBox(height: 5),
-                          CustomText(
-                            text: "Downloads",
-                            color: Colors.teal,
-                            size: FontSizes.lg,
-                            weight: FontWeight.w600,
-                          ),
-                          Spacer(),
-                        ],
+                    child: Container(
+                      height: 120,
+                      width: 180,
+                      decoration: BoxDecoration(
+                        color: AppColors.accentTealMuted,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Center(
+                        child: Column(
+                          children: [
+                            Spacer(),
+                            Icon(Icons.download, color: Colors.teal, size: 40),
+                            SizedBox(height: 5),
+                            CustomText(
+                              text: "Downloads",
+                              color: Colors.teal,
+                              size: FontSizes.lg,
+                              weight: FontWeight.w600,
+                            ),
+                            Spacer(),
+                          ],
+                        ),
                       ),
                     ),
                   ),
