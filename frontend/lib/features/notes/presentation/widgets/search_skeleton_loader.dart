@@ -9,7 +9,9 @@ class SearchSkeletonLoader extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final baseColor = isDarkMode ? Colors.grey[800]! : Colors.grey[300]!;
-    final highlightColor = AppColors.info.withOpacity(isDarkMode ? 0.6 : 0.4);
+    final highlightColor = AppColors.info.withValues(
+      alpha: isDarkMode ? 0.6 : 0.4,
+    );
 
     return ListView.builder(
       // --- ADD THESE TWO LINES ---
