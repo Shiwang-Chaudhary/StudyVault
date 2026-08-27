@@ -52,6 +52,7 @@ class NoteDetailScreen extends ConsumerWidget {
                   context,
                   MaterialPageRoute(
                     builder: (_) => PdfViewScreen(
+                      pdfId: note?.id ?? "dummy_id",
                       isLocal: false,
                       title: note?.title ?? "Dummy title",
                       pathOrUrl:

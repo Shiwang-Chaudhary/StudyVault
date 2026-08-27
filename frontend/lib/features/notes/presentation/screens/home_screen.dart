@@ -8,6 +8,7 @@ import 'package:study_vault/features/notes/presentation/screens/download_screen.
 import 'package:study_vault/features/notes/presentation/screens/note_detail_screen.dart';
 import 'package:study_vault/features/notes/presentation/widgets/home_screen_tab_bar.dart';
 import 'package:study_vault/features/notes/presentation/widgets/pdf_container.dart';
+import 'package:study_vault/features/notes/presentation/widgets/recently_opened_section.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -130,39 +131,7 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(
-                  text: "Recently opened",
-                  size: FontSizes.xl,
-                  weight: FontWeight.w600,
-                ),
-                CustomText(
-                  text: "See All",
-                  size: FontSizes.md,
-                  weight: FontWeight.w600,
-                  color: AppColors.primary,
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Column(
-              children: List.generate(
-                2,
-                (_) => Bounce(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const NoteDetailScreen(),
-                      ),
-                    );
-                  },
-                  child: const PdfContainer(),
-                ),
-              ),
-            ),
+            RecentlyOpenedSection(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

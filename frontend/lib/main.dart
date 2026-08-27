@@ -10,23 +10,23 @@ import 'package:study_vault/core/storage/hive_providers.dart';
 import 'package:study_vault/core/storage/hive_registrar.g.dart';
 import 'package:study_vault/features/auth/presentation/screens/get_started_screen.dart';
 import 'package:study_vault/features/notes/data/models/local_pdf_model.dart';
+import 'package:study_vault/features/notes/data/models/pdf_history_model.dart';
 import 'package:study_vault/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // 1. Initialize Hive for Flutter
   await Hive.initFlutter();
-
-  // 2. Register all generated adapters
   Hive.registerAdapters();
-
-  // 3. Open the type-safe box
   final pdfBox = await Hive.openBox<LocalPdfModel>('pdf_documents');
+  final pdfHistoryBox = await Hive.openBox<PdfHistoryModel>('pdf_history');
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final bool isFirstLaunch = await AppPreferences.isFirstLaunch();
   runApp(
     ProviderScope(
-      overrides: [pdfBoxProvider.overrideWithValue(pdfBox)],
+      overrides: [
+        pdfBoxProvider.overrideWithValue(pdfBox),
+        pdfHistoryBoxProvider.overrideWithValue(pdfHistoryBox),
+      ],
       child: StudyVault(isFirstLaunch: isFirstLaunch),
     ),
   );

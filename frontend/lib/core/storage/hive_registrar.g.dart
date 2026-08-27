@@ -8,11 +8,13 @@ import 'package:study_vault/core/storage/hive_adapters.dart';
 extension HiveRegistrar on HiveInterface {
   void registerAdapters() {
     registerAdapter(LocalPdfModelAdapter());
+    registerAdapter(PdfHistoryModelAdapter());
   }
 }
 
 extension IsolatedHiveRegistrar on IsolatedHiveInterface {
   void registerAdapters() {
     registerAdapter(LocalPdfModelAdapter());
+    registerAdapter(PdfHistoryModelAdapter());
   }
 }

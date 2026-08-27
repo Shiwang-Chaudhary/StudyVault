@@ -1,25 +1,32 @@
+import 'dart:developer';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:study_vault/features/notes/data/models/pdf_history_model.dart';
+import 'package:study_vault/features/notes/data/pdf_history_data_source.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-class PdfViewScreen extends StatefulWidget {
+class PdfViewScreen extends ConsumerStatefulWidget {
+  final String pdfId;
   final String pathOrUrl;
   final bool isLocal;
   final String? title;
 
   const PdfViewScreen({
     super.key,
+    required this.pdfId,
     required this.pathOrUrl,
     required this.isLocal,
     this.title,
   });
 
   @override
-  State<PdfViewScreen> createState() => _PdfViewScreenState();
+  ConsumerState<PdfViewScreen> createState() => _PdfViewScreenState();
 }
 
-class _PdfViewScreenState extends State<PdfViewScreen> {
+class _PdfViewScreenState extends ConsumerState<PdfViewScreen> {
   final _controller = PdfViewerController();
   String? _loadError;
 
@@ -29,9 +36,24 @@ class _PdfViewScreenState extends State<PdfViewScreen> {
     super.dispose();
   }
 
+  Future<void> saveHistory() async {
+    final pdfHistory = PdfHistoryModel(
+      title: widget.title ?? 'PDF',
+      pdfId: widget.pdfId,
+      localPathOrUrl: widget.pathOrUrl,
+      isLocal: widget.isLocal,
+      lastPage: _controller.pageNumber,
+      totalPages: _controller.pageCount,
+      lastOpened: DateTime.now(),
+    );
+
+    await ref.read(pdfHistoryDataSourceProvider).savePdfHistory(pdfHistory);
+  }
+
   //Since flutter was not able to pop the screen when the pdf is loading,
   //I had to create a safe pop function that waits for the end of the frame before popping the screen.
   Future<void> _safePop() async {
+    await saveHistory();
     await SchedulerBinding.instance.endOfFrame;
     if (mounted) Navigator.of(context).pop();
   }
@@ -61,6 +83,19 @@ class _PdfViewScreenState extends State<PdfViewScreen> {
             : widget.isLocal
             ? SfPdfViewer.file(
                 File(widget.pathOrUrl),
+                onDocumentLoaded: (details) async {
+                  final history = await ref
+                      .read(pdfHistoryDataSourceProvider)
+                      .getPdfHistory(widget.pdfId);
+                  log(
+                    "Loaded PDF: ${widget.pdfId}, last page: ${history?.lastPage}",
+                  );
+                  if (history != null) {
+                    _controller.jumpToPage(
+                      history.lastPage > 1 ? history.lastPage : 1,
+                    );
+                  }
+                },
                 controller: _controller,
                 onDocumentLoadFailed: (details) {
                   if (mounted) {
@@ -70,6 +105,17 @@ class _PdfViewScreenState extends State<PdfViewScreen> {
               )
             : SfPdfViewer.network(
                 widget.pathOrUrl,
+                onDocumentLoaded: (details) async {
+                  final history = await ref
+                      .read(pdfHistoryDataSourceProvider)
+                      .getPdfHistory(widget.pdfId);
+                  log(
+                    "Loaded PDF: ${widget.pdfId}, last page: ${history?.lastPage}",
+                  );
+                  if (history != null) {
+                    _controller.jumpToPage(history.lastPage);
+                  }
+                },
                 controller: _controller,
                 onDocumentLoadFailed: (details) {
                   if (mounted) {

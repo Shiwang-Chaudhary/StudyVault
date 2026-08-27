@@ -63,8 +63,9 @@ class DownloadScreen extends ConsumerWidget {
                             context,
                             MaterialPageRoute(
                               builder: (_) => PdfViewScreen(
+                                pdfId: pdf!.id,
                                 isLocal: true,
-                                pathOrUrl: pdf!.localPath,
+                                pathOrUrl: pdf.localPath,
                                 title: pdf.title,
                               ),
                             ),
