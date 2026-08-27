@@ -1,18 +1,16 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:study_vault/core/config/app_colors.dart';
 import 'package:study_vault/core/config/app_font_size.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/features/notes/data/models/local_pdf_model.dart';
 import 'package:study_vault/features/notes/data/models/notes_model.dart';
+import 'package:study_vault/features/notes/data/pdf_local_data_source.dart';
 
-class DownloadedItemContainer extends StatelessWidget {
+class DownloadedItemContainer extends ConsumerWidget {
   final LocalPdfModel? pdf;
   final Note? note;
   final String title;
-  final String subtitle;
-  final String rating;
-  final String likes;
-  final String downloads;
   final Color iconColor;
   final Color iconBgColor;
   final double? height;
@@ -21,17 +19,13 @@ class DownloadedItemContainer extends StatelessWidget {
     this.pdf,
     this.note,
     this.title = "Operating Systems Unit 2 — Deadlocks",
-    this.subtitle = "CSE · Semester IV",
-    this.rating = "4.8",
-    this.likes = "132",
-    this.downloads = "540",
     this.iconColor = AppColors.accentCoral,
     this.iconBgColor = AppColors.accentCoralMuted,
     this.height = 90,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       height: height,
       width: double.infinity,
@@ -77,12 +71,13 @@ class DownloadedItemContainer extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  ref.read(pdfLocalDataSourceProvider).deletePdf(pdf!.id);
+                },
                 icon: Icon(Icons.delete, color: AppColors.error),
               ),
             ],
           ),
-
           Divider(color: AppColors.info, thickness: 1.2),
         ],
       ),
