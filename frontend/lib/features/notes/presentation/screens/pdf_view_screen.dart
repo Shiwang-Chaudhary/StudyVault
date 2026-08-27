@@ -29,6 +29,8 @@ class _PdfViewScreenState extends State<PdfViewScreen> {
     super.dispose();
   }
 
+  //Since flutter was not able to pop the screen when the pdf is loading,
+  //I had to create a safe pop function that waits for the end of the frame before popping the screen.
   Future<void> _safePop() async {
     await SchedulerBinding.instance.endOfFrame;
     if (mounted) Navigator.of(context).pop();
@@ -36,8 +38,6 @@ class _PdfViewScreenState extends State<PdfViewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final key = ValueKey('pdf_${widget.isLocal}_${widget.pathOrUrl}');
-
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, _) async {
@@ -61,7 +61,6 @@ class _PdfViewScreenState extends State<PdfViewScreen> {
             : widget.isLocal
             ? SfPdfViewer.file(
                 File(widget.pathOrUrl),
-                key: key,
                 controller: _controller,
                 onDocumentLoadFailed: (details) {
                   if (mounted) {
@@ -71,7 +70,6 @@ class _PdfViewScreenState extends State<PdfViewScreen> {
               )
             : SfPdfViewer.network(
                 widget.pathOrUrl,
-                key: key,
                 controller: _controller,
                 onDocumentLoadFailed: (details) {
                   if (mounted) {
