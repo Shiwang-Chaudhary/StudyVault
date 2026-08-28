@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:study_vault/core/constans/api_constants.dart';
 import 'package:study_vault/features/auth/data/auth_repository.dart';
+import 'package:study_vault/features/notes/data/models/notes_model.dart';
 import 'package:study_vault/features/notes/data/models/notes_response_model.dart';
 
 class NotesRepository {
@@ -87,6 +88,52 @@ class NotesRepository {
     } catch (e) {
       log("Error downloading file locally: $e");
       return null;
+    }
+  }
+
+  Future<List<Note>> fetchBookmarks() async {
+    try {
+      final token = await auth.getIdToken;
+      final response = await dio.get(
+        ApiConstants.getBookmark,
+        options: Options(headers: {"Authorization": "Bearer $token"}),
+      );
+      final responseData = response.data;
+      final List bookmarkList = responseData["data"];
+      return bookmarkList
+          .map((e) => Note.fromJson(e["note"] as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      log("Failed to load bookmarks: $e");
+      throw Exception("Failed to load bookmarks. Please try again.");
+    }
+  }
+
+  Future<void> addBookmark(String noteId) async {
+    try {
+      final token = await auth.getIdToken;
+      final response = await dio.post(
+        "/api/notes/$noteId/bookmark",
+        options: Options(headers: {"Authorization": "Bearer $token"}),
+      );
+      log("Add bookmark response: ${response.data}");
+    } catch (e) {
+      log("Failed to add bookmark: $e");
+      throw Exception("Faild to add bookmark: $e");
+    }
+  }
+
+  Future<void> deleteBookmark(String noteId) async {
+    try {
+      final token = await auth.getIdToken;
+      final response = await dio.delete(
+        "/api/notes/$noteId/bookmark",
+        options: Options(headers: {"Authorization": "Bearer $token"}),
+      );
+      log("Delete bookmark response: ${response.data}");
+    } catch (e) {
+      log("Failed to delete bookmark: $e");
+      throw Exception("Faild to delete bookmark: $e");
     }
   }
 }

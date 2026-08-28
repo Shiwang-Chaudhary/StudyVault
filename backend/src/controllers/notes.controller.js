@@ -36,8 +36,8 @@ const listNotes = asyncHandler(async(req,res) => {
 
 const getMyNotes = asyncHandler(async(req,res) => {
     const {cursor} = req.query;
-    // const userId = req.user._id;
-    const userId = "6a6ef0ada2d4366d71437583";
+    const userId = req.user._id;
+    // const userId = "6a6ef0ada2d4366d71437583";
     const notes = await noteService.getMyNotes(userId, cursor);
     return successResponse(res, 200, notes);
 });
@@ -58,6 +58,35 @@ const downloadNote = asyncHandler(async(req,res) => {
         throw new ApiError(404, "Note not found");
     }
     return successResponse(res, 200, {downloadCount: note.downloadCount, downloadUrl});
+});
+
+const bookmarkNote = asyncHandler(async(req,res) => {
+    const noteId = req.params.noteId;
+    // const userId = req.user._id;
+    const userId = "6a6ef0ada2d4366d71437583";
+    const bookmarkNote = await noteService.bookmarkNote(noteId, userId);
+    if(!bookmarkNote){
+        throw new ApiError(404, "Note not found");
+    }
+    return successResponse(res, 200, bookmarkNote);
+});
+
+const getBookmarks = asyncHandler(async(req,res) => {
+    // const userId = req.user._id;
+    const userId = "6a6ef0ada2d4366d71437583";
+    const bookmarks = await noteService.getBookmarks(userId);
+    return successResponse(res, 200, bookmarks);
+});
+
+const deleteBookmark = asyncHandler(async(req,res) => {
+    const noteId = req.params.noteId;
+    const userId = "6a6ef0ada2d4366d71437583";
+    // const userId = req.user._id;
+    const bookmark = await noteService.deleteBookmark(noteId, userId);
+    if(!bookmark){
+        throw new ApiError(404, "Bookmark not found");
+    }
+    return successResponse(res, 200, {message: "Bookmark deleted successfully"});
 });
 
 const updateNote = asyncHandler(async(req,res) =>{
@@ -86,4 +115,4 @@ const deleteNote = asyncHandler(async(req,res) =>{
     return successResponse(res, 200, {message: "Note deleted successfully"});
     });
 
-module.exports = { uploadNote, listNotes, getMyNotes, getNoteById, updateNote, deleteNote, downloadNote };
+module.exports = { uploadNote, listNotes, getMyNotes, getNoteById, updateNote, deleteNote, downloadNote, bookmarkNote, getBookmarks, deleteBookmark };

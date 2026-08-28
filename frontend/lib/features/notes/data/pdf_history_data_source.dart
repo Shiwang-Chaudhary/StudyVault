@@ -24,7 +24,7 @@ class PdfHistoryDataSource {
 
     history.sort((a, b) => b.lastOpened.compareTo(a.lastOpened));
 
-    return history;
+    return history.take(5).toList();
   }
 }
 

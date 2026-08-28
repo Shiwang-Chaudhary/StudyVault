@@ -11,6 +11,7 @@ import 'package:study_vault/features/notes/data/models/local_pdf_model.dart';
 import 'package:study_vault/features/notes/data/models/notes_model.dart';
 import 'package:study_vault/features/notes/data/pdf_local_data_source.dart';
 import 'package:study_vault/features/notes/presentation/screens/pdf_view_screen.dart';
+import 'package:study_vault/features/notes/providers/bookmark_notifier.dart';
 import 'package:study_vault/features/notes/providers/notes_download_notifier.dart';
 import 'package:study_vault/features/profile/presentation/screens/uploader_profile_screen.dart';
 
@@ -79,19 +80,91 @@ class NoteDetailScreen extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 20),
-            CustomText(
-              text: note?.title ?? "Operating ////Systems Unit 2 — Deadlocks",
-              size: FontSizes.xxxl,
-              maxLines: 2,
-              weight: FontWeight.bold,
-              color: AppColors.textPrimary,
-            ),
-            CustomText(
-              text:
-                  "${note?.branch ?? "CSE"} · Semester ${note?.semester ?? "IV"} · ${note?.pageCount ?? 0} pages",
-              size: FontSizes.xl,
-              maxLines: 2,
-              color: AppColors.textSecondary,
+            Row(
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      text:
+                          note?.title ??
+                          "Operating ////Systems Unit 2 — Deadlocks",
+                      size: FontSizes.xxl,
+                      maxLines: 2,
+                      weight: FontWeight.bold,
+                      color: AppColors.textPrimary,
+                    ),
+                    CustomText(
+                      text:
+                          "${note?.branch ?? "CSE"} · Semester ${note?.semester ?? "IV"} · ${note?.pageCount ?? 0} pages",
+                      size: FontSizes.lg,
+                      maxLines: 2,
+                      color: AppColors.textSecondary,
+                    ),
+                  ],
+                ),
+                const Spacer(),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final isBookmarked =
+                        ref
+                            .watch(bookmarkProvider)
+                            .value
+                            ?.any((n) => n.id == note?.id) ??
+                        false;
+
+                    return IconButton(
+                      onPressed: () async {
+                        await Future.delayed(const Duration(milliseconds: 200));
+
+                        final noteId = note?.id;
+
+                        if (noteId == null) return;
+
+                        final notifier = ref.read(bookmarkProvider.notifier);
+
+                        try {
+                          if (isBookmarked) {
+                            await notifier.deleteBookmark(noteId);
+
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Bookmark removed"),
+                                ),
+                              );
+                            }
+                          } else {
+                            await notifier.addBookmark(noteId);
+
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Note bookmarked successfully"),
+                                ),
+                              );
+                            }
+                          }
+                        } catch (e) {
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Something went wrong"),
+                              ),
+                            );
+                          }
+                        }
+                      },
+                      icon: Icon(
+                        isBookmarked ? Icons.bookmark : Icons.bookmark_add,
+                        color: AppColors.primary,
+                        size: 34,
+                      ),
+                    );
+                  },
+                ),
+              ],
             ),
             const SizedBox(height: 20),
             GestureDetector(

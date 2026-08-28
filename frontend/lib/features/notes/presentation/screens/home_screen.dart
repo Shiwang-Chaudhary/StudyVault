@@ -4,8 +4,10 @@ import 'package:study_vault/core/config/app_colors.dart';
 import 'package:study_vault/core/config/app_font_size.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/core/widgets/custom_text_field.dart';
+import 'package:study_vault/features/notes/presentation/screens/bookmark_screen.dart';
 import 'package:study_vault/features/notes/presentation/screens/download_screen.dart';
 import 'package:study_vault/features/notes/presentation/screens/note_detail_screen.dart';
+import 'package:study_vault/features/notes/presentation/screens/search_screen.dart';
 import 'package:study_vault/features/notes/presentation/widgets/home_screen_tab_bar.dart';
 import 'package:study_vault/features/notes/presentation/widgets/pdf_container.dart';
 import 'package:study_vault/features/notes/presentation/widgets/recently_opened_section.dart';
@@ -55,10 +57,15 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 20),
-            CustomTextField(
-              hintText: "Search notes",
-              controller: TextEditingController(),
-            ),
+            // CustomTextField(
+            //   hintText: "Search notes",
+            //   controller: TextEditingController(),
+            //   onTap: () => Navigator.push(
+            //     context,
+            //     MaterialPageRoute(builder: (context) => const SearchScreen()),
+            //   ),
+            //   readOnly: true,
+            // ),
             const SizedBox(height: 20),
             const HomeScreenTabBar(),
             const SizedBox(height: 20),
@@ -66,31 +73,39 @@ class HomeScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
-                    height: 120,
-                    width: 180,
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryMuted,
-                      borderRadius: BorderRadius.circular(20),
+                  GestureDetector(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const BookmarkScreen(),
+                      ),
                     ),
-                    child: Center(
-                      child: Column(
-                        children: [
-                          Spacer(),
-                          Icon(
-                            Icons.bookmark,
-                            color: AppColors.primaryPressed,
-                            size: 40,
-                          ),
-                          SizedBox(height: 10),
-                          CustomText(
-                            text: "Saved",
-                            color: AppColors.borderFocused,
-                            size: FontSizes.lg,
-                            weight: FontWeight.w600,
-                          ),
-                          Spacer(),
-                        ],
+                    child: Container(
+                      height: 120,
+                      width: 180,
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryMuted,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Center(
+                        child: Column(
+                          children: [
+                            Spacer(),
+                            Icon(
+                              Icons.bookmark,
+                              color: AppColors.primaryPressed,
+                              size: 40,
+                            ),
+                            SizedBox(height: 10),
+                            CustomText(
+                              text: "Saved",
+                              color: AppColors.borderFocused,
+                              size: FontSizes.lg,
+                              weight: FontWeight.w600,
+                            ),
+                            Spacer(),
+                          ],
+                        ),
                       ),
                     ),
                   ),

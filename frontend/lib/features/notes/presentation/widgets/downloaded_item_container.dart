@@ -6,6 +6,7 @@ import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/features/notes/data/models/local_pdf_model.dart';
 import 'package:study_vault/features/notes/data/models/notes_model.dart';
 import 'package:study_vault/features/notes/data/pdf_local_data_source.dart';
+import 'package:study_vault/features/notes/providers/bookmark_notifier.dart';
 
 class DownloadedItemContainer extends ConsumerWidget {
   final LocalPdfModel? pdf;
@@ -61,7 +62,7 @@ class DownloadedItemContainer extends ConsumerWidget {
                   ),
                   child: Center(
                     child: CustomText(
-                      text: pdf?.title ?? title,
+                      text: note?.title ?? title,
                       maxLines: 3,
                       size: FontSizes.lg,
                       weight: FontWeight.w600,
@@ -72,7 +73,7 @@ class DownloadedItemContainer extends ConsumerWidget {
               ),
               IconButton(
                 onPressed: () {
-                  ref.read(pdfLocalDataSourceProvider).deletePdf(pdf!.id);
+                  ref.read(bookmarkProvider.notifier).deleteBookmark(note!.id);
                 },
                 icon: Icon(Icons.delete, color: AppColors.error),
               ),

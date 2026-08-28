@@ -89,19 +89,19 @@ class PdfContainer extends StatelessWidget {
                         weight: FontWeight.w600,
                         color: AppColors.textSecondary,
                       ),
-                      const SizedBox(width: 16),
-                      const Icon(
-                        Icons.favorite_border,
-                        color: AppColors.accentCoral,
-                        size: 18,
-                      ),
-                      const SizedBox(width: 4),
-                      CustomText(
-                        text: note?.likeCount.toString() ?? likes,
-                        size: FontSizes.sm,
-                        weight: FontWeight.w600,
-                        color: AppColors.textSecondary,
-                      ),
+                      // const SizedBox(width: 16),
+                      // const Icon(
+                      //   Icons.favorite_border,
+                      //   color: AppColors.accentCoral,
+                      //   size: 18,
+                      // ),
+                      // const SizedBox(width: 4),
+                      // CustomText(
+                      //   text: note?.likeCount.toString() ?? likes,
+                      //   size: FontSizes.sm,
+                      //   weight: FontWeight.w600,
+                      //   color: AppColors.textSecondary,
+                      // ),
                       const SizedBox(width: 16),
                       const Icon(
                         Icons.download_outlined,

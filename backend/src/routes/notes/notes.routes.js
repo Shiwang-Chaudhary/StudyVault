@@ -10,13 +10,16 @@ const {
   getNoteById,
   updateNote,
   deleteNote,
-  downloadNote
+  downloadNote,
+  bookmarkNote,
+  getBookmarks,
+  deleteBookmark
 } = require("../../controllers/notes.controller");
 
 // POST /api/notes
 // Upload a new note
 router.post("/", authMiddleware, upload.single("pdf"), uploadNote);
-
+router.post("/:noteId/bookmark", bookmarkNote);
 // GET /api/notes
 // Examples:
 // GET /api/notes
@@ -25,20 +28,18 @@ router.post("/", authMiddleware, upload.single("pdf"), uploadNote);
 // GET /api/notes?college=ABC
 // GET /api/notes?semester=5
 // GET /api/notes?sort=latest
-router.get("/",
-    //  authMiddleware,
-      listNotes);
+router.get("/", authMiddleware, listNotes);
 
 // GET /api/notes/my
 // Get logged-in user's uploaded notes
 router.get("/my", authMiddleware, getMyNotes);
+router.get("/my/bookmarks", getBookmarks);
+router.delete("/:noteId/bookmark", deleteBookmark);
 
 // GET /api/notes/:id
 // Get a single note
 router.get("/:id",authMiddleware, getNoteById);
-router.get("/:id/download",
-    // authMiddleware,
-    downloadNote);
+router.get("/:id/download", authMiddleware, downloadNote);
 
 // PATCH /api/notes/:id
 // Update note details

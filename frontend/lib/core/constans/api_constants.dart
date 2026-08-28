@@ -8,4 +8,7 @@ class ApiConstants {
   static const String getUserNotes = "/api/notes/my";
   static const String getFilteredNotes = "/api/notes/"; //GET
   static const String downloadNote = "/api/noteId/download";
+  static const String getBookmark = "/api/notes/my/bookmarks";
+  static const String addBookmark = "/api/notes/noteId/bookmark";
+  static const String deleteBookmark = "/api/notes/noteId/bookmark";
 }
