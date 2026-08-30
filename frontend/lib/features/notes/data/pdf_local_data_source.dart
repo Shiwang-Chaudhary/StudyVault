@@ -15,6 +15,10 @@ class PdfLocalDataSource {
     await _pdfBox.delete(pdfId);
   }
 
+  LocalPdfModel? getPdfById(String pdfId) {
+    return _pdfBox.get(pdfId);
+  }
+
   Stream<List<LocalPdfModel?>> getAllPdf() async* {
     yield _pdfBox.values.toList();
 

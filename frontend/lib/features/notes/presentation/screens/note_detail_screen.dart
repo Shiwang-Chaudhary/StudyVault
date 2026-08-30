@@ -12,6 +12,7 @@ import 'package:study_vault/features/notes/data/models/notes_model.dart';
 import 'package:study_vault/features/notes/data/pdf_local_data_source.dart';
 import 'package:study_vault/features/notes/presentation/screens/pdf_view_screen.dart';
 import 'package:study_vault/features/notes/providers/bookmark_notifier.dart';
+import 'package:study_vault/features/notes/providers/isdownloaded_provider.dart';
 import 'package:study_vault/features/notes/providers/notes_download_notifier.dart';
 import 'package:study_vault/features/profile/presentation/screens/uploader_profile_screen.dart';
 
@@ -21,9 +22,61 @@ class NoteDetailScreen extends ConsumerWidget {
   final String? params;
   const NoteDetailScreen({super.key, this.note, this.totalNotes, this.params});
 
+  Future<void> _downloadNote(BuildContext context, WidgetRef ref) async {
+    if (note?.id == null) return;
+    final download = await ref
+        .read(pdfLocalDataSourceProvider)
+        .getPdfById(note!.id);
+    if (download != null) {
+      ref.invalidate(isDownloadedProvider(note!.id));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Note already downloaded")));
+      return;
+    }
+    final result = await ref
+        .read(noteDownloadProvider.notifier)
+        .downloadNote(note!.id);
+    final file = result?.file;
+    if (file != null) {
+      final pdfDoc = LocalPdfModel(
+        id: note!.id,
+        title: note!.title,
+        localPath: file.path,
+        downloadedAt: DateTime.now(),
+        fileSize: (await file.length()).toString(),
+      );
+      await ref.read(pdfLocalDataSourceProvider).savePdf(pdfDoc);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Note downloaded successfully")),
+      );
+    }
+    //if user leaves screen, snackbar still runs so we need to stop that using this:
+    if (!context.mounted) return;
+    // Download failed.
+    if (result == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Failed to download note")));
+      return;
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final downloadNote = ref.watch(noteDownloadProvider);
+    final isDownloaded = ref.watch(isDownloadedProvider(note?.id ?? ""));
+    final isDownloading = downloadNote.isLoading;
+    final downloadLabel = isDownloading
+        ? "Downloading..."
+        : isDownloaded
+        ? "Downloaded"
+        : "Download";
+    final downloadIcon = isDownloading
+        ? Icons.downloading
+        : isDownloaded
+        ? Icons.download_done
+        : Icons.download;
     Map<String, dynamic> containerData = {
       "Downloads":
           downloadNote.value?.downloadCount.toString() ??
@@ -117,17 +170,12 @@ class NoteDetailScreen extends ConsumerWidget {
                     return IconButton(
                       onPressed: () async {
                         await Future.delayed(const Duration(milliseconds: 200));
-
                         final noteId = note?.id;
-
                         if (noteId == null) return;
-
                         final notifier = ref.read(bookmarkProvider.notifier);
-
                         try {
                           if (isBookmarked) {
                             await notifier.deleteBookmark(noteId);
-
                             if (context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
@@ -137,7 +185,6 @@ class NoteDetailScreen extends ConsumerWidget {
                             }
                           } else {
                             await notifier.addBookmark(noteId);
-
                             if (context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
@@ -253,39 +300,40 @@ class NoteDetailScreen extends ConsumerWidget {
               onTap: downloadNote.isLoading
                   ? null
                   : () async {
-                      if (note?.id == null) return;
-                      final result = await ref
-                          .read(noteDownloadProvider.notifier)
-                          .downloadNote(note!.id);
-                      final file = result?.file;
-                      if (file != null) {
-                        final pdfDoc = LocalPdfModel(
-                          id: note!.id,
-                          title: note!.title,
-                          localPath: file.path,
-                          downloadedAt: DateTime.now(),
-                          fileSize: (await file.length()).toString(),
-                        );
-                        await ref
-                            .read(pdfLocalDataSourceProvider)
-                            .savePdf(pdfDoc);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Note downloaded successfully"),
-                          ),
-                        );
-                      }
-                      //if user leaves screen, snackbar still runs so we need to stop that using this:
-                      if (!context.mounted) return;
-                      // Download failed.
-                      if (result == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Failed to download note"),
-                          ),
-                        );
-                        return;
-                      }
+                      await _downloadNote(context, ref);
+                      // if (note?.id == null) return;
+                      // final result = await ref
+                      //     .read(noteDownloadProvider.notifier)
+                      //     .downloadNote(note!.id);
+                      // final file = result?.file;
+                      // if (file != null) {
+                      //   final pdfDoc = LocalPdfModel(
+                      //     id: note!.id,
+                      //     title: note!.title,
+                      //     localPath: file.path,
+                      //     downloadedAt: DateTime.now(),
+                      //     fileSize: (await file.length()).toString(),
+                      //   );
+                      //   await ref
+                      //       .read(pdfLocalDataSourceProvider)
+                      //       .savePdf(pdfDoc);
+                      //   ScaffoldMessenger.of(context).showSnackBar(
+                      //     const SnackBar(
+                      //       content: Text("Note downloaded successfully"),
+                      //     ),
+                      //   );
+                      // }
+                      // //if user leaves screen, snackbar still runs so we need to stop that using this:
+                      // if (!context.mounted) return;
+                      // // Download failed.
+                      // if (result == null) {
+                      //   ScaffoldMessenger.of(context).showSnackBar(
+                      //     const SnackBar(
+                      //       content: Text("Failed to download note"),
+                      //     ),
+                      //   );
+                      //   return;
+                      // }
                     },
               child: Container(
                 height: 60,
@@ -297,14 +345,10 @@ class NoteDetailScreen extends ConsumerWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                      Iconsax.document_download,
-                      color: AppColors.textPrimary,
-                      size: 28,
-                    ),
+                    Icon(downloadIcon, color: AppColors.textPrimary, size: 28),
                     const SizedBox(width: 10),
                     CustomText(
-                      text: "Download",
+                      text: downloadLabel,
                       size: FontSizes.xl,
                       weight: FontWeight.bold,
                     ),

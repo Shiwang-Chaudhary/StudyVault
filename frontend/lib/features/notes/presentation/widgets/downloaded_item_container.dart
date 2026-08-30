@@ -62,7 +62,7 @@ class DownloadedItemContainer extends ConsumerWidget {
                   ),
                   child: Center(
                     child: CustomText(
-                      text: note?.title ?? title,
+                      text: pdf?.title ?? title,
                       maxLines: 3,
                       size: FontSizes.lg,
                       weight: FontWeight.w600,
@@ -73,12 +73,13 @@ class DownloadedItemContainer extends ConsumerWidget {
               ),
               IconButton(
                 onPressed: () {
-                  ref.read(bookmarkProvider.notifier).deleteBookmark(note!.id);
+                  ref.read(pdfLocalDataSourceProvider).deletePdf(pdf!.id);
                 },
                 icon: Icon(Icons.delete, color: AppColors.error),
               ),
             ],
           ),
+
           Divider(color: AppColors.info, thickness: 1.2),
         ],
       ),

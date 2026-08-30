@@ -6,6 +6,7 @@ import 'package:study_vault/core/config/app_colors.dart';
 import 'package:study_vault/core/config/app_font_size.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/features/notes/presentation/screens/pdf_view_screen.dart';
+import 'package:study_vault/features/notes/presentation/widgets/bookmark_pdf_container.dart';
 import 'package:study_vault/features/notes/presentation/widgets/downloaded_item_container.dart';
 import 'package:study_vault/features/notes/providers/bookmark_notifier.dart';
 
@@ -74,7 +75,7 @@ class BookmarkScreen extends ConsumerWidget {
                             ),
                           );
                         },
-                        child: DownloadedItemContainer(note: pdf),
+                        child: BookmarkPdfContainer(note: pdf),
                       );
                     },
                   ),

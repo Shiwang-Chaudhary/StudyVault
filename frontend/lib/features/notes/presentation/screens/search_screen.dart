@@ -79,17 +79,19 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 10),
-            const CustomText(
-              text: "Search",
-              size: FontSizes.xxxl,
-              weight: FontWeight.w600,
+            AppBar(
+              title: const CustomText(
+                text: "Search Screen",
+                size: FontSizes.xxl,
+                weight: FontWeight.w600,
+              ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             CustomTextField(
               hintText: "Search notes, subjects, colleges",
               controller: _searchController,

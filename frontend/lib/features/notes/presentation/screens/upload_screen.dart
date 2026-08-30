@@ -51,7 +51,7 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
             AppBar(
               title: const CustomText(
                 text: "Upload Screen",
-                size: FontSizes.xxxl,
+                size: FontSizes.xxl,
                 weight: FontWeight.w600,
               ),
             ),

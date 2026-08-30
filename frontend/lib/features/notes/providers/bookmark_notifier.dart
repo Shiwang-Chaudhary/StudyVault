@@ -21,6 +21,7 @@ class BookmarkNotifier extends AsyncNotifier<List<Note>> {
 
   Future<void> addBookmark(String noteId) async {
     state = const AsyncLoading();
+    await Future.delayed(const Duration(milliseconds: 200));
     isPressed = true;
     state = await AsyncValue.guard(() async {
       await _notesRepo.addBookmark(noteId);

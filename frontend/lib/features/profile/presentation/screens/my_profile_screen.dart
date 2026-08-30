@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:study_vault/core/config/app_colors.dart';
+import 'package:study_vault/core/config/app_font_size.dart';
 import 'package:study_vault/core/widgets/custom_button2.dart';
+import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/features/auth/providers/google_sign_in_notifier.dart';
 import 'package:study_vault/features/profile/presentation/widgets/notes_section.dart';
 import 'package:study_vault/features/profile/presentation/widgets/profile_section.dart';
@@ -17,7 +19,11 @@ class MyProfileScreen extends StatelessWidget {
         child: Column(
           children: [
             AppBar(
-              title: const Text("My Profile"),
+              title: const CustomText(
+                text: "My Profile",
+                size: FontSizes.xxl,
+                weight: FontWeight.w600,
+              ),
               shape: const Border(
                 bottom: BorderSide(color: AppColors.border, width: 2),
               ),

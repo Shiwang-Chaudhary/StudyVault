@@ -3,12 +3,12 @@ import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:study_vault/features/notes/data/notes_repository.dart';
+import 'package:study_vault/features/notes/providers/isdownloaded_provider.dart';
 import 'package:study_vault/features/notes/providers/notes_repo_provider.dart';
 
 class NoteDownloadNotifier
     extends AsyncNotifier<({int downloadCount, File file})?> {
   NotesRepository get _notesRepo => ref.read(notesRepositoryProvider);
-
   @override
   Future<({int downloadCount, File file})?> build() async {
     return null;
@@ -20,7 +20,7 @@ class NoteDownloadNotifier
       final result = await _notesRepo.saveNoteToLocalStorage(noteId);
       // Store the result in the notifier state.
       state = AsyncData(result);
-
+      ref.invalidate(isDownloadedProvider(noteId));
       return result;
     } catch (e, st) {
       log('Failed to download note', error: e, stackTrace: st);
