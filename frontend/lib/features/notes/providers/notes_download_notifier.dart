@@ -14,13 +14,17 @@ class NoteDownloadNotifier
     return null;
   }
 
-  Future<({int downloadCount, File file})?> downloadNote(String noteId) async {
+  Future<({int downloadCount, File file})?> downloadNote(
+    String noteId,
+    String userId,
+  ) async {
     try {
       state = const AsyncLoading();
       final result = await _notesRepo.saveNoteToLocalStorage(noteId);
       // Store the result in the notifier state.
       state = AsyncData(result);
-      ref.invalidate(isDownloadedProvider(noteId));
+      log('Note downloaded: $noteId');
+      ref.invalidate(isDownloadedProvider((noteId: noteId, userId: userId)));
       return result;
     } catch (e, st) {
       log('Failed to download note', error: e, stackTrace: st);

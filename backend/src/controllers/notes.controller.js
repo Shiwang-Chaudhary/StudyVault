@@ -62,8 +62,8 @@ const downloadNote = asyncHandler(async(req,res) => {
 
 const bookmarkNote = asyncHandler(async(req,res) => {
     const noteId = req.params.noteId;
-    // const userId = req.user._id;
-    const userId = "6a6ef0ada2d4366d71437583";
+    const userId = req.user._id;
+    // const userId = "6a6ef0ada2d4366d71437583";
     const bookmarkNote = await noteService.bookmarkNote(noteId, userId);
     if(!bookmarkNote){
         throw new ApiError(404, "Note not found");
@@ -72,16 +72,16 @@ const bookmarkNote = asyncHandler(async(req,res) => {
 });
 
 const getBookmarks = asyncHandler(async(req,res) => {
-    // const userId = req.user._id;
-    const userId = "6a6ef0ada2d4366d71437583";
+    const userId = req.user._id;
+    // const userId = "6a6ef0ada2d4366d71437583";
     const bookmarks = await noteService.getBookmarks(userId);
     return successResponse(res, 200, bookmarks);
 });
 
 const deleteBookmark = asyncHandler(async(req,res) => {
     const noteId = req.params.noteId;
-    const userId = "6a6ef0ada2d4366d71437583";
-    // const userId = req.user._id;
+    // const userId = "6a6ef0ada2d4366d71437583";
+    const userId = req.user._id;
     const bookmark = await noteService.deleteBookmark(noteId, userId);
     if(!bookmark){
         throw new ApiError(404, "Bookmark not found");

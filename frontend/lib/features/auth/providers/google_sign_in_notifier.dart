@@ -25,6 +25,7 @@ class GoogleSignInProvider extends AsyncNotifier<void> {
       final authRepo = ref.read(authRepositoryProvider);
       await authRepo.signOut();
     });
+    ref.invalidate(userProfileProvider);
   }
 }
 

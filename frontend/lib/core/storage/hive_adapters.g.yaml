@@ -5,7 +5,7 @@ nextTypeId: 2
 types:
   LocalPdfModel:
     typeId: 0
-    nextIndex: 5
+    nextIndex: 6
     fields:
       id:
         index: 0
@@ -17,6 +17,8 @@ types:
         index: 3
       downloadedAt:
         index: 4
+      userId:
+        index: 5
   PdfHistoryModel:
     typeId: 1
     nextIndex: 7

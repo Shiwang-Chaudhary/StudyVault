@@ -18,6 +18,7 @@ class LocalPdfModelAdapter extends TypeAdapter<LocalPdfModel> {
     };
     return LocalPdfModel(
       id: fields[0] as String,
+      userId: fields[5] as String,
       title: fields[1] as String,
       localPath: fields[2] as String,
       fileSize: fields[3] as String,
@@ -28,7 +29,7 @@ class LocalPdfModelAdapter extends TypeAdapter<LocalPdfModel> {
   @override
   void write(BinaryWriter writer, LocalPdfModel obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -38,7 +39,9 @@ class LocalPdfModelAdapter extends TypeAdapter<LocalPdfModel> {
       ..writeByte(3)
       ..write(obj.fileSize)
       ..writeByte(4)
-      ..write(obj.downloadedAt);
+      ..write(obj.downloadedAt)
+      ..writeByte(5)
+      ..write(obj.userId);
   }
 
   @override

@@ -42,4 +42,6 @@ class UploadFileNotifier extends AsyncNotifier<void> {
 }
 
 final uploadFileNotifierProvider =
-    AsyncNotifierProvider<UploadFileNotifier, void>(() => UploadFileNotifier());
+    AsyncNotifierProvider.autoDispose<UploadFileNotifier, void>(
+      () => UploadFileNotifier(),
+    );

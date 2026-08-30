@@ -4,7 +4,7 @@ const { ApiError, successResponse } = require("../utils/apiResponse.utils");
 
 const onboardingController = asyncHandler(async (req, res) => {
     const{college, branch, semester, subjects} = req.body;
-    const userFirebaseUid = req.user.uid;
+    const userFirebaseUid = req.firebaseUser.uid;
     const user = await User.findOne({firebaseUid: userFirebaseUid});
     if (!college || !branch || !semester || !Array.isArray(subjects)) {
         throw new ApiError(

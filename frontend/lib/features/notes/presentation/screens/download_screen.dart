@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:study_vault/core/config/app_colors.dart';
@@ -6,13 +7,16 @@ import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/features/notes/data/pdf_local_data_source.dart';
 import 'package:study_vault/features/notes/presentation/screens/pdf_view_screen.dart';
 import 'package:study_vault/features/notes/presentation/widgets/downloaded_item_container.dart';
+import 'package:study_vault/features/notes/providers/current_user_id_provider.dart';
 
 class DownloadScreen extends ConsumerWidget {
   const DownloadScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final downloadedPdfs = ref.watch(downloadPdfStreamProvider);
+    final userId = ref.watch(currentUserIdProvider);
+    log('Current User ID inside download screen: $userId');
+    final downloadedPdfs = ref.watch(downloadPdfStreamProvider(userId));
     return downloadedPdfs.when(
       loading: () {
         return const Center(child: CircularProgressIndicator());
@@ -21,6 +25,7 @@ class DownloadScreen extends ConsumerWidget {
         return Center(child: Text('Error: $error'));
       },
       data: (pdfList) {
+        log('Downloaded PDFs: $pdfList');
         return Scaffold(
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),

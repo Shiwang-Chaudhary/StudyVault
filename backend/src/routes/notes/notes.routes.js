@@ -19,7 +19,7 @@ const {
 // POST /api/notes
 // Upload a new note
 router.post("/", authMiddleware, upload.single("pdf"), uploadNote);
-router.post("/:noteId/bookmark", bookmarkNote);
+router.post("/:noteId/bookmark", authMiddleware, bookmarkNote);
 // GET /api/notes
 // Examples:
 // GET /api/notes
@@ -33,8 +33,8 @@ router.get("/", authMiddleware, listNotes);
 // GET /api/notes/my
 // Get logged-in user's uploaded notes
 router.get("/my", authMiddleware, getMyNotes);
-router.get("/my/bookmarks", getBookmarks);
-router.delete("/:noteId/bookmark", deleteBookmark);
+router.get("/my/bookmarks", authMiddleware, getBookmarks);
+router.delete("/:noteId/bookmark", authMiddleware, deleteBookmark);
 
 // GET /api/notes/:id
 // Get a single note

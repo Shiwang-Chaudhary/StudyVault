@@ -38,6 +38,7 @@ class BookmarkNotifier extends AsyncNotifier<List<Note>> {
   }
 }
 
-final bookmarkProvider = AsyncNotifierProvider<BookmarkNotifier, List<Note>>(
-  () => BookmarkNotifier(),
-);
+final bookmarkProvider =
+    AsyncNotifierProvider.autoDispose<BookmarkNotifier, List<Note>>(
+      () => BookmarkNotifier(),
+    );

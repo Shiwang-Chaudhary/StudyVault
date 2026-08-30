@@ -71,4 +71,6 @@ class MyNotesNotifier extends AsyncNotifier<NotesResponse> {
 }
 
 final myNotesNotifierProvider =
-    AsyncNotifierProvider<MyNotesNotifier, NotesResponse>(MyNotesNotifier.new);
+    AsyncNotifierProvider.autoDispose<MyNotesNotifier, NotesResponse>(
+      MyNotesNotifier.new,
+    );

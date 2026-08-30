@@ -73,7 +73,9 @@ class DownloadedItemContainer extends ConsumerWidget {
               ),
               IconButton(
                 onPressed: () {
-                  ref.read(pdfLocalDataSourceProvider).deletePdf(pdf!.id);
+                  ref
+                      .read(pdfLocalDataSourceProvider)
+                      .deletePdf(pdf!.id, pdf!.userId);
                 },
                 icon: Icon(Icons.delete, color: AppColors.error),
               ),

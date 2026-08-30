@@ -5,33 +5,54 @@ import 'package:study_vault/features/notes/data/models/local_pdf_model.dart';
 
 class PdfLocalDataSource {
   final Box<LocalPdfModel> _pdfBox;
+
   PdfLocalDataSource(this._pdfBox);
 
-  Future<void> savePdf(LocalPdfModel pdf) async {
-    await _pdfBox.put(pdf.id, pdf);
+  // Creates a unique key for each user's downloaded note.
+  String _key(String noteId, String userId) {
+    return '$userId:$noteId';
   }
 
-  Future<void> deletePdf(String pdfId) async {
-    await _pdfBox.delete(pdfId);
+  // Save a downloaded PDF.
+  Future<void> savePdf(LocalPdfModel pdf, String userId) async {
+    await _pdfBox.put(_key(pdf.id, userId), pdf);
   }
 
-  LocalPdfModel? getPdfById(String pdfId) {
-    return _pdfBox.get(pdfId);
+  // Delete a downloaded PDF.
+  Future<void> deletePdf(String noteId, String userId) async {
+    await _pdfBox.delete(_key(noteId, userId));
   }
 
-  Stream<List<LocalPdfModel?>> getAllPdf() async* {
-    yield _pdfBox.values.toList();
+  // Check/get a downloaded PDF for a specific user.
+  LocalPdfModel? getPdfById(String noteId, String userId) {
+    return _pdfBox.get(_key(noteId, userId));
+  }
 
-    yield* _pdfBox.watch().map((event) => _pdfBox.values.toList());
+  // Get all PDFs downloaded by a specific user.
+  Stream<List<LocalPdfModel>> getAllPdf(String userId) async* {
+    List<LocalPdfModel> getUserPdfs() {
+      return _pdfBox.values.where((pdf) => pdf.userId == userId).toList();
+    }
+
+    // Initial data.
+    yield getUserPdfs();
+
+    // Listen for changes.
+    yield* _pdfBox.watch().map((_) => getUserPdfs());
   }
 }
 
+// Data source provider.
 final pdfLocalDataSourceProvider = Provider<PdfLocalDataSource>((ref) {
   final pdfBox = ref.watch(pdfBoxProvider);
+
   return PdfLocalDataSource(pdfBox);
 });
 
-final downloadPdfStreamProvider = StreamProvider<List<LocalPdfModel?>>((ref) {
-  final pdfLocalDataSource = ref.watch(pdfLocalDataSourceProvider);
-  return pdfLocalDataSource.getAllPdf();
-});
+// Get all downloaded PDFs for a specific user.
+final downloadPdfStreamProvider = StreamProvider.autoDispose
+    .family<List<LocalPdfModel>, String>((ref, userId) {
+      final pdfLocalDataSource = ref.watch(pdfLocalDataSourceProvider);
+
+      return pdfLocalDataSource.getAllPdf(userId);
+    });

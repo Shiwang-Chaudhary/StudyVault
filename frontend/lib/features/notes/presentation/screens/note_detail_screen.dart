@@ -12,6 +12,7 @@ import 'package:study_vault/features/notes/data/models/notes_model.dart';
 import 'package:study_vault/features/notes/data/pdf_local_data_source.dart';
 import 'package:study_vault/features/notes/presentation/screens/pdf_view_screen.dart';
 import 'package:study_vault/features/notes/providers/bookmark_notifier.dart';
+import 'package:study_vault/features/notes/providers/current_user_id_provider.dart';
 import 'package:study_vault/features/notes/providers/isdownloaded_provider.dart';
 import 'package:study_vault/features/notes/providers/notes_download_notifier.dart';
 import 'package:study_vault/features/profile/presentation/screens/uploader_profile_screen.dart';
@@ -24,11 +25,14 @@ class NoteDetailScreen extends ConsumerWidget {
 
   Future<void> _downloadNote(BuildContext context, WidgetRef ref) async {
     if (note?.id == null) return;
+    final currentUserId = ref.read(currentUserIdProvider);
     final download = await ref
         .read(pdfLocalDataSourceProvider)
-        .getPdfById(note!.id);
+        .getPdfById(note!.id, currentUserId);
     if (download != null) {
-      ref.invalidate(isDownloadedProvider(note!.id));
+      ref.invalidate(
+        isDownloadedProvider((noteId: note!.id, userId: currentUserId)),
+      );
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text("Note already downloaded")));
@@ -36,17 +40,18 @@ class NoteDetailScreen extends ConsumerWidget {
     }
     final result = await ref
         .read(noteDownloadProvider.notifier)
-        .downloadNote(note!.id);
+        .downloadNote(note!.id, currentUserId);
     final file = result?.file;
     if (file != null) {
       final pdfDoc = LocalPdfModel(
         id: note!.id,
+        userId: currentUserId,
         title: note!.title,
         localPath: file.path,
         downloadedAt: DateTime.now(),
         fileSize: (await file.length()).toString(),
       );
-      await ref.read(pdfLocalDataSourceProvider).savePdf(pdfDoc);
+      await ref.read(pdfLocalDataSourceProvider).savePdf(pdfDoc, currentUserId);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Note downloaded successfully")),
       );
@@ -64,8 +69,11 @@ class NoteDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final currentUserId = ref.watch(currentUserIdProvider);
     final downloadNote = ref.watch(noteDownloadProvider);
-    final isDownloaded = ref.watch(isDownloadedProvider(note?.id ?? ""));
+    final isDownloaded = ref.watch(
+      isDownloadedProvider((noteId: note?.id ?? " ", userId: currentUserId)),
+    );
     final isDownloading = downloadNote.isLoading;
     final downloadLabel = isDownloading
         ? "Downloading..."
@@ -102,19 +110,44 @@ class NoteDetailScreen extends ConsumerWidget {
               onTap: () {
                 log("Pdf name: ${note?.title}");
                 log("Pdf url: ${note?.cloudinaryUrl}");
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => PdfViewScreen(
-                      pdfId: note?.id ?? "dummy_id",
-                      isLocal: false,
-                      title: note?.title ?? "Dummy title",
-                      pathOrUrl:
-                          note?.cloudinaryUrl ??
-                          "https://res.cloudinary.com/demo/image/upload/sample.pdf",
+                if (isDownloaded) {
+                  final downloadedPdf = ref
+                      .read(pdfLocalDataSourceProvider)
+                      .getPdfById(note?.id ?? " ", currentUserId);
+                  log(
+                    "Opening pdf using local path: ${downloadedPdf?.localPath}",
+                  );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => PdfViewScreen(
+                        pdfId: downloadedPdf?.id ?? "dummy_id",
+                        isLocal: true,
+                        pathOrUrl:
+                            downloadedPdf?.localPath ??
+                            "https://res.cloudinary.com/demo/image/upload/sample.pdf",
+                        title: downloadedPdf?.title ?? "Dummy title",
+                      ),
                     ),
-                  ),
-                );
+                  );
+                } else {
+                  log(
+                    "Opening pdf using cloudinary url: ${note?.cloudinaryUrl}",
+                  );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => PdfViewScreen(
+                        pdfId: note?.id ?? "dummy_id",
+                        isLocal: false,
+                        title: note?.title ?? "Dummy title",
+                        pathOrUrl:
+                            note?.cloudinaryUrl ??
+                            "https://res.cloudinary.com/demo/image/upload/sample.pdf",
+                      ),
+                    ),
+                  );
+                }
               },
               child: Container(
                 height: 170,
