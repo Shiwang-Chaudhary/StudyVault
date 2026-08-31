@@ -21,7 +21,7 @@ types:
         index: 5
   PdfHistoryModel:
     typeId: 1
-    nextIndex: 7
+    nextIndex: 8
     fields:
       pdfId:
         index: 0
@@ -37,3 +37,5 @@ types:
         index: 5
       isLocal:
         index: 6
+      userId:
+        index: 7

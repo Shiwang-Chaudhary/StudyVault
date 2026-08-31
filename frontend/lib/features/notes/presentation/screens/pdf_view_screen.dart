@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:study_vault/features/notes/data/models/pdf_history_model.dart';
 import 'package:study_vault/features/notes/data/pdf_history_data_source.dart';
+import 'package:study_vault/features/notes/providers/current_user_id_provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class PdfViewScreen extends ConsumerStatefulWidget {
@@ -37,8 +38,10 @@ class _PdfViewScreenState extends ConsumerState<PdfViewScreen> {
   }
 
   Future<void> saveHistory() async {
+    final userId = ref.read(currentUserIdProvider);
     final pdfHistory = PdfHistoryModel(
       title: widget.title ?? 'PDF',
+      userId: userId,
       pdfId: widget.pdfId,
       localPathOrUrl: widget.pathOrUrl,
       isLocal: widget.isLocal,
@@ -47,19 +50,23 @@ class _PdfViewScreenState extends ConsumerState<PdfViewScreen> {
       lastOpened: DateTime.now(),
     );
 
-    await ref.read(pdfHistoryDataSourceProvider).savePdfHistory(pdfHistory);
+    await ref
+        .read(pdfHistoryDataSourceProvider)
+        .savePdfHistory(pdfHistory, userId);
   }
 
   //Since flutter was not able to pop the screen when the pdf is loading,
   //I had to create a safe pop function that waits for the end of the frame before popping the screen.
   Future<void> _safePop() async {
     await saveHistory();
+    ref.invalidate(pdfHistoryDataSourceProvider);
     await SchedulerBinding.instance.endOfFrame;
     if (mounted) Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
+    final userId = ref.watch(currentUserIdProvider);
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, _) async {
@@ -84,9 +91,9 @@ class _PdfViewScreenState extends ConsumerState<PdfViewScreen> {
             ? SfPdfViewer.file(
                 File(widget.pathOrUrl),
                 onDocumentLoaded: (details) async {
-                  final history = await ref
+                  final history = ref
                       .read(pdfHistoryDataSourceProvider)
-                      .getPdfHistory(widget.pdfId);
+                      .getPdfHistory(widget.pdfId, userId);
                   log(
                     "Loaded PDF: ${widget.pdfId}, last page: ${history?.lastPage}",
                   );
@@ -108,7 +115,7 @@ class _PdfViewScreenState extends ConsumerState<PdfViewScreen> {
                 onDocumentLoaded: (details) async {
                   final history = await ref
                       .read(pdfHistoryDataSourceProvider)
-                      .getPdfHistory(widget.pdfId);
+                      .getPdfHistory(widget.pdfId, userId);
                   log(
                     "Loaded PDF: ${widget.pdfId}, last page: ${history?.lastPage}",
                   );

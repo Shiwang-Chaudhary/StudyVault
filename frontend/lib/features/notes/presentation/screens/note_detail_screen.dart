@@ -1,9 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:developer';
-
 import 'package:bounce/bounce.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:study_vault/core/config/app_colors.dart';
 import 'package:study_vault/core/config/app_font_size.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
@@ -15,6 +13,7 @@ import 'package:study_vault/features/notes/providers/bookmark_notifier.dart';
 import 'package:study_vault/features/notes/providers/current_user_id_provider.dart';
 import 'package:study_vault/features/notes/providers/isdownloaded_provider.dart';
 import 'package:study_vault/features/notes/providers/notes_download_notifier.dart';
+import 'package:study_vault/features/profile/presentation/screens/my_profile_screen.dart';
 import 'package:study_vault/features/profile/presentation/screens/uploader_profile_screen.dart';
 
 class NoteDetailScreen extends ConsumerWidget {
@@ -26,7 +25,7 @@ class NoteDetailScreen extends ConsumerWidget {
   Future<void> _downloadNote(BuildContext context, WidgetRef ref) async {
     if (note?.id == null) return;
     final currentUserId = ref.read(currentUserIdProvider);
-    final download = await ref
+    final download = ref
         .read(pdfLocalDataSourceProvider)
         .getPdfById(note!.id, currentUserId);
     if (download != null) {
@@ -249,12 +248,21 @@ class NoteDetailScreen extends ConsumerWidget {
             const SizedBox(height: 20),
             GestureDetector(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const UploaderProfileScreen(),
-                  ),
-                );
+                log("Uploader user name: ${note?.user.name}");
+                final loggedUserId = ref.read(currentUserIdProvider);
+                if (loggedUserId == note?.user.id) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("This is your profile")),
+                  );
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          UploaderProfileScreen(user: note!.user),
+                    ),
+                  );
+                }
               },
               child: Row(
                 children: [
@@ -273,7 +281,7 @@ class NoteDetailScreen extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
-                        text: "Shiwang Chaudhary",
+                        text: note!.user.name,
                         size: FontSizes.lg,
                         weight: FontWeight.w600,
                       ),

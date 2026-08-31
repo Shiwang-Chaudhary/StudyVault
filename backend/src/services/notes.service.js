@@ -70,10 +70,7 @@ const getNotes = async (
     }
     
     const notes = await Note.find(filter)
-        .populate(
-            "userId",
-            "name photoUrl college branch semester isVerified totalNotes"
-        )
+        .populate("userId")
         .sort(sortOptions[sort] || sortOptions.latest)
         .limit(PAGE_SIZE + 1);
 
@@ -101,10 +98,7 @@ const getMyNotes = async (userId, cursor) => {
         filter._id = {$lt: cursor};
     }
     const notes = await Note.find(filter)
-        .populate(
-            "userId",
-            "name photoUrl college branch semester isVerified totalNotes"
-        )
+        .populate("userId")
         .sort({_id: -1})
         .limit(PAGE_SIZE + 1);
 
@@ -127,10 +121,7 @@ const getMyNotes = async (userId, cursor) => {
 
 const getNoteById = async (noteId) => {
     return await Note.findById(noteId)
-        .populate(
-            "userId",
-            "name photoUrl college branch semester isVerified"
-        );
+        .populate("userId");
 };
 
 // ==================== DOWNLOAD NOTE ====================

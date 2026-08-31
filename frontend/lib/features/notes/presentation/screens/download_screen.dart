@@ -16,6 +16,7 @@ class DownloadScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userId = ref.watch(currentUserIdProvider);
     log('Current User ID inside download screen: $userId');
+
     final downloadedPdfs = ref.watch(downloadPdfStreamProvider(userId));
     return downloadedPdfs.when(
       loading: () {

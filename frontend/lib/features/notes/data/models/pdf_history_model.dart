@@ -1,5 +1,6 @@
 class PdfHistoryModel {
   final String title;
+  final String userId;
   final String pdfId;
   final String localPathOrUrl;
   final bool isLocal;
@@ -9,6 +10,7 @@ class PdfHistoryModel {
 
   PdfHistoryModel({
     required this.title,
+    required this.userId,
     required this.isLocal,
     required this.localPathOrUrl,
     required this.pdfId,
@@ -24,10 +26,12 @@ class PdfHistoryModel {
     bool? isLocal,
     String? localPathOrUrl,
     DateTime? lastOpened,
+    String? userId,
     String? title,
   }) {
     return PdfHistoryModel(
       title: title ?? this.title,
+      userId: userId ?? this.userId,
       lastOpened: lastOpened ?? this.lastOpened,
       lastPage: lastPage ?? this.lastPage,
       isLocal: isLocal ?? this.isLocal,

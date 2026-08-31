@@ -3,22 +3,21 @@ import 'package:bounce/bounce.dart';
 import 'package:flutter/material.dart';
 import 'package:study_vault/core/config/app_colors.dart';
 import 'package:study_vault/core/config/app_font_size.dart';
-import 'package:study_vault/core/storage/hive_providers.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/features/notes/data/pdf_history_data_source.dart';
-import 'package:study_vault/features/notes/presentation/screens/note_detail_screen.dart';
 import 'package:study_vault/features/notes/presentation/screens/pdf_view_screen.dart';
-import 'package:study_vault/features/notes/presentation/widgets/pdf_container.dart';
 import 'package:study_vault/features/notes/presentation/widgets/pdf_progress_card.dart';
+import 'package:study_vault/features/notes/providers/current_user_id_provider.dart';
 
 class RecentlyOpenedSection extends ConsumerWidget {
   const RecentlyOpenedSection({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final userId = ref.watch(currentUserIdProvider);
     final pdfHistory = ref
         .watch(pdfHistoryDataSourceProvider)
-        .getAllPdfHistory();
+        .getAllPdfHistory(userId);
     return Column(
       children: [
         Row(
@@ -62,18 +61,18 @@ class RecentlyOpenedSection extends ConsumerWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => PdfViewScreen(
-                          isLocal: pdf?.isLocal ?? false,
-                          pathOrUrl: pdf?.localPathOrUrl ?? '',
-                          pdfId: pdf?.pdfId ?? '',
-                          title: pdf?.title,
+                          isLocal: pdf.isLocal,
+                          pathOrUrl: pdf.localPathOrUrl,
+                          pdfId: pdf.pdfId,
+                          title: pdf.title,
                         ),
                       ),
                     );
                   },
                   child: PdfProgressCard(
-                    title: pdf?.title ?? "Untitled PDF",
-                    currentPage: pdf?.lastPage ?? 0,
-                    totalPages: pdf?.totalPages ?? 20,
+                    title: pdf.title,
+                    currentPage: pdf.lastPage,
+                    totalPages: pdf.totalPages,
                   ),
                 );
               }),

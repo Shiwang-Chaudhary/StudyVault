@@ -67,6 +67,7 @@ class PdfHistoryModelAdapter extends TypeAdapter<PdfHistoryModel> {
     };
     return PdfHistoryModel(
       title: fields[4] as String,
+      userId: fields[7] as String,
       isLocal: fields[6] as bool,
       localPathOrUrl: fields[5] as String,
       pdfId: fields[0] as String,
@@ -79,7 +80,7 @@ class PdfHistoryModelAdapter extends TypeAdapter<PdfHistoryModel> {
   @override
   void write(BinaryWriter writer, PdfHistoryModel obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.pdfId)
       ..writeByte(1)
@@ -93,7 +94,9 @@ class PdfHistoryModelAdapter extends TypeAdapter<PdfHistoryModel> {
       ..writeByte(5)
       ..write(obj.localPathOrUrl)
       ..writeByte(6)
-      ..write(obj.isLocal);
+      ..write(obj.isLocal)
+      ..writeByte(7)
+      ..write(obj.userId);
   }
 
   @override
