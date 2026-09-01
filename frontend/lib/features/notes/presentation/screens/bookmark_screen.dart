@@ -1,13 +1,11 @@
 import 'dart:developer';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:study_vault/core/config/app_colors.dart';
 import 'package:study_vault/core/config/app_font_size.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
-import 'package:study_vault/features/notes/presentation/screens/pdf_view_screen.dart';
+import 'package:study_vault/features/notes/presentation/screens/note_detail_screen.dart';
 import 'package:study_vault/features/notes/presentation/widgets/bookmark_pdf_container.dart';
-import 'package:study_vault/features/notes/presentation/widgets/downloaded_item_container.dart';
 import 'package:study_vault/features/notes/providers/bookmark_notifier.dart';
 
 class BookmarkScreen extends ConsumerWidget {
@@ -63,15 +61,21 @@ class BookmarkScreen extends ConsumerWidget {
                       return GestureDetector(
                         onTap: () {
                           log("pdf cloudinary url: ${pdf.cloudinaryUrl}");
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (_) => PdfViewScreen(
+                          //       pdfId: pdf.id,
+                          //       isLocal: false,
+                          //       pathOrUrl: pdf.cloudinaryUrl,
+                          //       title: pdf.title,
+                          //     ),
+                          //   ),
+                          // );
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => PdfViewScreen(
-                                pdfId: pdf.id,
-                                isLocal: false,
-                                pathOrUrl: pdf.cloudinaryUrl,
-                                title: pdf.title,
-                              ),
+                              builder: (_) => NoteDetailScreen(note: pdf),
                             ),
                           );
                         },

@@ -2,6 +2,7 @@ const { uploadToCloudinary, deletePdf } = require("../services/cloudinary_upload
 const Note = require("../models/notes.model");
 const User = require("../models/user.model");
 const Bookmark = require("../models/bookmark.model");
+const Rating = require("../models/rating.model");
 const PAGE_SIZE = 10;
 
 // ==================== CREATE NOTE ====================
@@ -174,6 +175,36 @@ const deleteBookmark = async(noteId, userId) => {
     );
     return bookmark;
 }
+// ==================== RATE NOTE ====================
+
+const rateNote = async(noteId, userId, rating) => {
+    const note = await Note.findById(noteId);
+    if(!note){
+        return null;
+    }
+    await Rating.findOneAndUpdate(
+        {note: noteId, user: userId},
+        {value},
+        {upsert: true, new: true, setDefaultsOnInsert: true}
+    );
+
+    const stats = await Rating.aggregate([
+        {$match: {note: noteId}},
+        {
+            $group: {
+                _id : "$note",
+                avgRating: {$avg: "$value"},
+                ratingCount: {$sum: 1}
+            }
+        }
+    ]);
+    //stats returns an array with one object containing avgRating and ratingCount
+    const {avgRating, ratingCount} = stats[0];
+    note.avgRating = Math.round(avgRating * 10) / 10; // round to 1 decimal place
+    note.ratingCount = ratingCount;
+    await note.save();
+    return note;
+}
 
 // ==================== UPDATE NOTE ====================
 
@@ -213,5 +244,6 @@ module.exports = {
     downloadNote,
     bookmarkNote,
     deleteBookmark,
-    getBookmarks
+    getBookmarks,
+    rateNote
 };

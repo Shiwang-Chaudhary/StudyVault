@@ -89,6 +89,20 @@ const deleteBookmark = asyncHandler(async(req,res) => {
     return successResponse(res, 200, {message: "Bookmark deleted successfully"});
 });
 
+const rateNote = asyncHandler(async(req, res)=>{
+    const noteId = req.params.noteId;
+    const userId = req.user._id;
+    const {value} = req.body;
+     if (!value || value < 1 || value > 5) {
+        throw new ApiError(400, "Rating value must be between 1 and 5");
+    }
+    const ratedNote = await noteService.rateNote(noteId, userId, value);
+    if(!ratedNote){
+        throw new ApiError(404, "Note not found");
+    }
+    return successResponse(res, 200)
+})
+
 const updateNote = asyncHandler(async(req,res) =>{
     const noteId = req.params.id;
     const userId = req.user._id;
@@ -115,4 +129,4 @@ const deleteNote = asyncHandler(async(req,res) =>{
     return successResponse(res, 200, {message: "Note deleted successfully"});
     });
 
-module.exports = { uploadNote, listNotes, getMyNotes, getNoteById, updateNote, deleteNote, downloadNote, bookmarkNote, getBookmarks, deleteBookmark };
+module.exports = { uploadNote, listNotes, getMyNotes, getNoteById, updateNote, deleteNote, downloadNote, bookmarkNote, getBookmarks, deleteBookmark, rateNote };

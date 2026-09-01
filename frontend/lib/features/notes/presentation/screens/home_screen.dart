@@ -147,6 +147,7 @@ class HomeScreen extends StatelessWidget {
             ),
             SizedBox(height: 10),
             RecentlyOpenedSection(),
+            SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -154,7 +155,7 @@ class HomeScreen extends StatelessWidget {
                   text: "Trending",
                   size: FontSizes.xl,
                   weight: FontWeight.w600,
-                  // color: AppColors.info,
+                  color: AppColors.accentTeal,
                 ),
                 CustomText(
                   text: "See All",
@@ -165,22 +166,33 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 10),
-            Column(
-              children: List.generate(
-                3,
-                (_) => Bounce(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const NoteDetailScreen(),
-                      ),
-                    );
-                  },
-                  child: const PdfContainer(),
+            SizedBox(
+              height: 100,
+              child: Center(
+                child: CustomText(
+                  text: "No recommended PDFs for you",
+                  size: FontSizes.md,
+                  weight: FontWeight.w400,
+                  color: AppColors.textSecondary,
                 ),
               ),
             ),
+            // Column(
+            //   children: List.generate(
+            //     3,
+            //     (_) => Bounce(
+            //       onTap: () {
+            //         Navigator.push(
+            //           context,
+            //           MaterialPageRoute(
+            //             builder: (context) => const NoteDetailScreen(),
+            //           ),
+            //         );
+            //       },
+            //       child: const PdfContainer(),
+            //     ),
+            //   ),
+            // ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -188,6 +200,7 @@ class HomeScreen extends StatelessWidget {
                   text: "Recommended for you",
                   size: FontSizes.xl,
                   weight: FontWeight.w600,
+                  color: AppColors.accentAmber,
                 ),
                 CustomText(
                   text: "See All",
@@ -198,19 +211,30 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 10),
-            Column(
-              children: List.generate(
-                3,
-                (_) => Bounce(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const NoteDetailScreen(),
-                      ),
-                    );
-                  },
-                  child: const PdfContainer(),
+            // Column(
+            //   children: List.generate(
+            //     3,
+            //     (_) => Bounce(
+            //       onTap: () {
+            //         Navigator.push(
+            //           context,
+            //           MaterialPageRoute(
+            //             builder: (context) => const NoteDetailScreen(),
+            //           ),
+            //         );
+            //       },
+            //       child: const PdfContainer(),
+            //     ),
+            //   ),
+            // ),
+            SizedBox(
+              height: 100,
+              child: Center(
+                child: CustomText(
+                  text: "No recommended PDFs for you",
+                  size: FontSizes.md,
+                  weight: FontWeight.w400,
+                  color: AppColors.textSecondary,
                 ),
               ),
             ),
