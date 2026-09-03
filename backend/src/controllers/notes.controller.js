@@ -43,7 +43,7 @@ const getMyNotes = asyncHandler(async(req,res) => {
 });
 
 const getNoteById = asyncHandler(async(req,res) => {
-    const noteId = req.params.id;
+    const noteId = req.params.noteId;
     const note = await noteService.getNoteById(noteId);
     if(!note){
         throw new ApiError(404, "Note not found");
@@ -52,7 +52,7 @@ const getNoteById = asyncHandler(async(req,res) => {
 });
 
 const downloadNote = asyncHandler(async(req,res) => {
-    const noteId = req.params.id;
+    const noteId = req.params.noteId;
     const {note, downloadUrl} = await noteService.downloadNote(noteId);
      if(!note){
         throw new ApiError(404, "Note not found");
@@ -91,7 +91,9 @@ const deleteBookmark = asyncHandler(async(req,res) => {
 
 const rateNote = asyncHandler(async(req, res)=>{
     const noteId = req.params.noteId;
-    const userId = req.user._id;
+    // const userId = req.user._id;
+    // const userId = "6a6ef0ada2d4366d71437583"; //Shiwang909
+    const userId = "6a942d8247f7d4e6945a788b"; //YoutuberSingh
     const {value} = req.body;
      if (!value || value < 1 || value > 5) {
         throw new ApiError(400, "Rating value must be between 1 and 5");
@@ -100,11 +102,18 @@ const rateNote = asyncHandler(async(req, res)=>{
     if(!ratedNote){
         throw new ApiError(404, "Note not found");
     }
-    return successResponse(res, 200)
+    return successResponse(res, 200, ratedNote);
 })
 
+const getNoteRatings = asyncHandler(async(req, res) => {
+    const noteId = req.params.noteId;
+    const {cursor} = req.query;
+    const ratings = await noteService.getNoteRatings(noteId, cursor);
+    return successResponse(res, 200, ratings);
+});
+
 const updateNote = asyncHandler(async(req,res) =>{
-    const noteId = req.params.id;
+    const noteId = req.params.noteId;
     const userId = req.user._id;
     const note = await noteService.updateNote(noteId, userId, req.body);
     if(!note){
@@ -117,7 +126,7 @@ const updateNote = asyncHandler(async(req,res) =>{
 });
 
 const deleteNote = asyncHandler(async(req,res) =>{
-    const noteId = req.params.id;
+    const noteId = req.params.noteId;
     const userId = req.user._id;
     const note = await noteService.deleteNote(noteId, userId);
     if(!note){
@@ -129,4 +138,4 @@ const deleteNote = asyncHandler(async(req,res) =>{
     return successResponse(res, 200, {message: "Note deleted successfully"});
     });
 
-module.exports = { uploadNote, listNotes, getMyNotes, getNoteById, updateNote, deleteNote, downloadNote, bookmarkNote, getBookmarks, deleteBookmark, rateNote };
+module.exports = { uploadNote, listNotes, getMyNotes, getNoteById, updateNote, deleteNote, downloadNote, bookmarkNote, getBookmarks, deleteBookmark, rateNote, getNoteRatings };

@@ -13,40 +13,29 @@ const {
   downloadNote,
   bookmarkNote,
   getBookmarks,
-  deleteBookmark
+  deleteBookmark,
+  rateNote,
+  getNoteRatings,
 } = require("../../controllers/notes.controller");
 
-// POST /api/notes
-// Upload a new note
+//POST
 router.post("/", authMiddleware, upload.single("pdf"), uploadNote);
 router.post("/:noteId/bookmark", authMiddleware, bookmarkNote);
-// GET /api/notes
-// Examples:
-// GET /api/notes
-// GET /api/notes?search=flutter
-// GET /api/notes?subject=DBMS
-// GET /api/notes?college=ABC
-// GET /api/notes?semester=5
-// GET /api/notes?sort=latest
-router.get("/", authMiddleware, listNotes);
+router.post("/:noteId/ratings", rateNote);
 
-// GET /api/notes/my
-// Get logged-in user's uploaded notes
+//GET
+router.get("/", authMiddleware, listNotes);
 router.get("/my", authMiddleware, getMyNotes);
 router.get("/my/bookmarks", authMiddleware, getBookmarks);
+router.get("/:noteId",authMiddleware, getNoteById);
+router.get("/:noteId/download", authMiddleware, downloadNote);
+router.get("/:noteId/ratings", getNoteRatings);
+
+//PATCH
+router.patch("/:noteId", authMiddleware, updateNote);
+
+//DELETE
 router.delete("/:noteId/bookmark", authMiddleware, deleteBookmark);
-
-// GET /api/notes/:id
-// Get a single note
-router.get("/:id",authMiddleware, getNoteById);
-router.get("/:id/download", authMiddleware, downloadNote);
-
-// PATCH /api/notes/:id
-// Update note details
-router.patch("/:id", authMiddleware, updateNote);
-
-// DELETE /api/notes/:id
-// Delete a note
-router.delete("/:id", authMiddleware, deleteNote);
+router.delete("/:noteId", authMiddleware, deleteNote);
 
 module.exports = router;

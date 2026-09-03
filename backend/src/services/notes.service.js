@@ -4,6 +4,7 @@ const User = require("../models/user.model");
 const Bookmark = require("../models/bookmark.model");
 const Rating = require("../models/rating.model");
 const PAGE_SIZE = 10;
+const mongoose = require("mongoose");
 
 // ==================== CREATE NOTE ====================
 
@@ -177,7 +178,7 @@ const deleteBookmark = async(noteId, userId) => {
 }
 // ==================== RATE NOTE ====================
 
-const rateNote = async(noteId, userId, rating) => {
+const rateNote = async(noteId, userId, value) => {
     const note = await Note.findById(noteId);
     if(!note){
         return null;
@@ -189,7 +190,7 @@ const rateNote = async(noteId, userId, rating) => {
     );
 
     const stats = await Rating.aggregate([
-        {$match: {note: noteId}},
+        {$match: {note: new mongoose.Types.ObjectId(noteId)}},
         {
             $group: {
                 _id : "$note",
@@ -199,11 +200,35 @@ const rateNote = async(noteId, userId, rating) => {
         }
     ]);
     //stats returns an array with one object containing avgRating and ratingCount
-    const {avgRating, ratingCount} = stats[0];
+    const {avgRating = 0, ratingCount = 0} = stats[0];
     note.avgRating = Math.round(avgRating * 10) / 10; // round to 1 decimal place
     note.ratingCount = ratingCount;
     await note.save();
     return note;
+}
+
+const getNoteRatings = async(noteId, cursor)=> {
+    const filters = {note: noteId};
+    const note = await Note.findById(noteId)
+        .select("avgRating ratingCount");    
+        if(cursor){
+            filters._id = {
+                $lt: cursor
+            };
+        }
+    const ratings = await Rating.find(filters)
+                    .populate("user", "name profilePic")
+                    .sort({_id: -1})
+                    .limit(PAGE_SIZE + 1);
+    let hasMore = false;
+    let nextCursor = null;
+    if(ratings.length > PAGE_SIZE){
+        hasMore = true;
+        ratings.pop();
+        nextCursor = ratings[ratings.length - 1]._id;
+    }
+    return {
+        avgRating: note.avgRating, ratingCount: note.ratingCount,  ratings, hasMore, nextCursor};
 }
 
 // ==================== UPDATE NOTE ====================
@@ -245,5 +270,6 @@ module.exports = {
     bookmarkNote,
     deleteBookmark,
     getBookmarks,
-    rateNote
+    rateNote,
+    getNoteRatings
 };
