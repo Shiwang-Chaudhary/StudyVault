@@ -91,9 +91,9 @@ const deleteBookmark = asyncHandler(async(req,res) => {
 
 const rateNote = asyncHandler(async(req, res)=>{
     const noteId = req.params.noteId;
-    // const userId = req.user._id;
+    const userId = req.user._id;
     // const userId = "6a6ef0ada2d4366d71437583"; //Shiwang909
-    const userId = "6a942d8247f7d4e6945a788b"; //YoutuberSingh
+    // const userId = "6a942d8247f7d4e6945a788b"; //YoutuberSingh
     const {value} = req.body;
      if (!value || value < 1 || value > 5) {
         throw new ApiError(400, "Rating value must be between 1 and 5");
