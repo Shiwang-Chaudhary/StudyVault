@@ -55,6 +55,7 @@ dependencies:
   path_provider: ^2.1.5
   hive_ce: ^2.19.3
   hive_ce_flutter: ^2.3.4
+  flutter_rating_bar: ^4.0.1
 
 dev_dependencies:
   flutter_test:

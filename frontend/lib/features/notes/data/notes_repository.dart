@@ -7,6 +7,7 @@ import 'package:study_vault/core/constans/api_constants.dart';
 import 'package:study_vault/features/auth/data/auth_repository.dart';
 import 'package:study_vault/features/notes/data/models/notes_model.dart';
 import 'package:study_vault/features/notes/data/models/notes_response_model.dart';
+import 'package:study_vault/features/notes/data/models/rating_data_model.dart';
 
 class NotesRepository {
   final Dio dio;
@@ -134,6 +135,43 @@ class NotesRepository {
     } catch (e) {
       log("Failed to delete bookmark: $e");
       throw Exception("Faild to delete bookmark: $e");
+    }
+  }
+
+  Future<void> rateNote(String noteId, double rating) async {
+    try {
+      final token = await auth.getIdToken;
+      final response = await dio.post(
+        ApiConstants.rateNote(noteId),
+        data: {"value": rating},
+        options: Options(headers: {"Authorization": "Bearer $token"}),
+      );
+      log("Rate note response: ${response.data}");
+    } catch (e) {
+      log("Failed to rate note: $e");
+      throw Exception("Failed to rate note: $e");
+    }
+  }
+
+  Future<RatingData> fetchRatings(String noteId, [String? nextCursor]) async {
+    try {
+      final token = await auth.getIdToken;
+      final response = await dio.get(
+        ApiConstants.fetchRatings(noteId),
+        queryParameters: {if (nextCursor != null) "cursor": nextCursor},
+        options: Options(headers: {"Authorization": "Bearer $token"}),
+      );
+      final data = RatingData.fromJson(response.data["data"]);
+      // for (final rating in data.ratings) {
+      //   log("Inside notesRepo:");
+      //   log("USER: ${rating.userName}, VALUE: ${rating.value}");
+      // }
+      return data;
+    } catch (e, stackTrace) {
+      log("Failed to fetch ratings: $e");
+      log("STACK TRACE:");
+      log("$stackTrace");
+      throw Exception("Failed to fetch ratings: $e");
     }
   }
 }

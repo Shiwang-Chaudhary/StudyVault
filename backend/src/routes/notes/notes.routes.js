@@ -21,7 +21,7 @@ const {
 //POST
 router.post("/", authMiddleware, upload.single("pdf"), uploadNote);
 router.post("/:noteId/bookmark", authMiddleware, bookmarkNote);
-router.post("/:noteId/ratings",authMiddleware, rateNote);
+router.post("/:noteId/rating", authMiddleware, rateNote);
 
 //GET
 router.get("/", authMiddleware, listNotes);
@@ -29,7 +29,7 @@ router.get("/my", authMiddleware, getMyNotes);
 router.get("/my/bookmarks", authMiddleware, getBookmarks);
 router.get("/:noteId",authMiddleware, getNoteById);
 router.get("/:noteId/download", authMiddleware, downloadNote);
-router.get("/:noteId/ratings",authMiddleware, getNoteRatings);
+router.get("/:noteId/ratings", getNoteRatings);
 
 //PATCH
 router.patch("/:noteId", authMiddleware, updateNote);

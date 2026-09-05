@@ -84,7 +84,7 @@ class PdfContainer extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       CustomText(
-                        text: note?.ratingCount.toString() ?? rating,
+                        text: note?.avgRating.toString() ?? rating,
                         size: FontSizes.sm,
                         weight: FontWeight.w600,
                         color: AppColors.textSecondary,

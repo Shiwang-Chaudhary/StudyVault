@@ -1,3 +1,4 @@
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:developer';
 import 'package:bounce/bounce.dart';
@@ -9,6 +10,7 @@ import 'package:study_vault/features/notes/data/models/local_pdf_model.dart';
 import 'package:study_vault/features/notes/data/models/notes_model.dart';
 import 'package:study_vault/features/notes/data/pdf_local_data_source.dart';
 import 'package:study_vault/features/notes/presentation/screens/pdf_view_screen.dart';
+import 'package:study_vault/features/notes/presentation/widgets/rating_section.dart';
 import 'package:study_vault/features/notes/providers/bookmark_notifier.dart';
 import 'package:study_vault/features/notes/providers/current_user_id_provider.dart';
 import 'package:study_vault/features/notes/providers/isdownloaded_provider.dart';
@@ -88,7 +90,7 @@ class NoteDetailScreen extends ConsumerWidget {
       "Downloads":
           downloadNote.value?.downloadCount.toString() ??
           note?.downloadCount.toString(),
-      "Rating": note?.ratingCount.toString() ?? "0.0",
+      "Rating": note?.avgRating.toString() ?? "0.0",
       "Likes": note?.likeCount.toString() ?? "0",
     };
     final items = containerData.entries.toList();
@@ -398,63 +400,7 @@ class NoteDetailScreen extends ConsumerWidget {
               ),
             ),
             Divider(color: AppColors.border, height: 40, thickness: 1),
-            CustomText(
-              text: "Rate this note",
-              size: FontSizes.xxl,
-              weight: FontWeight.bold,
-              color: AppColors.textPrimary,
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.star_border_outlined,
-                color: AppColors.textTertiary,
-                size: 36,
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(
-                  text: "Reviews",
-                  size: FontSizes.xxl,
-                  weight: FontWeight.bold,
-                  color: AppColors.textPrimary,
-                ),
-                TextButton(
-                  onPressed: () {},
-                  child: CustomText(text: "See all", color: AppColors.primary),
-                ),
-              ],
-            ),
-            Column(
-              children: List.generate(
-                2,
-                (index) => Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Row(
-                    children: [
-                      CustomText(
-                        text: "Name ${index + 1}",
-                        size: FontSizes.lg,
-                        color: AppColors.textPrimary,
-                      ),
-                      const SizedBox(width: 10),
-                      Row(
-                        children: List.generate(
-                          5,
-                          (i) => Icon(
-                            Icons.star,
-                            color: AppColors.accentAmber,
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            Expanded(child: RatingSection(noteId: note?.id ?? "dummy_id")),
           ],
         ),
       ),
