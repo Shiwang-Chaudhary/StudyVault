@@ -7,6 +7,7 @@ import 'package:study_vault/core/config/app_colors.dart';
 import 'package:study_vault/core/config/app_font_size.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/features/notes/presentation/widgets/see_all_reviews.dart';
+import 'package:study_vault/features/notes/providers/current_user_id_provider.dart';
 import 'package:study_vault/features/notes/providers/rating_notifier.dart';
 import 'package:study_vault/features/notes/providers/select_rating_provider.dart';
 
@@ -23,13 +24,13 @@ class _RatingSectionState extends ConsumerState<RatingSection> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      ref.read(ratingProvider.notifier).fetchRatings(widget.noteId);
+      ref.read(ratingProvider(widget.noteId).notifier).fetchMoreRatings();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final rating = ref.watch(ratingProvider);
+    final rating = ref.watch(ratingProvider(widget.noteId));
     final selectedRating = ref.watch(selectRatingProvider);
     return rating.when(
       error: (error, stackTrace) {
@@ -57,15 +58,20 @@ class _RatingSectionState extends ConsumerState<RatingSection> {
         );
       },
       data: (ratingData) {
+        final hasAlreadyRated = ratingData.ratings.any(
+          (e) => e.userId == ref.read(currentUserIdProvider),
+        );
         return Column(
           children: [
-            CustomText(
-              text: "Rate this note",
-              size: FontSizes.xxl,
-              weight: FontWeight.bold,
-              color: AppColors.textPrimary,
-            ),
             SizedBox(height: 10),
+            hasAlreadyRated
+                ? CustomText(text: "You already rated this note, Rate again?")
+                : CustomText(
+                    text: "Rate this note",
+                    size: FontSizes.xxl,
+                    weight: FontWeight.bold,
+                    color: AppColors.textPrimary,
+                  ),
             Row(
               children: [
                 RatingBar.builder(
@@ -77,7 +83,7 @@ class _RatingSectionState extends ConsumerState<RatingSection> {
                   itemCount: 5,
                   itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
                   itemBuilder: (context, _) =>
-                      Icon(Icons.star, color: Colors.amber),
+                      Icon(Icons.star_outline_rounded, color: Colors.amber),
                   onRatingUpdate: (rating) async {
                     log("rating: $rating");
                     ref.read(selectRatingProvider.notifier).state = rating;
@@ -101,8 +107,8 @@ class _RatingSectionState extends ConsumerState<RatingSection> {
                     }
                     log("Selected rating: $selectedRating");
                     ref
-                        .read(ratingProvider.notifier)
-                        .rateNote(widget.noteId, selectedRating);
+                        .read(ratingProvider(widget.noteId).notifier)
+                        .rateNote(selectedRating);
                   },
                   child: CustomText(
                     text: "Submit",

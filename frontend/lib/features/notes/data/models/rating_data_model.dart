@@ -6,14 +6,34 @@ class RatingData {
   final List<Rating> ratings;
   final bool hasMore;
   final String? nextCursor;
+  //NOT IN BACKEND RESPONSE:
+  final bool isLoadingMore;
 
   RatingData({
     required this.avgRating,
     required this.ratingCount,
     required this.ratings,
     required this.hasMore,
+    required this.isLoadingMore,
     this.nextCursor,
   });
+
+  RatingData copyWith({
+    double? avgRating,
+    int? ratingCount,
+    List<Rating>? ratings,
+    bool? hasMore,
+    String? nextCursor,
+    bool? isLoadingMore,
+  }) {
+    return RatingData(
+      avgRating: avgRating ?? this.avgRating,
+      ratingCount: ratingCount ?? this.ratingCount,
+      ratings: ratings ?? this.ratings,
+      hasMore: hasMore ?? this.hasMore,
+      isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+    );
+  }
 
   factory RatingData.fromJson(Map<String, dynamic> json) {
     return RatingData(
@@ -24,6 +44,7 @@ class RatingData {
           .toList(),
       hasMore: json['hasMore'] ?? false,
       nextCursor: json['nextCursor'],
+      isLoadingMore: false,
     );
   }
 
@@ -34,6 +55,7 @@ class RatingData {
       'ratings': ratings.map((e) => e.toJson()).toList(),
       'hasMore': hasMore,
       'nextCursor': nextCursor,
+      'isLoadingMore': isLoadingMore,
     };
   }
 }

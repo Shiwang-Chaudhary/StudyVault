@@ -231,6 +231,34 @@ const getNoteRatings = async(noteId, cursor)=> {
         avgRating: note.avgRating, ratingCount: note.ratingCount,  ratings, hasMore, nextCursor};
 }
 
+    const deleteRating = async(noteId, userId) => {
+        const rating = await Rating.findOneAndDelete({note: noteId, user: userId});
+        if(!rating){
+            return null;
+        }
+        const stats = await Rating.aggregate([
+            {$match: {note: new mongoose.Types.ObjectId(noteId)}},
+            {
+                $group: {
+                    _id : "$note",
+                    avgRating: {$avg: "$value"},
+                    ratingCount: {$sum: 1}
+                }
+            }
+        ]);
+        const note = await Note.findById(noteId);
+        if(stats.length > 0){
+            const {avgRating = 0, ratingCount = 0} = stats[0];
+            note.avgRating = Math.round(avgRating * 10) / 10; // round to 1 decimal place
+            note.ratingCount = ratingCount;
+        } else {
+            note.avgRating = 0;
+            note.ratingCount = 0;
+        }
+        await note.save();
+        return rating;
+    }
+
 // ==================== UPDATE NOTE ====================
 
 const updateNote = async (noteId, userId, updateData) => {
