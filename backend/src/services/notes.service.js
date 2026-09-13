@@ -183,6 +183,9 @@ const rateNote = async(noteId, userId, value) => {
     if(!note){
         return null;
     }
+    if (note.userId.equals(userId)) {
+        return null;
+    }
     await Rating.findOneAndUpdate(
         {note: noteId, user: userId},
         {value},
@@ -200,10 +203,36 @@ const rateNote = async(noteId, userId, value) => {
         }
     ]);
     //stats returns an array with one object containing avgRating and ratingCount
-    const {avgRating = 0, ratingCount = 0} = stats[0];
+    const {avgRating = 0, ratingCount = 0} = stats[0] ?? {};
     note.avgRating = Math.round(avgRating * 10) / 10; // round to 1 decimal place
     note.ratingCount = ratingCount;
     await note.save();
+
+    //Update user totalRatings and avgRating
+    const ownerId = note.userId;
+    const userStats = await Note.aggregate([
+        {$match: {userId: new mongoose.Types.ObjectId(ownerId)}},
+        {
+            $group:{
+                _id: null,
+                totalRatingValue: {
+                    $sum: {
+                        $multiply: ['$avgRating', '$ratingCount']
+                    }
+                },
+                totalCountValue: {
+                    $sum: '$ratingCount'
+                }
+            }
+        }
+    ])
+    const {totalRatingValue = 0, totalCountValue = 0} = userStats[0] ?? {};
+    const userAvgRating = totalCountValue > 0 ? totalRatingValue/totalCountValue : 0;
+    const updatedUser = await User.findByIdAndUpdate(
+        {_id: ownerId},
+        {avgRating: userAvgRating},
+        {new: true}
+    );
     return note;
 }
 

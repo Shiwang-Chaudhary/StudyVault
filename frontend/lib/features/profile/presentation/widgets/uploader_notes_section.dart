@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:study_vault/core/config/app_font_size.dart';
@@ -22,6 +24,9 @@ class UploaderNotesSection extends ConsumerWidget {
       error: (error, stackTrace) =>
           Center(child: CustomText(text: error.toString())),
       data: (notesResponse) {
+        log(
+          "UploaderNotesSection: Fetched ${notesResponse.notes.length} notes for userId: $userId",
+        );
         final notes = notesResponse.notes;
         return Column(
           children: [

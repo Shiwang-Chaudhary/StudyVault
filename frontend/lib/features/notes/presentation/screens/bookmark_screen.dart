@@ -75,7 +75,10 @@ class BookmarkScreen extends ConsumerWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => NoteDetailScreen(note: pdf),
+                              builder: (_) => NoteDetailScreen(
+                                note: pdf,
+                                totalNotes: pdfList.length,
+                              ),
                             ),
                           );
                         },

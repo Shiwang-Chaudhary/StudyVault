@@ -13,7 +13,8 @@ import 'package:study_vault/features/notes/providers/select_rating_provider.dart
 
 class RatingSection extends ConsumerStatefulWidget {
   final String noteId;
-  const RatingSection({super.key, required this.noteId});
+  final String ownerId;
+  const RatingSection({super.key, required this.noteId, required this.ownerId});
 
   @override
   ConsumerState<RatingSection> createState() => _RatingSectionState();
@@ -61,63 +62,82 @@ class _RatingSectionState extends ConsumerState<RatingSection> {
         final hasAlreadyRated = ratingData.ratings.any(
           (e) => e.userId == ref.read(currentUserIdProvider),
         );
+        final bool sameUser = widget.ownerId == ref.read(currentUserIdProvider);
+        log("Same user: $sameUser, Has already rated: $hasAlreadyRated");
+        log(
+          "CurrentUserId: ${ref.read(currentUserIdProvider)}, OwnerId: ${widget.ownerId}",
+        );
         return Column(
           children: [
             SizedBox(height: 10),
-            hasAlreadyRated
-                ? CustomText(text: "You already rated this note, Rate again?")
-                : CustomText(
-                    text: "Rate this note",
-                    size: FontSizes.xxl,
-                    weight: FontWeight.bold,
-                    color: AppColors.textPrimary,
-                  ),
-            Row(
-              children: [
-                RatingBar.builder(
-                  glow: true,
-                  initialRating: 0,
-                  minRating: 1,
-                  direction: Axis.horizontal,
-                  allowHalfRating: true,
-                  itemCount: 5,
-                  itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                  itemBuilder: (context, _) =>
-                      Icon(Icons.star_outline_rounded, color: Colors.amber),
-                  onRatingUpdate: (rating) async {
-                    log("rating: $rating");
-                    ref.read(selectRatingProvider.notifier).state = rating;
-                  },
-                ),
-                Spacer(),
-                TextButton(
-                  onPressed: () {
-                    if (selectedRating == 0.0) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: CustomText(
-                            text: "Please select a rating before submitting.",
-                            color: AppColors.error,
-                            size: FontSizes.md,
+            sameUser
+                ? SizedBox.shrink()
+                : Column(
+                    children: [
+                      hasAlreadyRated
+                          ? CustomText(
+                              text: "You already rated this note, Rate again?",
+                            )
+                          : CustomText(
+                              text: "Rate this note",
+                              size: FontSizes.xxl,
+                              weight: FontWeight.bold,
+                              color: AppColors.textPrimary,
+                            ),
+                      Row(
+                        children: [
+                          RatingBar.builder(
+                            glow: true,
+                            initialRating: 0,
+                            minRating: 1,
+                            direction: Axis.horizontal,
+                            allowHalfRating: true,
+                            itemCount: 5,
+                            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                            itemBuilder: (context, _) => Icon(
+                              Icons.star_outline_rounded,
+                              color: Colors.amber,
+                            ),
+                            onRatingUpdate: (rating) async {
+                              log("rating: $rating");
+                              ref.read(selectRatingProvider.notifier).state =
+                                  rating;
+                            },
                           ),
-                          backgroundColor: AppColors.background,
-                        ),
-                      );
-                      return;
-                    }
-                    log("Selected rating: $selectedRating");
-                    ref
-                        .read(ratingProvider(widget.noteId).notifier)
-                        .rateNote(selectedRating);
-                  },
-                  child: CustomText(
-                    text: "Submit",
-                    color: AppColors.primary,
-                    size: FontSizes.lg,
+                          Spacer(),
+                          TextButton(
+                            onPressed: () {
+                              if (selectedRating == 0.0) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: CustomText(
+                                      text:
+                                          "Please select a rating before submitting.",
+                                      color: AppColors.error,
+                                      size: FontSizes.md,
+                                    ),
+                                    backgroundColor: AppColors.background,
+                                  ),
+                                );
+                                return;
+                              }
+                              log("Selected rating: $selectedRating");
+                              ref
+                                  .read(ratingProvider(widget.noteId).notifier)
+                                  .rateNote(selectedRating);
+                            },
+                            child: CustomText(
+                              text: "Submit",
+                              color: AppColors.primary,
+                              size: FontSizes.lg,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
+
+            ////////////
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -147,6 +167,13 @@ class _RatingSectionState extends ConsumerState<RatingSection> {
                 ),
               ],
             ),
+            ratingData.ratings.isEmpty
+                ? CustomText(
+                    text: "No reviews yet.",
+                    size: FontSizes.lg,
+                    color: AppColors.textSecondary,
+                  )
+                : SizedBox.shrink(),
             Column(
               children: List.generate(
                 ratingData.ratings.length,

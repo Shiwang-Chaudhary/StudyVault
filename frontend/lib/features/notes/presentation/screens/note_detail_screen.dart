@@ -344,39 +344,6 @@ class NoteDetailScreen extends ConsumerWidget {
                   ? null
                   : () async {
                       await _downloadNote(context, ref);
-                      // if (note?.id == null) return;
-                      // final result = await ref
-                      //     .read(noteDownloadProvider.notifier)
-                      //     .downloadNote(note!.id);
-                      // final file = result?.file;
-                      // if (file != null) {
-                      //   final pdfDoc = LocalPdfModel(
-                      //     id: note!.id,
-                      //     title: note!.title,
-                      //     localPath: file.path,
-                      //     downloadedAt: DateTime.now(),
-                      //     fileSize: (await file.length()).toString(),
-                      //   );
-                      //   await ref
-                      //       .read(pdfLocalDataSourceProvider)
-                      //       .savePdf(pdfDoc);
-                      //   ScaffoldMessenger.of(context).showSnackBar(
-                      //     const SnackBar(
-                      //       content: Text("Note downloaded successfully"),
-                      //     ),
-                      //   );
-                      // }
-                      // //if user leaves screen, snackbar still runs so we need to stop that using this:
-                      // if (!context.mounted) return;
-                      // // Download failed.
-                      // if (result == null) {
-                      //   ScaffoldMessenger.of(context).showSnackBar(
-                      //     const SnackBar(
-                      //       content: Text("Failed to download note"),
-                      //     ),
-                      //   );
-                      //   return;
-                      // }
                     },
               child: Container(
                 height: 60,
@@ -400,7 +367,12 @@ class NoteDetailScreen extends ConsumerWidget {
               ),
             ),
             Divider(color: AppColors.border, height: 40, thickness: 1),
-            Expanded(child: RatingSection(noteId: note?.id ?? "dummy_id")),
+            Expanded(
+              child: RatingSection(
+                noteId: note?.id ?? "dummy_id",
+                ownerId: note?.user.id ?? "dummy_owner_id",
+              ),
+            ),
           ],
         ),
       ),
