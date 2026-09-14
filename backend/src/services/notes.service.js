@@ -151,10 +151,22 @@ const bookmarkNote = async(noteId, userId) => {
         user: userId,   
         note: noteId
     });
+    await User.findByIdAndUpdate(
+        userId,
+        {
+            $inc: {
+                totalBookmarks: 1
+            }
+        },
+        {
+            new: true
+        }
+    );
     return bookmark;
 }
 
 const getBookmarks = async(userId) => {
+    
     const bookmarks = await Bookmark.find({user: userId}).populate({
         path: "note",
         populate: {
@@ -173,6 +185,18 @@ const deleteBookmark = async(noteId, userId) => {
             note: noteId,
             user: userId
         }
+    );
+    if(!bookmark){
+        return null;
+    }
+    await User.findByIdAndUpdate(
+        userId,
+        {
+            $inc: {
+                totalBookmarks: -1
+            }
+        },
+        {new: true}
     );
     return bookmark;
 }

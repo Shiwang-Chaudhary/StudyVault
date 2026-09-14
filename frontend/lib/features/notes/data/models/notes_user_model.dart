@@ -7,7 +7,7 @@ class NoteUserModel {
   final String semester;
   final bool isVerified;
   final int totalNotes;
-  final int totalDownloads;
+  final int totalBookmarks;
   final double avgRating;
   final String createdAt; // Added createdAt field
   final String updatedAt; // Added updatedAt field
@@ -23,7 +23,7 @@ class NoteUserModel {
     required this.totalNotes,
     required this.createdAt, // Initialize createdAt
     required this.updatedAt, // Initialize updatedAt
-    this.totalDownloads = 0, // Default value for totalDownloads
+    this.totalBookmarks = 0, // Default value for totalBookmarks
     this.avgRating = 0.0, // Default value for avgRating
   });
 
@@ -39,7 +39,7 @@ class NoteUserModel {
       totalNotes: json['totalNotes'] as int,
       createdAt: json['createdAt'] as String, // Parse createdAt
       updatedAt: json['updatedAt'] as String, // Parse updatedAt
-      totalDownloads: json['totalDownloads'] as int? ?? 0, // Handle null
+      totalBookmarks: json['totalBookmarks'] as int? ?? 0, // Handle null
       avgRating: (json['avgRating'] as num?)?.toDouble() ?? 0.0,
     );
   }
@@ -56,7 +56,7 @@ class NoteUserModel {
       'totalNotes': totalNotes,
       'createdAt': createdAt, // Include createdAt in JSON
       'updatedAt': updatedAt, // Include updatedAt in JSON
-      'totalDownloads': totalDownloads, // Include totalDownloads in JSON
+      'totalBookmarks': totalBookmarks, // Include totalBookmarks in JSON
       'avgRating': avgRating, // Include avgRating in JSON
     };
   }
@@ -70,7 +70,7 @@ class NoteUserModel {
     String? semester,
     bool? isVerified,
     int? totalNotes,
-    int? totalDownloads,
+    int? totalBookmarks,
     double? avgRating,
     String? createdAt, // Optional parameter for createdAt
     String? updatedAt, // Optional parameter for updatedAt
@@ -86,7 +86,7 @@ class NoteUserModel {
       totalNotes: totalNotes ?? this.totalNotes,
       createdAt: createdAt ?? this.createdAt, // Preserve createdAt
       updatedAt: updatedAt ?? this.updatedAt, // Preserve updatedAt
-      totalDownloads: totalDownloads ?? this.totalDownloads,
+      totalBookmarks: totalBookmarks ?? this.totalBookmarks,
       avgRating: avgRating ?? this.avgRating,
     );
   }

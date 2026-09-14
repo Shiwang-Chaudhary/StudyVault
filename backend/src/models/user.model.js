@@ -36,7 +36,7 @@ const userSchema = new mongoose.Schema(
 
     // Computed stats — updated whenever a note is uploaded/deleted
     totalNotes: { type: Number, default: 0 },
-    totalDownloads: { type: Number, default: 0 },
+    totalBookmarks: { type: Number, default: 0 },
     avgRating: { type: Number, default: 0 },
     isVerified: { type: Boolean, default: false },
   },

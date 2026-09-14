@@ -57,31 +57,38 @@ class DownloadScreen extends ConsumerWidget {
                 SizedBox(height: 10),
                 Divider(color: const Color.fromARGB(255, 107, 106, 106)),
                 SizedBox(height: 15),
-                Expanded(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.all(0),
-                    itemCount: pdfList.length,
-                    itemBuilder: (context, index) {
-                      final pdf = pdfList[index];
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => PdfViewScreen(
-                                pdfId: pdf!.id,
-                                isLocal: true,
-                                pathOrUrl: pdf.localPath,
-                                title: pdf.title,
-                              ),
-                            ),
-                          );
-                        },
-                        child: DownloadedItemContainer(pdf: pdf),
-                      );
-                    },
-                  ),
-                ),
+                pdfList.isEmpty
+                    ? CustomText(
+                        text:
+                            "No downloads available. Please download a note first",
+                        maxLines: 2,
+                        color: AppColors.textSecondary,
+                      )
+                    : Expanded(
+                        child: ListView.builder(
+                          padding: const EdgeInsets.all(0),
+                          itemCount: pdfList.length,
+                          itemBuilder: (context, index) {
+                            final pdf = pdfList[index];
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => PdfViewScreen(
+                                      pdfId: pdf.id,
+                                      isLocal: true,
+                                      pathOrUrl: pdf.localPath,
+                                      title: pdf.title,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: DownloadedItemContainer(pdf: pdf),
+                            );
+                          },
+                        ),
+                      ),
               ],
             ),
           ),

@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:study_vault/core/constans/api_constants.dart';
 import 'package:study_vault/features/auth/data/auth_repository.dart';
+import 'package:study_vault/features/notes/data/models/bookmark_backend_response_model.dart';
 import 'package:study_vault/features/notes/data/models/notes_model.dart';
 import 'package:study_vault/features/notes/data/models/notes_response_model.dart';
 import 'package:study_vault/features/notes/data/models/rating_data_model.dart';
@@ -100,9 +101,13 @@ class NotesRepository {
         options: Options(headers: {"Authorization": "Bearer $token"}),
       );
       final responseData = response.data;
-      final List bookmarkList = responseData["data"];
-      return bookmarkList
-          .map((e) => Note.fromJson(e["note"] as Map<String, dynamic>))
+      final BookmarkResponse bookmarkResponse = BookmarkResponse.fromJson(
+        responseData,
+      );
+      //using .where only because there is dummy data in the backend
+      return bookmarkResponse.data
+          .where((bookmark) => bookmark.note != null)
+          .map((bookmark) => bookmark.note!)
           .toList();
     } catch (e) {
       log("Failed to load bookmarks: $e");

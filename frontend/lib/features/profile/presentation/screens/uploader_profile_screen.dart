@@ -5,8 +5,6 @@ import 'package:study_vault/core/config/app_font_size.dart';
 import 'package:study_vault/core/helperFunc/date_time_format.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/features/notes/data/models/notes_user_model.dart';
-import 'package:study_vault/features/notes/presentation/widgets/pdf_container.dart';
-import 'package:study_vault/features/notes/presentation/widgets/sub_tab.dart';
 import 'package:study_vault/features/profile/presentation/widgets/uploader_notes_section.dart';
 
 class UploaderProfileScreen extends ConsumerWidget {
@@ -16,7 +14,7 @@ class UploaderProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Map<String, dynamic> containerData = {
-      "Downloads": user.totalDownloads,
+      "Bookmarks": user.totalBookmarks,
       "Rating": user.avgRating,
       "Notes": user.totalNotes,
     };

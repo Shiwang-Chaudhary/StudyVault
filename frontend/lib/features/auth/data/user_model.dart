@@ -19,7 +19,7 @@ class UserModel {
 
   // Stats
   final int totalNotes;
-  final int totalDownloads;
+  final int totalBookmarks;
   final double avgRating;
   final bool isVerified;
 
@@ -41,7 +41,7 @@ class UserModel {
     this.semester,
     this.subjects = const [],
     this.totalNotes = 0,
-    this.totalDownloads = 0,
+    this.totalBookmarks = 0,
     this.avgRating = 0.0,
     this.isVerified = false,
     this.createdAt,
@@ -66,7 +66,7 @@ class UserModel {
       semester: json['semester'],
       subjects: List<String>.from(json['subjects'] ?? []),
       totalNotes: json['totalNotes'] ?? 0,
-      totalDownloads: json['totalDownloads'] ?? 0,
+      totalBookmarks: json['totalBookmarks'] ?? 0,
       avgRating: (json['avgRating'] ?? 0).toDouble(),
       isVerified: json['isVerified'] ?? false,
       createdAt: json['createdAt'],
@@ -88,7 +88,7 @@ class UserModel {
       'semester': semester,
       'subjects': subjects,
       'totalNotes': totalNotes,
-      'totalDownloads': totalDownloads,
+      'totalBookmarks': totalBookmarks,
       'avgRating': avgRating,
       'isVerified': isVerified,
       'createdAt': createdAt,

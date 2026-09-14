@@ -29,7 +29,7 @@ class ProfileSection extends ConsumerWidget {
       data: (user) {
         final date = formatJoinedDate(user.createdAt);
         Map<String, dynamic> containerData = {
-          "Downloads": user.totalDownloads,
+          "Bookmarks": user.totalBookmarks,
           "Rating": user.avgRating,
           "Notes": user.totalNotes,
         };
