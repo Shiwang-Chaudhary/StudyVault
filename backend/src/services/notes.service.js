@@ -91,6 +91,25 @@ const getNotes = async (
     };
 };
 
+const trendingNotes = async() => {
+    const notes = await Note.find()
+    .populate("userId")
+    .sort({downloadCount: -1}).limit(3);
+    return notes;
+}
+
+const recommendedNotes = async(subjects) => {
+    //subjects is an array
+    const notes = await Note.find({
+        subject: {
+            $in : subjects
+        }
+    })
+    .populate("userId")
+    .sort({createdAt: -1}).limit(3);
+    return notes;
+}
+
 // ==================== MY NOTES ====================
 
 const getMyNotes = async (userId, cursor) => {
@@ -251,7 +270,7 @@ const rateNote = async(noteId, userId, value) => {
         }
     ])
     const {totalRatingValue = 0, totalCountValue = 0} = userStats[0] ?? {};
-    const userAvgRating = totalCountValue > 0 ? totalRatingValue/totalCountValue : 0;
+    const userAvgRating = totalCountValue > 0 ? Number((totalRatingValue / totalCountValue).toFixed(1)) : 0;
     const updatedUser = await User.findByIdAndUpdate(
         {_id: ownerId},
         {avgRating: userAvgRating},
@@ -352,5 +371,7 @@ module.exports = {
     deleteBookmark,
     getBookmarks,
     rateNote,
-    getNoteRatings
+    getNoteRatings,
+    recommendedNotes,
+    trendingNotes
 };

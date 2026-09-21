@@ -11,6 +11,8 @@ import 'package:study_vault/features/notes/presentation/screens/search_screen.da
 import 'package:study_vault/features/notes/presentation/widgets/home_screen_tab_bar.dart';
 import 'package:study_vault/features/notes/presentation/widgets/pdf_container.dart';
 import 'package:study_vault/features/notes/presentation/widgets/recently_opened_section.dart';
+import 'package:study_vault/features/notes/presentation/widgets/recommended_section.dart';
+import 'package:study_vault/features/notes/presentation/widgets/trending_section.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -157,42 +159,15 @@ class HomeScreen extends StatelessWidget {
                   weight: FontWeight.w600,
                   color: AppColors.accentTeal,
                 ),
-                CustomText(
-                  text: "See All",
-                  size: FontSizes.md,
-                  weight: FontWeight.w600,
-                  color: AppColors.primary,
-                ),
+                // CustomText(
+                //   text: "See All",
+                //   size: FontSizes.md,
+                //   weight: FontWeight.w600,
+                //   color: AppColors.primary,
+                // ),
               ],
             ),
-            const SizedBox(height: 10),
-            SizedBox(
-              height: 100,
-              child: Center(
-                child: CustomText(
-                  text: "No recommended PDFs for you",
-                  size: FontSizes.md,
-                  weight: FontWeight.w400,
-                  color: AppColors.textSecondary,
-                ),
-              ),
-            ),
-            // Column(
-            //   children: List.generate(
-            //     3,
-            //     (_) => Bounce(
-            //       onTap: () {
-            //         Navigator.push(
-            //           context,
-            //           MaterialPageRoute(
-            //             builder: (context) => const NoteDetailScreen(),
-            //           ),
-            //         );
-            //       },
-            //       child: const PdfContainer(),
-            //     ),
-            //   ),
-            // ),
+            TrendingSection(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -211,81 +186,7 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 10),
-            // Column(
-            //   children: List.generate(
-            //     3,
-            //     (_) => Bounce(
-            //       onTap: () {
-            //         Navigator.push(
-            //           context,
-            //           MaterialPageRoute(
-            //             builder: (context) => const NoteDetailScreen(),
-            //           ),
-            //         );
-            //       },
-            //       child: const PdfContainer(),
-            //     ),
-            //   ),
-            // ),
-            SizedBox(
-              height: 100,
-              child: Center(
-                child: CustomText(
-                  text: "No recommended PDFs for you",
-                  size: FontSizes.md,
-                  weight: FontWeight.w400,
-                  color: AppColors.textSecondary,
-                ),
-              ),
-            ),
-            // ListView.builder(
-            //   shrinkWrap: true,
-            //   physics: const NeverScrollableScrollPhysics(),
-            //   padding: const EdgeInsets.only(top: 10),
-            //   itemCount: AppConstants.mvpSubjectsByBranch["CSE"]!.length,
-            //   scrollDirection: Axis.vertical,
-            //   itemBuilder: (context, index) {
-            //     return Column(
-            //       crossAxisAlignment: CrossAxisAlignment.start,
-            //       children: [
-            //         Row(
-            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //           children: [
-            //             CustomText(
-            //               text: AppConstants.mvpSubjectsByBranch["CSE"]![index],
-            //               size: FontSizes.xxl,
-            //               weight: FontWeight.w600,
-            //             ),
-            //             CustomText(
-            //               text: "See All",
-            //               size: FontSizes.lg,
-            //               weight: FontWeight.w600,
-            //               color: AppColors.primary,
-            //             ),
-            //           ],
-            //         ),
-            //         const SizedBox(height: 10),
-            //         Column(
-            //           children: List.generate(
-            //             3,
-            //             (_) => Bounce(
-            //               onTap: () {
-            //                 Navigator.push(
-            //                   context,
-            //                   MaterialPageRoute(
-            //                     builder: (context) => const NoteDetailScreen(),
-            //                   ),
-            //                 );
-            //               },
-            //               child: const PdfContainer(),
-            //             ),
-            //           ),
-            //         ),
-            //         const SizedBox(height: 10),
-            //       ],
-            //     );
-            //   },
-            // ),
+            RecommendedSection(),
           ],
         ),
       ),

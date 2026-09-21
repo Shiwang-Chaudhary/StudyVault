@@ -174,34 +174,64 @@ class _RatingSectionState extends ConsumerState<RatingSection> {
                     color: AppColors.textSecondary,
                   )
                 : SizedBox.shrink(),
-            Column(
-              children: List.generate(
-                ratingData.ratings.length,
-                (index) => Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CustomText(
-                        text: ratingData.ratings[index].userName,
-                        size: FontSizes.lg,
-                        color: AppColors.textPrimary,
-                      ),
+            // Column(
+            //   children: List.generate(
+            //     ratingData.ratings.length,
+            //     (index) => Padding(
+            //       padding: const EdgeInsets.only(top: 8.0),
+            //       child: Row(
+            //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //         children: [
+            //           CustomText(
+            //             text: ratingData.ratings[index].userName,
+            //             size: FontSizes.lg,
+            //             color: AppColors.textPrimary,
+            //           ),
 
-                      Row(
-                        children: List.generate(
-                          ratingData.ratings[index].value.toInt(),
-                          (i) => Icon(
-                            Icons.star,
-                            color: AppColors.accentAmber,
-                            size: 20,
+            //           Row(
+            //             children: List.generate(
+            //               ratingData.ratings[index].value.toInt(),
+            //               (i) => Icon(
+            //                 Icons.star,
+            //                 color: AppColors.accentAmber,
+            //                 size: 20,
+            //               ),
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            Column(
+              children: ratingData.ratings
+                  .take(2)
+                  .map(
+                    (rating) => Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomText(
+                            text: rating.userName,
+                            size: FontSizes.lg,
+                            color: AppColors.textPrimary,
                           ),
-                        ),
+                          Row(
+                            children: List.generate(
+                              rating.value.toInt(),
+                              (i) => Icon(
+                                Icons.star,
+                                color: AppColors.accentAmber,
+                                size: 20,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-              ),
+                    ),
+                  )
+                  .toList(),
             ),
           ],
         );

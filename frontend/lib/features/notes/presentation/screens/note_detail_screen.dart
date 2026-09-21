@@ -15,7 +15,6 @@ import 'package:study_vault/features/notes/providers/bookmark_notifier.dart';
 import 'package:study_vault/features/notes/providers/current_user_id_provider.dart';
 import 'package:study_vault/features/notes/providers/isdownloaded_provider.dart';
 import 'package:study_vault/features/notes/providers/notes_download_notifier.dart';
-import 'package:study_vault/features/profile/presentation/screens/my_profile_screen.dart';
 import 'package:study_vault/features/profile/presentation/screens/uploader_profile_screen.dart';
 
 class NoteDetailScreen extends ConsumerWidget {

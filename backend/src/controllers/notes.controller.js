@@ -60,6 +60,17 @@ const downloadNote = asyncHandler(async(req,res) => {
     return successResponse(res, 200, {downloadCount: note.downloadCount, downloadUrl});
 });
 
+const getTrendingNotes = asyncHandler(async(req, res) => {
+    const trendingNotes = await noteService.trendingNotes();
+    return successResponse(res, 200, trendingNotes);
+});
+
+const getRecommendedNotes = asyncHandler(async(req, res) => {
+    const {subjects} = req.body;
+    const recommendedNotes = await noteService.recommendedNotes(subjects);
+    return successResponse(res, 200, recommendedNotes);
+});
+
 const bookmarkNote = asyncHandler(async(req,res) => {
     const noteId = req.params.noteId;
     const userId = req.user._id;
@@ -138,4 +149,4 @@ const deleteNote = asyncHandler(async(req,res) =>{
     return successResponse(res, 200, {message: "Note deleted successfully"});
     });
 
-module.exports = { uploadNote, listNotes, getMyNotes, getNoteById, updateNote, deleteNote, downloadNote, bookmarkNote, getBookmarks, deleteBookmark, rateNote, getNoteRatings };
+module.exports = { uploadNote, listNotes, getMyNotes, getNoteById, updateNote, deleteNote, downloadNote, bookmarkNote, getBookmarks, deleteBookmark, rateNote, getNoteRatings, getTrendingNotes, getRecommendedNotes };

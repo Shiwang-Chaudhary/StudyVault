@@ -1,5 +1,5 @@
 class ApiConstants {
-  static const String baseUrl = "http://192.168.1.8:3000";
+  static const String baseUrl = "http://192.168.1.4:3000";
   // static const String baseUrl = "https://study-vault-backend-29bx.onrender.com";
 
   static const String googleLogin = "/api/auth/google";
@@ -11,6 +11,8 @@ class ApiConstants {
   static const String getBookmark = "/api/notes/my/bookmarks";
   static const String addBookmark = "/api/notes/noteId/bookmark";
   static const String deleteBookmark = "/api/notes/noteId/bookmark";
+  static String trending = "/api/notes/trending";
+  static String recommended = "/api/notes/recommended";
   static String rateNote(String noteId) => "/api/notes/$noteId/rating";
   static String fetchRatings(String noteId) => "/api/notes/$noteId/ratings";
 }

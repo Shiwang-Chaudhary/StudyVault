@@ -16,6 +16,8 @@ const {
   deleteBookmark,
   rateNote,
   getNoteRatings,
+  getTrendingNotes,
+  getRecommendedNotes
 } = require("../../controllers/notes.controller");
 
 //POST
@@ -27,9 +29,11 @@ router.post("/:noteId/rating", authMiddleware, rateNote);
 router.get("/", authMiddleware, listNotes);
 router.get("/my", authMiddleware, getMyNotes);
 router.get("/my/bookmarks", authMiddleware, getBookmarks);
+router.get("/trending", getTrendingNotes);
+router.get("/recommended", getRecommendedNotes);
 router.get("/:noteId",authMiddleware, getNoteById);
 router.get("/:noteId/download", authMiddleware, downloadNote);
-router.get("/:noteId/ratings", getNoteRatings);
+router.get("/:noteId/ratings", authMiddleware,getNoteRatings);
 
 //PATCH
 router.patch("/:noteId", authMiddleware, updateNote);

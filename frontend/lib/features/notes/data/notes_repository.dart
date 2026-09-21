@@ -107,7 +107,7 @@ class NotesRepository {
       //using .where only because there is dummy data in the backend
       return bookmarkResponse.data
           .where((bookmark) => bookmark.note != null)
-          .map((bookmark) => bookmark.note!)
+          .map((bookmark) => bookmark.note)
           .toList();
     } catch (e) {
       log("Failed to load bookmarks: $e");
@@ -177,6 +177,41 @@ class NotesRepository {
       log("STACK TRACE:");
       log("$stackTrace");
       throw Exception("Failed to fetch ratings: $e");
+    }
+  }
+
+  Future<List<Note>> fetchTrendingNotes() async {
+    try {
+      final token = await auth.getIdToken;
+      final response = await dio.get(
+        ApiConstants.trending,
+        options: Options(headers: {"Authorization": "Bearer $token"}),
+      );
+      final List trendingList = response.data["data"];
+      return trendingList.map((e) => Note.fromJson(e)).toList();
+    } catch (e, st) {
+      log("Failed to fetch trending notes: $e");
+      log("STACK TRACE:");
+      log("$st");
+      throw Exception("Failed to fetch trending notes: $e");
+    }
+  }
+
+  Future<List<Note>> fetchRecommendedNotes(List<String> subjects) async {
+    try {
+      final token = await auth.getIdToken;
+      final response = await dio.get(
+        ApiConstants.recommended,
+        data: {"subjects": subjects},
+        options: Options(headers: {"Authorization": "Bearer $token"}),
+      );
+      final List recommendedList = response.data["data"];
+      return recommendedList.map((e) => Note.fromJson(e)).toList();
+    } catch (e, st) {
+      log("Failed to fetch recommended notes: $e");
+      log("STACK TRACE:");
+      log("$st");
+      throw Exception("Failed to fetch recommended notes: $e");
     }
   }
 }
