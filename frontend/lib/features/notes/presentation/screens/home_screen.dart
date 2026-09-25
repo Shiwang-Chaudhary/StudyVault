@@ -1,15 +1,10 @@
-import 'package:bounce/bounce.dart';
 import 'package:flutter/material.dart';
 import 'package:study_vault/core/config/app_colors.dart';
 import 'package:study_vault/core/config/app_font_size.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
-import 'package:study_vault/core/widgets/custom_text_field.dart';
 import 'package:study_vault/features/notes/presentation/screens/bookmark_screen.dart';
 import 'package:study_vault/features/notes/presentation/screens/download_screen.dart';
-import 'package:study_vault/features/notes/presentation/screens/note_detail_screen.dart';
-import 'package:study_vault/features/notes/presentation/screens/search_screen.dart';
 import 'package:study_vault/features/notes/presentation/widgets/home_screen_tab_bar.dart';
-import 'package:study_vault/features/notes/presentation/widgets/pdf_container.dart';
 import 'package:study_vault/features/notes/presentation/widgets/recently_opened_section.dart';
 import 'package:study_vault/features/notes/presentation/widgets/recommended_section.dart';
 import 'package:study_vault/features/notes/presentation/widgets/trending_section.dart';
@@ -177,12 +172,12 @@ class HomeScreen extends StatelessWidget {
                   weight: FontWeight.w600,
                   color: AppColors.accentAmber,
                 ),
-                CustomText(
-                  text: "See All",
-                  size: FontSizes.md,
-                  weight: FontWeight.w600,
-                  color: AppColors.primary,
-                ),
+                // CustomText(
+                //   text: "See All",
+                //   size: FontSizes.md,
+                //   weight: FontWeight.w600,
+                //   color: AppColors.primary,
+                // ),
               ],
             ),
             const SizedBox(height: 10),

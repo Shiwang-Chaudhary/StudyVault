@@ -113,7 +113,7 @@ class _PdfViewScreenState extends ConsumerState<PdfViewScreen> {
             : SfPdfViewer.network(
                 widget.pathOrUrl,
                 onDocumentLoaded: (details) async {
-                  final history = await ref
+                  final history = ref
                       .read(pdfHistoryDataSourceProvider)
                       .getPdfHistory(widget.pdfId, userId);
                   log(

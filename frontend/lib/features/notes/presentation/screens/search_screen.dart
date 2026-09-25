@@ -188,7 +188,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         MaterialPageRoute(
                           builder: (_) => NoteDetailScreen(
                             note: note,
-                            totalNotes: note.user?.totalNotes,
+                            totalNotes: note.user.totalNotes,
                           ),
                         ),
                       );

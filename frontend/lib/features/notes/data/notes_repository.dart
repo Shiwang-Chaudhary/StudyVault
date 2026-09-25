@@ -20,7 +20,7 @@ class NotesRepository {
     final String? token = await auth.getIdToken;
     final response = await dio.get(
       ApiConstants.getUserNotes,
-      queryParameters: {if (nextCursor != null) "cursor": nextCursor},
+      queryParameters: {"cursor": ?nextCursor},
       options: Options(headers: {"Authorization": "Bearer $token"}),
     );
     NotesResponse notesResponse = NotesResponse.fromJson(response.data);
@@ -50,14 +50,14 @@ class NotesRepository {
       ApiConstants.getFilteredNotes,
       options: Options(headers: {"Authorization": "Bearer $token"}),
       queryParameters: {
-        if (nextCursor != null) 'cursor': nextCursor,
-        if (subject != null) 'subject': subject,
-        if (college != null) 'college': college,
-        if (branch != null) 'branch': branch,
-        if (semester != null) 'semester': semester,
-        if (search != null) 'search': search,
-        if (sort != null) 'sort': sort,
-        if (userId != null) 'userId': userId,
+        'cursor': ?nextCursor,
+        'subject': ?subject,
+        'college': ?college,
+        'branch': ?branch,
+        'semester': ?semester,
+        'search': ?search,
+        'sort': ?sort,
+        'userId': ?userId,
       },
     );
     return NotesResponse.fromJson(response.data);
@@ -163,7 +163,7 @@ class NotesRepository {
       final token = await auth.getIdToken;
       final response = await dio.get(
         ApiConstants.fetchRatings(noteId),
-        queryParameters: {if (nextCursor != null) "cursor": nextCursor},
+        queryParameters: {"cursor": ?nextCursor},
         options: Options(headers: {"Authorization": "Bearer $token"}),
       );
       final data = RatingData.fromJson(response.data["data"]);

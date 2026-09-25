@@ -4,7 +4,7 @@ import 'package:study_vault/core/config/app_colors.dart';
 import 'package:study_vault/core/config/app_font_size.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/features/notes/presentation/screens/pdf_view_screen.dart';
-import 'package:study_vault/features/notes/presentation/widgets/pdf_container.dart';
+import 'package:study_vault/features/notes/presentation/widgets/trending_pdf_container.dart';
 import 'package:study_vault/features/notes/providers/trending_notes_provider.dart';
 
 class TrendingSection extends ConsumerWidget {
@@ -57,7 +57,7 @@ class TrendingSection extends ConsumerWidget {
                                 ),
                               );
                             },
-                            child: PdfContainer(note: note),
+                            child: TrendingPdfContainer(note: note),
                           ),
                         )
                         .toList(),

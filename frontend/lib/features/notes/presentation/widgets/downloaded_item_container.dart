@@ -6,7 +6,6 @@ import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/features/notes/data/models/local_pdf_model.dart';
 import 'package:study_vault/features/notes/data/models/notes_model.dart';
 import 'package:study_vault/features/notes/data/pdf_local_data_source.dart';
-import 'package:study_vault/features/notes/providers/bookmark_notifier.dart';
 
 class DownloadedItemContainer extends ConsumerWidget {
   final LocalPdfModel? pdf;

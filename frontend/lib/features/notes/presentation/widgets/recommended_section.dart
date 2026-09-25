@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:study_vault/core/config/app_colors.dart';
@@ -7,7 +5,7 @@ import 'package:study_vault/core/config/app_font_size.dart';
 import 'package:study_vault/core/widgets/custom_text.dart';
 import 'package:study_vault/features/auth/providers/user_profile_provider.dart';
 import 'package:study_vault/features/notes/presentation/screens/pdf_view_screen.dart';
-import 'package:study_vault/features/notes/presentation/widgets/pdf_container.dart';
+import 'package:study_vault/features/notes/presentation/widgets/recommended_note_container.dart';
 import 'package:study_vault/features/notes/providers/recommended_notes_provider.dart';
 
 class RecommendedSection extends ConsumerWidget {
@@ -25,7 +23,7 @@ class RecommendedSection extends ConsumerWidget {
     return recommendedProvider.when(
       error: (error, stackTrace) {
         return CustomText(
-          text: e.toString(),
+          text: error.toString(),
           color: Colors.redAccent,
           maxLines: 3,
         );
@@ -66,7 +64,7 @@ class RecommendedSection extends ConsumerWidget {
                                 ),
                               );
                             },
-                            child: PdfContainer(note: note),
+                            child: RecommendedPdfContainer(note: note),
                           ),
                         )
                         .toList(),

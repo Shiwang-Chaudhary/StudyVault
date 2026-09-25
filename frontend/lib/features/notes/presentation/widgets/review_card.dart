@@ -9,7 +9,7 @@ import 'package:study_vault/features/notes/data/models/rating_model.dart';
 class ReviewCard extends StatelessWidget {
   final Rating rating;
 
-  const ReviewCard({required this.rating});
+  const ReviewCard({super.key, required this.rating});
 
   @override
   Widget build(BuildContext context) {
